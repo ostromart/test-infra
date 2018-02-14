@@ -2,21 +2,27 @@ prowjob_namespace: default
 pod_namespace: test-pods
 log_level: info
 
+presets:
+- labels:
+    preset-service-account: true
+  env:
+  - name: GOOGLE_APPLICATION_CREDENTIALS
+    value: /etc/service-account/service-account.json
+  volumes:
+  - name: service
+    secret:
+      secretName: service-account
+  volumeMounts:
+  - name: service
+    mountPath: /etc/service-account
+    readOnly: true
+
 periodics:
 - interval: 10m
   agent: kubernetes
   name: gob-checkout-test
+  labels:
+    preset-service-account: true
   spec:
     containers:
-    - env:
-      - name: GOOGLE_APPLICATION_CREDENTIALS
-        value: /etc/service-account/service-account.json
       image: gcr.io/k8s-testimages/gob-test:v20180125-832d1e9
-      volumeMounts:
-      - mountPath: /etc/service-account
-        name: service
-        readOnly: true
-    volumes:
-    - name: service
-      secret:
-        secretName: service-account

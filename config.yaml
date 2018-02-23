@@ -40,7 +40,7 @@ periodics:
     preset-service-account: true
   spec:
     containers:
-      image: gcr.io/k8s-testimages/gob-test:v20180125-832d1e9
+    - image: gcr.io/k8s-testimages/gob-test:v20180125-832d1e9
 - interval: 1h
   name: ci-kubernetes-bazel-test
   agent: kubernetes
@@ -64,14 +64,8 @@ periodics:
       - --test-args=--build_tag_filters=-e2e,-integration
       - --test-args=--test_tag_filters=-e2e,-integration
       - --test-args=--flaky_test_attempts=3
-      env:
-      - name: TEST_TMPDIR
-        value: /root/.cache/bazel
       securityContext:
         privileged: true
-      volumeMounts:
-      - name: cache-ssd
-        mountPath: /root/.cache
       resources:
         requests:
           memory: "6Gi"

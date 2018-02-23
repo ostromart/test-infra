@@ -262,9 +262,16 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: deck-ing
+  annotations:
+    kubernetes.io/ingress.class: "gce"
 spec:
+  tls:
+  - secretName: tls-secret
+    hosts:
+    - prow-internal.gcpnode.com
   rules:
-  - http:
+  - host: prow-internal.gcpnode.com
+    http:
       paths:
       - path: /*
         backend:

@@ -1,0 +1,11 @@
+---
+default_org: kubernetes
+default_repo: kubernetes
+external_services:
+  kubernetes:
+    gcs_bucket: gke-prow/
+    gcs_pull_prefix: gke-prow/pr-logs/pull
+    prow_url: prow-internal.gcpnode.com
+jobs:
+  gke-prow/logs/:
+  - ci-kubernetes-bazel-test

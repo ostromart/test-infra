@@ -79,12 +79,12 @@ periodics:
     - image: gcr.io/k8s-testimages/bootstrap:v20180215-b2a89850e
       args:
       - --clean
-      - --git-cache=/root/.cache/git
       - --repo=gke-internal.googlesource.com/kubernetes
       - --repo=k8s.io/release
       - --root=/go/src
       - --timeout=30
       - --scenario=kubernetes_build
+      - --upload=gs://gke-prow/logs
       - --
       - --fast
       - --release=gs://kubernetes-release-gke-internal

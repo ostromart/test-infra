@@ -32,6 +32,49 @@ presets:
   - name: bazel-scratch
     mountPath: /bazel-scratch/.cache
 
+presubmits:
+  elafros/elafros:
+  - name: pull-elafros-bazel-test
+    agent: kubernetes
+    context: pull-elafros-bazel-test
+    always_run: true
+    rerun_command: "/test pull-elafros-bazel-test"
+    trigger: "(?m)^/test( all| pull-elafros-bazel-test),?(\\s+|$)"
+    labels:
+      preset-service-account: true
+      preset-bazel-scratch-dir: true
+    spec:
+      containers:
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180228-dabde9ed5-master
+        args:
+        - "--ssh=/etc/ssh-elafros/ssh-elafros"
+        - "--scenario=kubernetes_execute_bazel"
+        - "--clean"
+        - "--job=$(JOB_NAME)"
+        - "--repo=github.com/$(REPO_OWNER)/$(REPO_NAME)=$(PULL_REFS)"
+        - "--service-account=/etc/service-account/service-account.json"
+        - "--upload=gs://gke-prow/pr-logs"
+        - "--" # end bootstrap args, scenario args below
+        - "bazel"
+        - "test"
+        - "--workspace_status_command="
+        - "//pkg/..."
+        # Bazel needs privileged mode in order to sandbox builds.
+        securityContext:
+          privileged: true
+        resources:
+          requests:
+            memory: "6Gi"
+        volumeMounts:
+        - mountPath: /etc/ssh-elafros
+          name: ssh-elafros
+      volumes:
+      - name: ssh-elafros
+        secret:
+          defaultMode: 256
+          secretName: ssh-elafros
+
+
 periodics:
 - interval: 10m
   agent: kubernetes

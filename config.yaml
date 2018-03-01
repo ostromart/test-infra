@@ -33,14 +33,6 @@ presets:
     mountPath: /bazel-scratch/.cache
 
 periodics:
-- interval: 10m
-  agent: kubernetes
-  name: gob-checkout-test
-  labels:
-    preset-service-account: true
-  spec:
-    containers:
-    - image: gcr.io/k8s-testimages/gob-test:v20180125-832d1e9
 - interval: 1h
   name: ci-kubernetes-bazel-test
   agent: kubernetes
@@ -88,6 +80,7 @@ periodics:
       - --
       - --fast
       - --release=gs://kubernetes-release-gke-internal
+      - --push-build-script=../../kubernetes/release/push-build.sh
       env:
       - name: DOCKER_IN_DOCKER_ENABLED
         value: true
@@ -98,6 +91,38 @@ periodics:
         requests:
           cpu: 3
           memory: "8Gi"
+      volumeMounts:
+      - name: docker-graph
+        mountPath: /docker-graph
+    volumes:
+    - name: docker-graph
+      emptyDir: {}
+- interval: 1h
+  name: ci-kubernetes-integration
+  agent: kubernetes
+  labels:
+    preset-service-account: true
+  spec:
+    containers:
+    - image: gcr.io/k8s-testimages/bootstrap:v20180215-b2a89850e
+      args:
+      - --clean
+      - --repo=gke-internal.googlesource.com/kubernetes
+      - --timeout=100
+      - --scenario=kubernetes_verify
+      - --
+      - --branch=master
+      - --force
+      - --prow
+      env:
+      - name: DOCKER_IN_DOCKER_ENABLED
+        value: true
+      # docker-in-docker needs privileged mode
+      securityContext:
+        privileged: true
+      resources:
+        requests:
+          cpu: 3
       volumeMounts:
       - name: docker-graph
         mountPath: /docker-graph

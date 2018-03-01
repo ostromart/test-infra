@@ -80,7 +80,7 @@ periodics:
       - --
       - --fast
       - --release=gs://kubernetes-release-gke-internal
-      - --push-build-script=../../kubernetes/release/push-build.sh
+      - --push-build-script=../../k8s.io/release/push-build.sh
       env:
       - name: DOCKER_IN_DOCKER_ENABLED
         value: true
@@ -110,6 +110,7 @@ periodics:
       - --repo=gke-internal.googlesource.com/kubernetes
       - --timeout=100
       - --scenario=kubernetes_verify
+      - --upload=gs://gke-prow/logs
       - --
       - --branch=master
       - --force

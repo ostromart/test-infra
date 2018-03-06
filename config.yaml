@@ -57,7 +57,7 @@ presubmits:
         - "--" # end bootstrap args, scenario args below
         - "bazel"
         - "test"
-        - "--workspace_status_command="
+        - '"--workspace_status_command="'
         - "//pkg/..."
         # Bazel needs privileged mode in order to sandbox builds.
         securityContext:

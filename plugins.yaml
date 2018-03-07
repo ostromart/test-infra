@@ -1,1 +1,19 @@
 plugins:
+  elafros/elafros:
+  - trigger
+
+  elafros:
+  - assign
+  - cat
+  - dog
+  - golint
+  - heart
+  - help
+  - hold
+  - label
+  - lgtm
+  - shrug
+  - size
+  - skip
+  - wip
+  - yuks

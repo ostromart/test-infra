@@ -125,7 +125,7 @@ periodics:
       - --upload=gs://gke-prow/logs
       - --
       - --fast
-      - --release=gs://kubernetes-release-gke-internal
+      - --release=kubernetes-release-gke-internal
       - --push-build-script=../../k8s.io/release/push-build.sh
       env:
       - name: DOCKER_IN_DOCKER_ENABLED

@@ -4,6 +4,7 @@ plugins:
 
   elafros:
   - assign
+  - buildifier
   - cat
   - dog
   - golint

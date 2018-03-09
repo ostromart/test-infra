@@ -21,6 +21,24 @@ presets:
   - name: service
     mountPath: /etc/service-account
     readOnly: true
+- labels:
+    preset-k8s-ssh: true
+  env:
+  - name: USER
+    value: prow
+  - name: JENKINS_GCE_SSH_PRIVATE_KEY_FILE
+    value: /etc/ssh-key-secret/ssh-private
+  - name: JENKINS_GCE_SSH_PUBLIC_KEY_FILE
+    value: /etc/ssh-key-secret/ssh-public
+  volumes:
+  - name: ssh
+    secret:
+      defaultMode: 0400
+      secretName: ssh-key-secret
+  volumeMounts:
+  - name: ssh
+    mountPath: /etc/ssh-key-secret
+    readOnly: true
 # storage / caching presets
 - labels:
     preset-bazel-scratch-dir: true
@@ -125,7 +143,7 @@ periodics:
       - --upload=gs://gke-prow/logs
       - --
       - --fast
-      - --release=kubernetes-release-gke-internal
+      - --release=gke-prow
       - --push-build-script=../../k8s.io/release/push-build.sh
       env:
       - name: DOCKER_IN_DOCKER_ENABLED
@@ -176,3 +194,29 @@ periodics:
     volumes:
     - name: docker-graph
       emptyDir: {}
+- interval: 1h
+  agent: kubernetes
+  name: ci-kubernetes-e2e-gob-gke
+  labels:
+    preset-service-account: true
+    preset-k8s-ssh: true
+  spec:
+    containers:
+    - args:
+      - --timeout=70
+      - --bare
+      - --scenario=kubernetes_e2e
+      - --
+      - --check-leaked-resources
+      - --cluster=
+      - --deployment=gke
+      - --extract=gs://gke-prow/ci/latest.txt
+      - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+      - --gcp-node-image=gci
+      - --gcp-zone=us-central1-f
+      - --ginkgo-parallel
+      - --gke-environment=test
+      - --provider=gke
+      - --test_args=--ginkgo.skip=\\[Slow\\]|\\[Serial\\]|\\[Disruptive\\]|\\[Flaky\\]|\\[Feature:.+\\] --minStartupPods=8
+      - --timeout=50m
+      image: gcr.io/k8s-testimages/kubekins-e2e:v20180312-a6be97dc1-master

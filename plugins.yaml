@@ -1,7 +1,4 @@
 plugins:
-  elafros/elafros:
-  - trigger
-
   elafros:
   - assign
   - buildifier
@@ -16,5 +13,6 @@ plugins:
   - shrug
   - size
   - skip
+  - trigger
   - wip
   - yuks

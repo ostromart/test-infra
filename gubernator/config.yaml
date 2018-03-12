@@ -6,6 +6,15 @@ external_services:
     gcs_bucket: gke-prow/
     gcs_pull_prefix: gke-prow/pr-logs/pull
     prow_url: prow-internal.gcpnode.com
+  elafros:
+    gcs_bucket: gke-prow/
+    gcs_pull_prefix: gke-prow/pr-logs/pull
+    prow_url: prow-internal.gcpnode.com
 jobs:
   gke-prow/logs/:
+  - ci-kubernetes-build
   - ci-kubernetes-bazel-test
+  - ci-kubernetes-integration
+  gke-prow/pr-logs/directory/:
+  - pull-elafros-bazel-test
+  - pull-elafros-build-bazel-test

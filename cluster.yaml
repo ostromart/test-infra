@@ -476,3 +476,69 @@ spec:
   - port: 80
     targetPort: 8888
   type: NodePort
+---
+# gerrit-fetcher
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  labels:
+    app: gerrit
+  name: gerrit-storage
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  gcePersistentDisk:
+    pdName: gerrit-storage
+    fsType: ext4
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  labels:
+    app: gerrit
+  name: gerrit-storage
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: gerrit
+  labels:
+    app: gerrit
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: gerrit
+    spec:
+      terminationGracePeriodSeconds: 30
+      containers:
+      - name: gerrit
+        image: gcr.io/k8s-prow/gerrit:latest # TODO(senlu): create a stable tag
+        imagePullPolicy: Always
+        args:
+        - --storage=/store
+        - --gerrit-instance=gke-internal.googlesource.com
+        - --gerrit-projects=test-infra
+        volumeMounts:
+        - name: config
+          mountPath: /etc/config
+          readOnly: true
+        - mountPath: /store
+          name: gerrit-volume
+      volumes:
+      - name: config
+        configMap:
+          name: config
+      - name: gerrit-volume
+          persistentVolumeClaim:
+            claimName: gerrit-storage

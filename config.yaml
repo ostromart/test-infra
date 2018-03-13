@@ -136,6 +136,28 @@ presubmits:
           defaultMode: 256
           secretName: ssh-elafros
 
+  gke-internal.googlesource.com/test-infra:
+  - name: pull-test-infra-presubmit
+    agent: kubernetes
+    context: pull-test-infra-presubmit
+    always_run: true
+    rerun_command: "/test pull-test-infra-presubmit"
+    trigger: "(?m)^/test( all| pull-test-infra-presubmit),?(\\s+|$)"
+    labels:
+      preset-service-account: true
+    spec:
+      containers:
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180228-dabde9ed5-master
+        args:
+        - --clean
+        - --repo=gke-internal.googlesource.com/kubernetes
+        - --service-account=/etc/service-account/service-account.json
+        - --upload=gs://gke-prow/logs
+        - --scenario=execute
+        - -- # end bootstrap args, scenario args below
+        - echo
+        - 'test-infra presubmit placeholder'
+
 
 periodics:
 - interval: 1h

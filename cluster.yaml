@@ -540,5 +540,5 @@ spec:
         configMap:
           name: config
       - name: gerrit-volume
-          persistentVolumeClaim:
-            claimName: gerrit-storage
+        persistentVolumeClaim:
+          claimName: gerrit-storage

@@ -1,6 +1,11 @@
+approve:
+- repos:
+  - elafros
+  implicit_self_approve: true
+
 plugins:
   elafros:
-  - approval
+  - approve
   - assign
   - buildifier
   - cat

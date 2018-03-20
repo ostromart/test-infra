@@ -477,7 +477,7 @@ spec:
     targetPort: 8888
   type: NodePort
 ---
-# gerrit-fetcher
+# start gerrit
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -523,11 +523,12 @@ spec:
       terminationGracePeriodSeconds: 30
       containers:
       - name: gerrit
-        image: gcr.io/k8s-prow/gerrit:latest # TODO(senlu): create a stable tag
+        image: gcr.io/gke-prow/gerrit:latest # TODO(senlu): create a stable tag
         imagePullPolicy: Always
         args:
-        - --storage=/store
-        - --gerrit-instance=gke-internal.googlesource.com
+        - ./gerrit
+        - --storage=/store/gerrit
+        - --gerrit-instance=https://gke-internal-review.googlesource.com
         - --gerrit-projects=test-infra
         volumeMounts:
         - name: config
@@ -542,3 +543,4 @@ spec:
       - name: gerrit-volume
         persistentVolumeClaim:
           claimName: gerrit-storage
+# end gerrit

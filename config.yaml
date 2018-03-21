@@ -269,6 +269,7 @@ periodics:
     - args:
       - --timeout=70
       - --bare
+      - --upload=gs://gke-prow/logs
       - --scenario=kubernetes_e2e
       - --
       - --check-leaked-resources

@@ -17,4 +17,4 @@ jobs:
   - ci-kubernetes-integration
   gke-prow/pr-logs/directory/:
   - pull-elafros-bazel-test
-  - pull-elafros-build-bazel-test
+  - pull-elafros-build-test

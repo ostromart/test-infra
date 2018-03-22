@@ -211,8 +211,8 @@ presubmits:
     agent: kubernetes
     context: pull-k8s-tpu-operator-unit
     always_run: true
-    rerun_command: "/test pull-k8s-tpu-operator-unit"
-    trigger: "(?m)^/test( all| pull-k8s-tpu-operator-unit),?(\s+|$)"
+    rerun_command: /test pull-k8s-tpu-operator-unit
+    trigger: (?m)^/test( all| pull-k8s-tpu-operator-unit),?(\s+|$)
     labels:
       preset-service-account: "true"
     spec:
@@ -222,7 +222,8 @@ presubmits:
         - --clean
         - --repo=github.com/GoogleCloudPlatform/$(REPO_NAME)=$(PULL_REFS)
         - --service-account=/etc/service-account/service-account.json
-        - --upload=gs://gke-prow/logs
+        - --upload=gs://gke-prow/pr-logs
+        - --ssh=/etc/tpu-ssh/ssh-elafros
         - --scenario=execute
         - -- # end bootstrap args, scenario args below
         - make
@@ -242,7 +243,7 @@ presubmits:
       - name: tpu-ssh
         secret:
           defaultMode: 0400
-          secretName: tpu-ssh
+          secretName: ssh-elafros
       - name: docker-graph
         emptyDir: {}
   - name: pull-k8s-tpu-operator-verify
@@ -260,7 +261,8 @@ presubmits:
         - --clean
         - --repo=github.com/GoogleCloudPlatform/$(REPO_NAME)=$(PULL_REFS)
         - --service-account=/etc/service-account/service-account.json
-        - --upload=gs://gke-prow/logs
+        - --upload=gs://gke-prow/pr-logs
+        - --ssh=/etc/tpu-ssh/ssh-elafros
         - --scenario=execute
         - -- # end bootstrap args, scenario args below
         - make
@@ -280,7 +282,7 @@ presubmits:
       - name: tpu-ssh
         secret:
           defaultMode: 0400
-          secretName: tpu-ssh
+          secretName: ssh-elafros
       - name: docker-graph
         emptyDir: {}
 

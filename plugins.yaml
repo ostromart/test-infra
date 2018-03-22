@@ -1,6 +1,7 @@
 approve:
 - repos:
   - elafros
+  - GoogleCloudPlatform/k8s-tpu-operator
   implicit_self_approve: true
 
 plugins:
@@ -22,3 +23,14 @@ plugins:
   - trigger
   - wip
   - yuks
+  GoogleCloudPlatform/k8s-tpu-operator:
+  - approve
+  - assign
+  - blunderbuss
+  - hold
+  - label
+  - lgtm
+  - lifecycle
+  - size
+  - trigger
+  - wip

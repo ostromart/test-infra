@@ -66,12 +66,12 @@ presets:
 
 presubmits:
   elafros/elafros:
-  - name: pull-elafros-bazel-test
+  - name: pull-elafros-elafros-test
     agent: kubernetes
-    context: pull-elafros-bazel-test
+    context: pull-elafros-elafros-test
     always_run: true
-    rerun_command: "/test pull-elafros-bazel-test"
-    trigger: "(?m)^/test( all| pull-elafros-bazel-test),?(\\s+|$)"
+    rerun_command: "/test pull-elafros-elafros-test"
+    trigger: "(?m)^/test( all| pull-elafros-elafros-test),?(\\s+|$)"
     labels:
       preset-service-account: true
       preset-bazel-scratch-dir: true
@@ -88,10 +88,10 @@ presubmits:
         - "--upload=gs://gke-prow/pr-logs"
         - "--" # end bootstrap args, scenario args below
         - "--" # end kubernetes_execute_bazel flags (consider following flags as text)
-        - "bazel"
-        - "test"
-        - "--workspace_status_command="
-        - "//pkg/..."
+        - "tests/presubmit-tests.sh"
+        env:
+        - name: USER
+          value: prow
         # Bazel needs privileged mode in order to sandbox builds.
         securityContext:
           privileged: true

@@ -107,6 +107,39 @@ presubmits:
           defaultMode: 256
           secretName: ssh-elafros
 
+  - name: pull-elafros-go-coverage-test
+    agent: kubernetes
+    context: pull-elafros-go-coverage-test
+    always_run: false
+    rerun_command: "/test pull-elafros-go-coverage-test"
+    trigger: "(?m)^/test pull-elafros-go-coverage-test,?(\\s+|$)"
+    labels:
+      preset-service-account: true
+      preset-bazel-scratch-dir: true
+    spec:
+      containers:
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180228-dabde9ed5-master
+        args:
+        - "--ssh=/etc/ssh-elafros/ssh-elafros"
+        - "--scenario=kubernetes_execute_bazel"
+        - "--clean"
+        - "--job=$(JOB_NAME)"
+        - "--repo=github.com/$(REPO_OWNER)/$(REPO_NAME)=$(PULL_REFS)"
+        - "--root=/go/src"
+        - "--service-account=/etc/service-account/service-account.json"
+        - "--upload=gs://gke-prow/pr-logs"
+        - "--" # end bootstrap args, scenario args below
+        - "--" # end kubernetes_execute_bazel flags (consider following flags as text)
+        - "./hack/coverage.sh"
+        volumeMounts:
+        - mountPath: /etc/ssh-elafros
+          name: ssh-elafros
+      volumes:
+      - name: ssh-elafros
+        secret:
+          defaultMode: 256
+          secretName: ssh-elafros
+
   elafros/build:
   - name: pull-elafros-build-test
     agent: kubernetes

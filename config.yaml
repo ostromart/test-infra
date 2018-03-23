@@ -118,7 +118,7 @@ presubmits:
       preset-bazel-scratch-dir: true
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180228-dabde9ed5-master
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180322-179eac85b-experimental
         args:
         - "--ssh=/etc/ssh-elafros/ssh-elafros"
         - "--scenario=kubernetes_execute_bazel"

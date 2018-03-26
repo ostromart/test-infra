@@ -11,6 +11,8 @@ tide:
   queries:
   - repos:
     - GoogleCloudPlatform/k8s-tpu-operator
+    - elafros/build
+    - elafros/elafros
     labels:
     - lgtm
     - approved

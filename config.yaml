@@ -88,7 +88,7 @@ presubmits:
         - "--upload=gs://gke-prow/pr-logs"
         - "--" # end bootstrap args, scenario args below
         - "--" # end kubernetes_execute_bazel flags (consider following flags as text)
-        - "tests/presubmit-tests.sh"
+        - "test/presubmit-tests.sh"
         env:
         - name: USER
           value: prow

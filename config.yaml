@@ -114,9 +114,9 @@ presubmits:
   - name: pull-elafros-go-coverage-test
     agent: kubernetes
     context: pull-elafros-go-coverage-test
-    always_run: false
+    always_run: true
     rerun_command: "/test pull-elafros-go-coverage-test"
-    trigger: "(?m)^/test pull-elafros-go-coverage-test,?(\\s+|$)"
+    trigger: "(?m)^/( all|test pull-elafros-go-coverage-test),?(\\s+|$)"
     labels:
       preset-service-account: true
       preset-bazel-scratch-dir: true

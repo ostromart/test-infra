@@ -432,7 +432,7 @@ periodics:
       - "--scenario=kubernetes_execute_bazel"
       - "--clean"
       - "--job=$(JOB_NAME)"
-      - "--repo=github.com/$(REPO_OWNER)/$(REPO_NAME)"
+      - "--repo=github.com/elafros/elafros"
       - "--root=/go/src"
       - "--service-account=/etc/service-account/service-account.json"
       - "--upload=gs://gke-prow/pr-logs"

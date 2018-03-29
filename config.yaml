@@ -418,3 +418,42 @@ periodics:
       - --test_args=--ginkgo.skip=\\[Slow\\]|\\[Serial\\]|\\[Disruptive\\]|\\[Flaky\\]|\\[Feature:.+\\] --minStartupPods=8
       - --timeout=50m
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180312-a6be97dc1-master
+- interval: 24h
+  name: ci-elafros-build
+  agent: kubernetes
+  labels:
+    preset-service-account: true
+    preset-bazel-scratch-dir: true
+  spec:
+    containers:
+    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180322-179eac85b-experimental
+      args:
+      - "--ssh=/etc/ssh-elafros/ssh-elafros"
+      - "--scenario=kubernetes_execute_bazel"
+      - "--clean"
+      - "--job=$(JOB_NAME)"
+      - "--repo=github.com/$(REPO_OWNER)/$(REPO_NAME)"
+      - "--root=/go/src"
+      - "--service-account=/etc/service-account/service-account.json"
+      - "--upload=gs://gke-prow/pr-logs"
+      - "--timeout=90" # 1.5h
+      - "--" # end bootstrap args, scenario args below
+      - "--" # end kubernetes_execute_bazel flags (consider following flags as text)
+      - "./hack/release.sh"
+      env:
+      - name: USER
+        value: prow
+      # Bazel needs privileged mode in order to sandbox builds.
+      securityContext:
+        privileged: true
+      resources:
+        requests:
+          memory: "6Gi"
+      volumeMounts:
+      - mountPath: /etc/ssh-elafros
+        name: ssh-elafros
+    volumes:
+     - name: ssh-elafros
+       secret:
+         defaultMode: 256
+         secretName: ssh-elafros

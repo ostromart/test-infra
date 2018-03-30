@@ -419,7 +419,7 @@ periodics:
       - --timeout=50m
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180312-a6be97dc1-master
 - cron: "1 6 * * *" # Run at 23:01PST every day (06:01 UTC following day)
-  name: ci-elafros-build
+  name: ci-elafros-elafros-release
   agent: kubernetes
   labels:
     preset-service-account: true

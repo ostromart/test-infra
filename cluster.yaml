@@ -202,6 +202,7 @@ spec:
         image: gcr.io/k8s-prow/deck:v20180302-949b16f57
         args:
         - --hook-url=http://hook:8888/plugin-help
+        - --tide-url=http://tide/
         ports:
           - name: http
             containerPort: 8080

@@ -15,6 +15,8 @@ jobs:
   - ci-kubernetes-build
   - ci-kubernetes-bazel-test
   - ci-kubernetes-integration
+  - ci-elafros-build-release
+  - ci-elafros-elafros-release
   gke-prow/pr-logs/directory/:
   - pull-elafros-elafros-test
   - pull-elafros-build-test

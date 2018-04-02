@@ -1,0 +1,8 @@
+- names:
+  - gke-gerrit-boskos-01
+  - gke-gerrit-boskos-02
+  - gke-gerrit-boskos-03
+  - gke-gerrit-boskos-04
+  - gke-gerrit-boskos-05
+  state: dirty
+  type: gke-project

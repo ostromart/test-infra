@@ -81,7 +81,7 @@ presubmits:
       preset-bazel-scratch-dir: true
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180322-179eac85b-experimental
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
         args:
         - "--ssh=/etc/ssh-elafros/ssh-elafros"
         - "--scenario=kubernetes_execute_bazel"
@@ -123,7 +123,7 @@ presubmits:
       preset-bazel-scratch-dir: true
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180322-179eac85b-experimental
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
         args:
         - "--ssh=/etc/ssh-elafros/ssh-elafros"
         - "--scenario=kubernetes_execute_bazel"
@@ -160,7 +160,7 @@ presubmits:
       preset-bazel-scratch-dir: true
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180322-179eac85b-experimental
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
         args:
         - "--ssh=/etc/ssh-elafros/ssh-elafros"
         - "--scenario=kubernetes_execute_bazel"
@@ -202,7 +202,7 @@ presubmits:
       preset-service-account: true
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180228-dabde9ed5-master
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
         args:
         - --clean
         - --repo=gke-internal.googlesource.com/test-infra=$(PULL_REFS)
@@ -224,7 +224,7 @@ presubmits:
       preset-service-account: "true"
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180228-dabde9ed5-master
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
         args:
         - --clean
         - --repo=github.com/GoogleCloudPlatform/$(REPO_NAME)=$(PULL_REFS)
@@ -263,7 +263,7 @@ presubmits:
       preset-service-account: "true"
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180228-dabde9ed5-master
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
         args:
         - --clean
         - --repo=github.com/GoogleCloudPlatform/$(REPO_NAME)=$(PULL_REFS)
@@ -417,7 +417,7 @@ periodics:
       - --provider=gke
       - --test_args=--ginkgo.skip=\\[Slow\\]|\\[Serial\\]|\\[Disruptive\\]|\\[Flaky\\]|\\[Feature:.+\\] --minStartupPods=8
       - --timeout=50m
-      image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-765dce960-master
+      image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
 - cron: "1 6 * * *" # Run at 23:01PST every day (06:01 UTC following day)
   name: ci-elafros-elafros-release
   agent: kubernetes
@@ -426,7 +426,7 @@ periodics:
     preset-bazel-scratch-dir: true
   spec:
     containers:
-    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180322-179eac85b-experimental
+    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
       args:
       - "--ssh=/etc/ssh-elafros/ssh-elafros"
       - "--scenario=kubernetes_execute_bazel"
@@ -465,7 +465,7 @@ periodics:
     preset-bazel-scratch-dir: true
   spec:
     containers:
-    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180322-179eac85b-experimental
+    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
       args:
       - "--ssh=/etc/ssh-elafros/ssh-elafros"
       - "--scenario=kubernetes_execute_bazel"
@@ -505,7 +505,7 @@ periodics:
     preset-bazel-scratch-dir: true
   spec:
     containers:
-    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180322-179eac85b-experimental
+    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
       args:
       - "--ssh=/etc/ssh-elafros/ssh-elafros"
       - "--scenario=kubernetes_execute_bazel"

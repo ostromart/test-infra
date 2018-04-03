@@ -435,7 +435,7 @@ periodics:
       - "--repo=github.com/elafros/elafros"
       - "--root=/go/src"
       - "--service-account=/etc/service-account/service-account.json"
-      - "--upload=gs://gke-prow/pr-logs"
+      - "--upload=gs://gke-prow/logs"
       - "--timeout=90" # 1.5h
       - "--" # end bootstrap args, scenario args below
       - "--" # end kubernetes_execute_bazel flags (consider following flags as text)
@@ -474,7 +474,7 @@ periodics:
       - "--repo=github.com/elafros/elafros"
       - "--root=/go/src"
       - "--service-account=/etc/service-account/service-account.json"
-      - "--upload=gs://gke-prow/pr-logs"
+      - "--upload=gs://gke-prow/logs"
       - "--timeout=90" # 1.5h
       - "--" # end bootstrap args, scenario args below
       - "--" # end kubernetes_execute_bazel flags (consider following flags as text)
@@ -514,7 +514,7 @@ periodics:
       - "--repo=github.com/elafros/build"
       - "--root=/go/src"
       - "--service-account=/etc/service-account/service-account.json"
-      - "--upload=gs://gke-prow/pr-logs"
+      - "--upload=gs://gke-prow/logs"
       - "--timeout=90" # 1.5h
       - "--" # end bootstrap args, scenario args below
       - "--" # end kubernetes_execute_bazel flags (consider following flags as text)

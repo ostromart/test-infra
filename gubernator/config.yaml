@@ -1,4 +1,7 @@
 ---
+default_external_services:
+  gcs_pull_prefix: gke-prow/pr-logs/pull
+  prow_url: prow-internal.gcpnode.com
 default_org: kubernetes
 default_repo: kubernetes
 external_services:
@@ -20,3 +23,4 @@ jobs:
   gke-prow/pr-logs/directory/:
   - pull-elafros-elafros-test
   - pull-elafros-build-test
+recursive_artifacts: false

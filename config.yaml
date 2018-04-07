@@ -559,6 +559,7 @@ postsubmits:
         - "--" # end bootstrap args, scenario args below
         - "--" # end kubernetes_execute_bazel flags (consider following flags as text)
         - "./hack/coverage.sh"
+        - $(PULL_BASE_SHA)
         env:
         - name: USER
           value: prow

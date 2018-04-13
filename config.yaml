@@ -137,7 +137,7 @@ presubmits:
         - "--upload=gs://gke-prow/pr-logs"
         - "--" # end bootstrap args, scenario args below
         - "--" # end kubernetes_execute_bazel flags (consider following flags as text)
-        - "./hack/coverage.sh"
+        - "./hack/project-coverage.sh"
         env:
         - name: USER
           value: prow
@@ -459,6 +459,8 @@ periodics:
        secret:
          defaultMode: 256
          secretName: ssh-elafros
+# TODO(syzf) remove the job coverage-elafros-elafros-periodical after the coverage app uses the head
+# of post-submit commit ID for display on dashboard
 - cron: "1 * * * *" #Run at the first minute of each hour
   name: coverage-elafros-elafros-periodical
   agent: kubernetes
@@ -560,8 +562,7 @@ postsubmits:
         - "--upload=gs://gke-prow/logs"
         - "--" # end bootstrap args, scenario args below
         - "--" # end kubernetes_execute_bazel flags (consider following flags as text)
-        - "./hack/coverage.sh"
-        - $(PULL_BASE_SHA)
+        - "./hack/project-coverage.sh"
         env:
         - name: USER
           value: prow

@@ -1,3 +1,4 @@
+resources:
 - names:
   - gke-gerrit-boskos-01
   - gke-gerrit-boskos-02

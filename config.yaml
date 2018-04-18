@@ -69,6 +69,11 @@ presets:
   volumeMounts:
   - name: bazel-scratch
     mountPath: /bazel-scratch/.cache
+- labels:
+    preset-bazel-remote-cache-enabled: true
+  env:
+  - name: BAZEL_REMOTE_CACHE_ENABLED
+    value: "true"
 
 presubmits:
   elafros/elafros:
@@ -81,9 +86,10 @@ presubmits:
     labels:
       preset-service-account: true
       preset-bazel-scratch-dir: true
+      preset-bazel-remote-cache-enabled: true
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180418-79a97ca02-experimental
         args:
         - "--ssh=/etc/ssh-elafros/ssh-elafros"
         - "--scenario=kubernetes_execute_bazel"
@@ -160,9 +166,10 @@ presubmits:
     labels:
       preset-service-account: true
       preset-bazel-scratch-dir: true
+      preset-bazel-remote-cache-enabled: true
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180418-79a97ca02-experimental
         args:
         - "--ssh=/etc/ssh-elafros/ssh-elafros"
         - "--scenario=kubernetes_execute_bazel"
@@ -426,9 +433,10 @@ periodics:
   labels:
     preset-service-account: true
     preset-bazel-scratch-dir: true
+    preset-bazel-remote-cache-enabled: true
   spec:
     containers:
-    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
+    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180418-79a97ca02-experimental
       args:
       - "--ssh=/etc/ssh-elafros/ssh-elafros"
       - "--scenario=kubernetes_execute_bazel"
@@ -507,9 +515,10 @@ periodics:
   labels:
     preset-service-account: true
     preset-bazel-scratch-dir: true
+    preset-bazel-remote-cache-enabled: true
   spec:
     containers:
-    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
+    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180418-79a97ca02-experimental
       args:
       - "--ssh=/etc/ssh-elafros/ssh-elafros"
       - "--scenario=kubernetes_execute_bazel"

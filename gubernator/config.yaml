@@ -20,6 +20,7 @@ jobs:
   - ci-kubernetes-integration
   - ci-elafros-build-release
   - ci-elafros-elafros-release
+  - ci-elafros-elafros-playground
   gke-prow/pr-logs/directory/:
   - pull-elafros-elafros-test
   - pull-elafros-build-test

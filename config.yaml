@@ -467,6 +467,47 @@ periodics:
        secret:
          defaultMode: 256
          secretName: ssh-elafros
+- cron: "1 8 * * 6" # Run at 01:01PST every Saturday (08:01 UTC Saturday)
+  name: ci-elafros-elafros-playground
+  agent: kubernetes
+  labels:
+    preset-service-account: true
+    preset-bazel-scratch-dir: true
+    preset-bazel-remote-cache-enabled: true
+  spec:
+    containers:
+    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180418-79a97ca02-experimental
+      args:
+      - "--ssh=/etc/ssh-elafros/ssh-elafros"
+      - "--scenario=kubernetes_execute_bazel"
+      - "--clean"
+      - "--job=$(JOB_NAME)"
+      - "--repo=github.com/elafros/elafros"
+      - "--root=/go/src"
+      - "--service-account=/etc/service-account/service-account.json"
+      - "--upload=gs://gke-prow/logs"
+      - "--timeout=90" # 1.5h
+      - "--" # end bootstrap args, scenario args below
+      - "--" # end kubernetes_execute_bazel flags (consider following flags as text)
+      - "./hack/deploy.sh"
+      - "elafros-playground"
+      env:
+      - name: USER
+        value: prow
+      # Bazel needs privileged mode in order to sandbox builds.
+      securityContext:
+        privileged: true
+      resources:
+        requests:
+          memory: "6Gi"
+      volumeMounts:
+      - mountPath: /etc/ssh-elafros
+        name: ssh-elafros
+    volumes:
+     - name: ssh-elafros
+       secret:
+         defaultMode: 256
+         secretName: ssh-elafros
 # TODO(syzf) remove the job coverage-elafros-elafros-periodical after the coverage app uses the head
 # of post-submit commit ID for display on dashboard
 - cron: "1 * * * *" #Run at the first minute of each hour

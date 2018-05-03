@@ -7,3 +7,21 @@ resources:
   - gke-gerrit-boskos-05
   state: dirty
   type: gke-project
+- names:
+  - k8s-gci-boskos-1
+  - k8s-gci-boskos-2
+  - k8s-gci-boskos-3
+  - k8s-gci-boskos-4
+  - k8s-gci-boskos-5
+  - k8s-gci-boskos-6
+  - k8s-gci-boskos-7
+  - k8s-gci-boskos-8
+  - k8s-gci-boskos-9
+  - k8s-gci-boskos-10
+  - k8s-gci-boskos-11
+  - k8s-gci-boskos-12
+  - k8s-gci-boskos-13
+  - k8s-gci-boskos-14
+  - k8s-gci-boskos-15
+  state: dirty
+  type: gci-qa-project

@@ -22,6 +22,7 @@ jobs:
   - pull-elafros-elafros-test
   - pull-elafros-build-test
   - ci-elafros-build-release
+  - ci-elafros-elafros-continuous
   - ci-elafros-elafros-release
   - ci-elafros-elafros-playground
 recursive_artifacts: false

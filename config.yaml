@@ -631,6 +631,346 @@ periodics:
          defaultMode: 256
          secretName: ssh-elafros
 
+- interval: 1h
+  agent: kubernetes
+  name: ci-kubernetes-e2e-gce-gci-ci-master
+  labels:
+    preset-service-account: true
+    preset-k8s-ssh: true
+  spec:
+    containers:
+    - args:
+      - --timeout=70
+      - --bare
+      - --scenario=kubernetes_e2e
+      - --
+      - --check-leaked-resources
+      - --extract=gci/gci-canary/latest
+      - --gcp-project-type=gci-qa-project
+      - --gcp-zone=us-central1-f
+      - --ginkgo-parallel=25
+      - --provider=gce
+      - --test_args=--ginkgo.skip=\[Slow\]|\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\] --minStartupPods=8
+      - --timeout=50m
+  image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
+
+- interval: 2h
+  agent: kubernetes
+  name: ci-kubernetes-e2e-gce-gci-ci-serial-master
+  labels:
+    preset-service-account: true
+    preset-k8s-ssh: true
+  spec:
+    containers:
+    - args:
+      - --timeout=70
+      - --bare
+      - --scenario=kubernetes_e2e
+      - --
+      - --check-leaked-resources
+      - --extract=gci/gci-canary/latest
+      - --gcp-project-type=gci-qa-project
+      - --gcp-zone=us-central1-f
+      - --provider=gce
+      - --test_args=--ginkgo.focus=\[Serial\]|\[Disruptive\] --ginkgo.skip=\[Flaky\]|\[Feature:.+\] --minStartupPods=8
+      - --timeout=300m
+  image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
+
+- interval: 2h
+  agent: kubernetes
+  name: ci-kubernetes-e2e-gce-gci-ci-slow-master
+  labels:
+    preset-service-account: true
+    preset-k8s-ssh: true
+  spec:
+    containers:
+    - args:
+      - --timeout=70
+      - --bare
+      - --scenario=kubernetes_e2e
+      - --
+      - --check-leaked-resources
+      - --extract=gci/gci-canary/latest
+      - --gcp-project-type=gci-qa-project
+      - --gcp-zone=us-central1-f
+      - --ginkgo-parallel=25
+      - --provider=gce
+      - --test_args=--ginkgo.focus=\[Slow\] --ginkgo.skip=\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\] --minStartupPods=8
+      - --timeout=150m
+  image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
+
+- interval: 30m
+  agent: kubernetes
+  name: ci-kubernetes-e2e-gce-gci-qa-m65
+  labels:
+    preset-service-account: true
+    preset-k8s-ssh: true
+  spec:
+    containers:
+    - args:
+      - --timeout=70
+      - --bare
+      - --scenario=kubernetes_e2e
+      - --
+      - --check-leaked-resources
+      - --extract=gci/gci-65/latest-1.8
+      - --gcp-project-type=gci-qa-project
+      - --gcp-zone=us-central1-f
+      - --ginkgo-parallel=25
+      - --provider=gce
+      - --test_args=--ginkgo.skip=\[Slow\]|\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\] --minStartupPods=8
+      - --timeout=50m
+  image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
+
+- interval: 30m
+  agent: kubernetes
+  name: ci-kubernetes-e2e-gce-gci-qa-m66
+  labels:
+    preset-service-account: true
+    preset-k8s-ssh: true
+  spec:
+    containers:
+    - args:
+      - --timeout=70
+      - --bare
+      - --scenario=kubernetes_e2e
+      - --
+      - --check-leaked-resources
+      - --extract=gci/gci-66/latest-1.9
+      - --gcp-project-type=gci-qa-project
+      - --gcp-zone=us-central1-f
+      - --ginkgo-parallel=25
+      - --provider=gce
+      - --test_args=--ginkgo.skip=\[Slow\]|\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\] --minStartupPods=8
+      - --timeout=50m
+  image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
+
+- interval: 30m
+  agent: kubernetes
+  name: ci-kubernetes-e2e-gce-gci-qa-m67
+  labels:
+    preset-service-account: true
+    preset-k8s-ssh: true
+  spec:
+    containers:
+    - args:
+      - --timeout=70
+      - --bare
+      - --scenario=kubernetes_e2e
+      - --
+      - --check-leaked-resources
+      - --extract=gci/gci-67
+      - --gcp-project-type=gci-qa-project
+      - --gcp-zone=us-central1-f
+      - --ginkgo-parallel=25
+      - --provider=gce
+      - --test_args=--ginkgo.skip=\[Slow\]|\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\] --minStartupPods=8
+      - --timeout=50m
+  image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
+
+- interval: 30m
+  agent: kubernetes
+  name: ci-kubernetes-e2e-gce-gci-qa-master
+  labels:
+    preset-service-account: true
+    preset-k8s-ssh: true
+  spec:
+    containers:
+    - args:
+      - --timeout=70
+      - --bare
+      - --scenario=kubernetes_e2e
+      - --
+      - --check-leaked-resources
+      - --extract=gci/gci-canary
+      - --gcp-project-type=gci-qa-project
+      - --gcp-zone=us-central1-f
+      - --ginkgo-parallel=25
+      - --provider=gce
+      - --test_args=--ginkgo.skip=\[Slow\]|\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\] --minStartupPods=8
+      - --timeout=50m
+  image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
+
+- interval: 1h
+  agent: kubernetes
+  name: ci-kubernetes-e2e-gce-gci-qa-serial-m65
+  labels:
+    preset-service-account: true
+    preset-k8s-ssh: true
+  spec:
+    containers:
+    - args:
+      - --timeout=70
+      - --bare
+      - --scenario=kubernetes_e2e
+      - --
+      - --check-leaked-resources
+      - --extract=gci/gci-65/latest-1.8
+      - --gcp-project-type=gci-qa-project
+      - --gcp-zone=us-central1-f
+      - --provider=gce
+      - --test_args=--ginkgo.focus=\[Serial\]|\[Disruptive\] --ginkgo.skip=\[Flaky\]|\[Feature:.+\] --minStartupPods=8
+      - --timeout=300m
+  image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
+
+- interval: 1h
+  agent: kubernetes
+  name: ci-kubernetes-e2e-gce-gci-qa-serial-m66
+  labels:
+    preset-service-account: true
+    preset-k8s-ssh: true
+  spec:
+    containers:
+    - args:
+      - --timeout=70
+      - --bare
+      - --scenario=kubernetes_e2e
+      - --
+      - --check-leaked-resources
+      - --extract=gci/gci-66/latest-1.9
+      - --gcp-project-type=gci-qa-project
+      - --gcp-zone=us-central1-f
+      - --provider=gce
+      - --test_args=--ginkgo.focus=\[Serial\]|\[Disruptive\] --ginkgo.skip=\[Flaky\]|\[Feature:.+\] --minStartupPods=8
+      - --timeout=300m
+  image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
+
+- interval: 1h
+  agent: kubernetes
+  name: ci-kubernetes-e2e-gce-gci-qa-serial-m67
+  labels:
+    preset-service-account: true
+    preset-k8s-ssh: true
+  spec:
+    containers:
+    - args:
+      - --timeout=70
+      - --bare
+      - --scenario=kubernetes_e2e
+      - --
+      - --check-leaked-resources
+      - --extract=gci/gci-67
+      - --gcp-project-type=gci-qa-project
+      - --gcp-zone=us-central1-f
+      - --provider=gce
+      - --test_args=--ginkgo.focus=\[Serial\]|\[Disruptive\] --ginkgo.skip=\[Flaky\]|\[Feature:.+\] --minStartupPods=8
+      - --timeout=300m
+  image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
+
+- interval: 1h
+  agent: kubernetes
+  name: ci-kubernetes-e2e-gce-gci-qa-serial-master
+  labels:
+    preset-service-account: true
+    preset-k8s-ssh: true
+  spec:
+    containers:
+    - args:
+      - --timeout=70
+      - --bare
+      - --scenario=kubernetes_e2e
+      - --
+      - --check-leaked-resources
+      - --extract=gci/gci-canary
+      - --gcp-project-type=gci-qa-project
+      - --gcp-zone=us-central1-f
+      - --provider=gce
+      - --test_args=--ginkgo.focus=\[Serial\]|\[Disruptive\] --ginkgo.skip=\[Flaky\]|\[Feature:.+\] --minStartupPods=8
+      - --timeout=300m
+  image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
+
+- interval: 2h
+  agent: kubernetes
+  name: ci-kubernetes-e2e-gce-gci-qa-slow-m65
+  labels:
+    preset-service-account: true
+    preset-k8s-ssh: true
+  spec:
+    containers:
+    - args:
+      - --timeout=70
+      - --bare
+      - --scenario=kubernetes_e2e
+      - --
+      - --check-leaked-resources
+      - --extract=gci/gci-65/latest-1.8
+      - --gcp-project-type=gci-qa-project
+      - --gcp-zone=us-central1-f
+      - --ginkgo-parallel=25
+      - --provider=gce
+      - --test_args=--ginkgo.focus=\[Slow\] --ginkgo.skip=\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\] --minStartupPods=8
+      - --timeout=150m
+  image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
+
+- interval: 2h
+  agent: kubernetes
+  name: ci-kubernetes-e2e-gce-gci-qa-slow-m66
+  labels:
+    preset-service-account: true
+    preset-k8s-ssh: true
+  spec:
+    containers:
+    - args:
+      - --timeout=70
+      - --bare
+      - --scenario=kubernetes_e2e
+      - --
+      - --check-leaked-resources
+      - --extract=gci/gci-66/latest-1.9
+      - --gcp-project-type=gci-qa-project
+      - --gcp-zone=us-central1-f
+      - --ginkgo-parallel=25
+      - --provider=gce
+      - --test_args=--ginkgo.focus=\[Slow\] --ginkgo.skip=\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\] --minStartupPods=8
+      - --timeout=150m
+  image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
+
+- interval: 2h
+  agent: kubernetes
+  name: ci-kubernetes-e2e-gce-gci-qa-slow-m67
+  labels:
+    preset-service-account: true
+    preset-k8s-ssh: true
+  spec:
+    containers:
+    - args:
+      - --timeout=70
+      - --bare
+      - --scenario=kubernetes_e2e
+      - --
+      - --check-leaked-resources
+      - --extract=gci/gci-67
+      - --gcp-project-type=gci-qa-project
+      - --gcp-zone=us-central1-f
+      - --ginkgo-parallel=25
+      - --provider=gce
+      - --test_args=--ginkgo.focus=\[Slow\] --ginkgo.skip=\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\] --minStartupPods=8
+      - --timeout=150m
+  image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
+
+- interval: 2h
+  agent: kubernetes
+  name: ci-kubernetes-e2e-gce-gci-qa-slow-master
+  labels:
+    preset-service-account: true
+    preset-k8s-ssh: true
+  spec:
+    containers:
+    - args:
+      - --timeout=70
+      - --bare
+      - --scenario=kubernetes_e2e
+      - --
+      - --check-leaked-resources
+      - --extract=gci/gci-canary
+      - --gcp-project-type=gci-qa-project
+      - --gcp-zone=us-central1-f
+      - --ginkgo-parallel=25
+      - --provider=gce
+      - --test_args=--ginkgo.focus=\[Slow\] --ginkgo.skip=\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\] --minStartupPods=8
+      - --timeout=150m
+  image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
+
 postsubmits:
   elafros/elafros:
   - name: coverage-postsubmit

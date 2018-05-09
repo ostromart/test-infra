@@ -643,6 +643,7 @@ periodics:
       - --timeout=70
       - --bare
       - --scenario=kubernetes_e2e
+      - --upload=gs://gke-prow/logs
       - --
       - --check-leaked-resources
       - --extract=gci/gci-canary/latest
@@ -652,7 +653,7 @@ periodics:
       - --provider=gce
       - --test_args=--ginkgo.skip=\[Slow\]|\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\] --minStartupPods=8
       - --timeout=50m
-  image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
+      image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
 
 - interval: 2h
   agent: kubernetes
@@ -666,6 +667,7 @@ periodics:
       - --timeout=70
       - --bare
       - --scenario=kubernetes_e2e
+      - --upload=gs://gke-prow/logs
       - --
       - --check-leaked-resources
       - --extract=gci/gci-canary/latest
@@ -674,7 +676,7 @@ periodics:
       - --provider=gce
       - --test_args=--ginkgo.focus=\[Serial\]|\[Disruptive\] --ginkgo.skip=\[Flaky\]|\[Feature:.+\] --minStartupPods=8
       - --timeout=300m
-  image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
+      image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
 
 - interval: 2h
   agent: kubernetes
@@ -688,6 +690,7 @@ periodics:
       - --timeout=70
       - --bare
       - --scenario=kubernetes_e2e
+      - --upload=gs://gke-prow/logs
       - --
       - --check-leaked-resources
       - --extract=gci/gci-canary/latest
@@ -697,7 +700,7 @@ periodics:
       - --provider=gce
       - --test_args=--ginkgo.focus=\[Slow\] --ginkgo.skip=\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\] --minStartupPods=8
       - --timeout=150m
-  image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
+      image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
 
 - interval: 30m
   agent: kubernetes
@@ -711,6 +714,7 @@ periodics:
       - --timeout=70
       - --bare
       - --scenario=kubernetes_e2e
+      - --upload=gs://gke-prow/logs
       - --
       - --check-leaked-resources
       - --extract=gci/gci-65/latest-1.8
@@ -720,7 +724,7 @@ periodics:
       - --provider=gce
       - --test_args=--ginkgo.skip=\[Slow\]|\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\] --minStartupPods=8
       - --timeout=50m
-  image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
+      image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
 
 - interval: 30m
   agent: kubernetes
@@ -734,6 +738,7 @@ periodics:
       - --timeout=70
       - --bare
       - --scenario=kubernetes_e2e
+      - --upload=gs://gke-prow/logs
       - --
       - --check-leaked-resources
       - --extract=gci/gci-66/latest-1.9
@@ -743,7 +748,7 @@ periodics:
       - --provider=gce
       - --test_args=--ginkgo.skip=\[Slow\]|\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\] --minStartupPods=8
       - --timeout=50m
-  image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
+      image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
 
 - interval: 30m
   agent: kubernetes
@@ -757,6 +762,7 @@ periodics:
       - --timeout=70
       - --bare
       - --scenario=kubernetes_e2e
+      - --upload=gs://gke-prow/logs
       - --
       - --check-leaked-resources
       - --extract=gci/gci-67
@@ -766,7 +772,7 @@ periodics:
       - --provider=gce
       - --test_args=--ginkgo.skip=\[Slow\]|\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\] --minStartupPods=8
       - --timeout=50m
-  image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
+      image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
 
 - interval: 30m
   agent: kubernetes
@@ -780,6 +786,7 @@ periodics:
       - --timeout=70
       - --bare
       - --scenario=kubernetes_e2e
+      - --upload=gs://gke-prow/logs
       - --
       - --check-leaked-resources
       - --extract=gci/gci-canary
@@ -789,7 +796,7 @@ periodics:
       - --provider=gce
       - --test_args=--ginkgo.skip=\[Slow\]|\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\] --minStartupPods=8
       - --timeout=50m
-  image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
+      image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
 
 - interval: 1h
   agent: kubernetes
@@ -803,6 +810,7 @@ periodics:
       - --timeout=70
       - --bare
       - --scenario=kubernetes_e2e
+      - --upload=gs://gke-prow/logs
       - --
       - --check-leaked-resources
       - --extract=gci/gci-65/latest-1.8
@@ -811,7 +819,7 @@ periodics:
       - --provider=gce
       - --test_args=--ginkgo.focus=\[Serial\]|\[Disruptive\] --ginkgo.skip=\[Flaky\]|\[Feature:.+\] --minStartupPods=8
       - --timeout=300m
-  image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
+      image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
 
 - interval: 1h
   agent: kubernetes
@@ -825,6 +833,7 @@ periodics:
       - --timeout=70
       - --bare
       - --scenario=kubernetes_e2e
+      - --upload=gs://gke-prow/logs
       - --
       - --check-leaked-resources
       - --extract=gci/gci-66/latest-1.9
@@ -833,7 +842,7 @@ periodics:
       - --provider=gce
       - --test_args=--ginkgo.focus=\[Serial\]|\[Disruptive\] --ginkgo.skip=\[Flaky\]|\[Feature:.+\] --minStartupPods=8
       - --timeout=300m
-  image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
+      image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
 
 - interval: 1h
   agent: kubernetes
@@ -847,6 +856,7 @@ periodics:
       - --timeout=70
       - --bare
       - --scenario=kubernetes_e2e
+      - --upload=gs://gke-prow/logs
       - --
       - --check-leaked-resources
       - --extract=gci/gci-67
@@ -855,7 +865,7 @@ periodics:
       - --provider=gce
       - --test_args=--ginkgo.focus=\[Serial\]|\[Disruptive\] --ginkgo.skip=\[Flaky\]|\[Feature:.+\] --minStartupPods=8
       - --timeout=300m
-  image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
+      image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
 
 - interval: 1h
   agent: kubernetes
@@ -869,6 +879,7 @@ periodics:
       - --timeout=70
       - --bare
       - --scenario=kubernetes_e2e
+      - --upload=gs://gke-prow/logs
       - --
       - --check-leaked-resources
       - --extract=gci/gci-canary
@@ -877,7 +888,7 @@ periodics:
       - --provider=gce
       - --test_args=--ginkgo.focus=\[Serial\]|\[Disruptive\] --ginkgo.skip=\[Flaky\]|\[Feature:.+\] --minStartupPods=8
       - --timeout=300m
-  image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
+      image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
 
 - interval: 2h
   agent: kubernetes
@@ -891,6 +902,7 @@ periodics:
       - --timeout=70
       - --bare
       - --scenario=kubernetes_e2e
+      - --upload=gs://gke-prow/logs
       - --
       - --check-leaked-resources
       - --extract=gci/gci-65/latest-1.8
@@ -900,7 +912,7 @@ periodics:
       - --provider=gce
       - --test_args=--ginkgo.focus=\[Slow\] --ginkgo.skip=\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\] --minStartupPods=8
       - --timeout=150m
-  image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
+      image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
 
 - interval: 2h
   agent: kubernetes
@@ -914,6 +926,7 @@ periodics:
       - --timeout=70
       - --bare
       - --scenario=kubernetes_e2e
+      - --upload=gs://gke-prow/logs
       - --
       - --check-leaked-resources
       - --extract=gci/gci-66/latest-1.9
@@ -923,7 +936,7 @@ periodics:
       - --provider=gce
       - --test_args=--ginkgo.focus=\[Slow\] --ginkgo.skip=\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\] --minStartupPods=8
       - --timeout=150m
-  image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
+      image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
 
 - interval: 2h
   agent: kubernetes
@@ -937,6 +950,7 @@ periodics:
       - --timeout=70
       - --bare
       - --scenario=kubernetes_e2e
+      - --upload=gs://gke-prow/logs
       - --
       - --check-leaked-resources
       - --extract=gci/gci-67
@@ -946,7 +960,7 @@ periodics:
       - --provider=gce
       - --test_args=--ginkgo.focus=\[Slow\] --ginkgo.skip=\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\] --minStartupPods=8
       - --timeout=150m
-  image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
+      image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
 
 - interval: 2h
   agent: kubernetes
@@ -960,6 +974,7 @@ periodics:
       - --timeout=70
       - --bare
       - --scenario=kubernetes_e2e
+      - --upload=gs://gke-prow/logs
       - --
       - --check-leaked-resources
       - --extract=gci/gci-canary
@@ -969,7 +984,7 @@ periodics:
       - --provider=gce
       - --test_args=--ginkgo.focus=\[Slow\] --ginkgo.skip=\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\] --minStartupPods=8
       - --timeout=150m
-  image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
+      image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
 
 postsubmits:
   elafros/elafros:

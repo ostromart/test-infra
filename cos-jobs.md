@@ -53,3 +53,11 @@ to kubetest.
 
 These jobs give us an early signal of how likely the parallel developments of
 COS and Kubernetes are going to break each other.
+
+# Docker Validation Test Jobs
+Jobs with "cos-docker-validation" in their names also belong to COS team. While
+initially designed to qualify up-coming docker upgrades in COS, they are being
+used to qualify other package upgrades like the kernel, systemd,
+compute-image-package, etc. They are very similar to the `gci-qa-` equivalents
+except that they all use the `gci-next-canary` image family, as opposed to
+`gci-canary`.

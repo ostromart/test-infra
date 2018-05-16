@@ -986,6 +986,113 @@ periodics:
       - --timeout=150m
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
 
+# COS Docker validation tests.
+- interval: 1h
+  agent: kubernetes
+  name: ci-kubernetes-e2e-cos-docker-validation
+  labels:
+    preset-service-account: true
+    preset-k8s-ssh: true
+  spec:
+    containers:
+    - args:
+      - --timeout=70
+      - --bare
+      - --scenario=kubernetes_e2e
+      - --upload=gs://gke-prow/logs
+      - --
+      - --check-leaked-resources
+      - --extract=gci/gci-next-canary
+      - --gcp-master-image=gci
+      - --gcp-node-image=gci
+      - --gcp-project-type=gci-qa-project
+      - --gcp-zone=us-central1-f
+      - --ginkgo-parallel=25
+      - --provider=gce
+      - --test_args=--ginkgo.skip=\[Slow\]|\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\] --minStartupPods=8
+      - --timeout=50m
+      image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
+
+- interval: 1h
+  agent: kubernetes
+  name: ci-kubernetes-e2e-cos-docker-validation-serial
+  labels:
+    preset-service-account: true
+    preset-k8s-ssh: true
+  spec:
+    containers:
+    - args:
+      - --timeout=70
+      - --bare
+      - --scenario=kubernetes_e2e
+      - --upload=gs://gke-prow/logs
+      - --
+      - --check-leaked-resources
+      - --extract=gci/gci-next-canary
+      - --gcp-master-image=gci
+      - --gcp-node-image=gci
+      - --gcp-project-type=gci-qa-project
+      - --gcp-zone=us-central1-f
+      - --provider=gce
+      - --test_args=--ginkgo.focus=\[Serial\]|\[Disruptive\] --ginkgo.skip=\[Flaky\]|\[Feature:.+\] --minStartupPods=8
+      - --timeout=300m
+      image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
+
+- interval: 1h
+  agent: kubernetes
+  name: ci-kubernetes-e2e-cos-docker-validation-slow
+  labels:
+    preset-service-account: true
+    preset-k8s-ssh: true
+  spec:
+    containers:
+    - args:
+      - --timeout=70
+      - --bare
+      - --scenario=kubernetes_e2e
+      - --upload=gs://gke-prow/logs
+      - --
+      - --check-leaked-resources
+      - --extract=gci/gci-next-canary
+      - --gcp-master-image=gci
+      - --gcp-node-image=gci
+      - --gcp-project-type=gci-qa-project
+      - --gcp-zone=us-central1-f
+      - --ginkgo-parallel=25
+      - --provider=gce
+      - --test_args=--ginkgo.focus=\[Slow\] --ginkgo.skip=\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\] --minStartupPods=8
+      - --timeout=150m
+      image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
+
+- interval: 12h
+  agent: kubernetes
+  name: ci-kubernetes-soak-cos-docker-validation
+  labels:
+    preset-service-account: true
+    preset-k8s-ssh: true
+  spec:
+    containers:
+    - args:
+      - --timeout=70
+      - --bare
+      - --scenario=kubernetes_e2e
+      - --upload=gs://gke-prow/logs
+      - --
+      - --down=false
+      - --env=DOCKER_TEST_LOG_LEVEL=--log-level=warn
+      - --extract=gci/gci-next-canary
+      - --gcp-master-image=gci
+      - --gcp-node-image=gci
+      - --gcp-project-type=gci-qa-project
+      - --gcp-zone=us-central1-f
+      - --provider=gce
+      - --save=gs://gke-prow/soak/ci-kubernetes-soak-cos-docker-validation
+      - --soak
+      - --test_args=--ginkgo.skip=\[Disruptive\]|\[Flaky\]|\[Feature:.+\] --clean-start=true --minStartupPods=8
+      - --timeout=600m
+      - --up=false
+      image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
+
 postsubmits:
   elafros/elafros:
   - name: coverage-postsubmit

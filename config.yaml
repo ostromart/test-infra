@@ -168,13 +168,13 @@ presubmits:
           defaultMode: 256
           secretName: ssh-elafros
 
-  - name: pull-elafros-go-coverage
+  - name: pull-elafros-elafros-go-coverage
     agent: kubernetes
-    #context: pull-elafros-go-coverage
+    #context: pull-elafros-elafros-go-coverage
     always_run: true
     skip_report: true
-    rerun_command: "/test pull-elafros-go-coverage"
-    trigger: "(?m)^/test (all|pull-elafros-go-coverage),?(\\s+|$)"
+    rerun_command: "/test pull-elafros-elafros-go-coverage"
+    trigger: "(?m)^/test (all|pull-elafros-elafros-go-coverage),?(\\s+|$)"
     decorate: true
     clone_uri: "git@github.com:elafros/elafros.git"
     ssh_key_secrets:
@@ -581,48 +581,28 @@ periodics:
        secret:
          defaultMode: 256
          secretName: ssh-elafros
-# TODO(syzf) remove the job coverage-elafros-elafros-periodical after the coverage app uses the head
-# of post-submit commit ID for display on dashboard
 - cron: "1 * * * *" #Run at the first minute of each hour
-  name: coverage-elafros-elafros-periodical
+  name: ci-elafros-elafros-go-coverage
   agent: kubernetes
-  labels:
-    preset-service-account: true
-    preset-bazel-scratch-dir: true
+  decorate: true
+  clone_uri: "git@github.com:elafros/elafros.git"
+  ssh_key_secrets:
+  - ssh-elafros
+  extra_refs:
+  - org: elafros
+    repo: elafros
+    base_ref: master
   spec:
     containers:
-    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
+    - image: gcr.io/elafros-e2e-tests/coverage:latest
+      imagePullPolicy: Always
+      command:
+      - "/coverage"
       args:
-      - "--ssh=/etc/ssh-elafros/ssh-elafros"
-      - "--scenario=kubernetes_execute_bazel"
-      - "--clean"
-      - "--job=$(JOB_NAME)"
-      - "--repo=github.com/elafros/elafros"
-      - "--root=/go/src"
-      - "--service-account=/etc/service-account/service-account.json"
-      - "--upload=gs://ela-prow/logs"
-      - "--timeout=90" # 1.5h
-      - "--" # end bootstrap args, scenario args below
-      - "--" # end kubernetes_execute_bazel flags (consider following flags as text)
-      - "./hack/coverage.sh"
-      - "newest.txt" # the argument is the name of the profile
-      env:
-      - name: USER
-        value: prow
-      # Bazel needs privileged mode in order to sandbox builds.
-      securityContext:
-        privileged: true
-      resources:
-        requests:
-          memory: "1Gi"
-      volumeMounts:
-      - mountPath: /etc/ssh-elafros
-        name: ssh-elafros
-    volumes:
-     - name: ssh-elafros
-       secret:
-         defaultMode: 256
-         secretName: ssh-elafros
+      - "--artifacts=$(ARTIFACTS)"
+      - "--cov-target=./pkg/"
+
+
 - cron: "31 6 * * *" # Run at 23:31PST every day (06:31 UTC following day)
   name: ci-elafros-build-release
   agent: kubernetes
@@ -1159,6 +1139,22 @@ postsubmits:
         secret:
           defaultMode: 256
           secretName: ssh-elafros
+  - name: post-elafros-elafros-go-coverage
+    agent: kubernetes
+    decorate: true
+    clone_uri: "git@github.com:elafros/elafros.git"
+    ssh_key_secrets:
+    - ssh-elafros
+    spec:
+      containers:
+      - image: gcr.io/elafros-e2e-tests/coverage:latest
+        imagePullPolicy: Always
+        command:
+        - "/coverage"
+        args:
+        - "--artifacts=$(ARTIFACTS)"
+        - "--cov-target=./pkg/"
+
 
   - name: post-elafros-go-coverage
     agent: kubernetes

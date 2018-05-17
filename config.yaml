@@ -1139,24 +1139,8 @@ postsubmits:
         secret:
           defaultMode: 256
           secretName: ssh-elafros
+
   - name: post-elafros-elafros-go-coverage
-    agent: kubernetes
-    decorate: true
-    clone_uri: "git@github.com:elafros/elafros.git"
-    ssh_key_secrets:
-    - ssh-elafros
-    spec:
-      containers:
-      - image: gcr.io/elafros-e2e-tests/coverage:latest
-        imagePullPolicy: Always
-        command:
-        - "/coverage"
-        args:
-        - "--artifacts=$(ARTIFACTS)"
-        - "--cov-target=./pkg/"
-
-
-  - name: post-elafros-go-coverage
     agent: kubernetes
     decorate: true
     clone_uri: "git@github.com:elafros/elafros.git"

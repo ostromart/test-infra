@@ -1,7 +1,19 @@
 plank:
-  job_url_template: 'https://gubernator-internal.googleplex.com/build/{{if eq .Spec.Refs.Org "elafros"}}ela-prow{{else}}gke-prow{{end}}/{{if eq .Spec.Type "presubmit"}}pr-logs/pull{{else if eq .Spec.Type "batch"}}pr-logs/pull{{else}}logs{{end}}{{if ne .Spec.Refs.Org ""}}{{if ne .Spec.Refs.Org "kubernetes"}}/{{.Spec.Refs.Org}}_{{.Spec.Refs.Repo}}{{else if ne .Spec.Refs.Repo "kubernetes"}}/{{.Spec.Refs.Repo}}{{end}}{{end}}{{if eq .Spec.Type "presubmit"}}/{{with index .Spec.Refs.Pulls 0}}{{.Number}}{{end}}{{else if eq .Spec.Type "batch"}}/batch{{end}}/{{.Spec.Job}}/{{.Status.BuildID}}/'
+  job_url_template: 'https://gubernator-internal.googleplex.com/build/{{if .Spec.Refs}}{{if eq .Spec.Refs.Org "elafros"}}ela-prow{{else}}gke-prow{{end}}{{else}}gke-prow{{end}}/{{if eq .Spec.Type "presubmit"}}pr-logs/pull{{else if eq .Spec.Type "batch"}}pr-logs/pull{{else}}logs{{end}}{{if .Spec.Refs}}{{if ne .Spec.Refs.Org ""}}{{if ne .Spec.Refs.Org "kubernetes"}}/{{.Spec.Refs.Org}}_{{.Spec.Refs.Repo}}{{else if ne .Spec.Refs.Repo "kubernetes"}}/{{.Spec.Refs.Repo}}{{end}}{{end}}{{end}}{{if eq .Spec.Type "presubmit"}}/{{with index .Spec.Refs.Pulls 0}}{{.Number}}{{end}}{{else if eq .Spec.Type "batch"}}/batch{{end}}/{{.Spec.Job}}/{{.Status.BuildID}}/'
   report_template: '[Full PR test history](https://gubernator-internal.googleplex.com/pr/{{if eq .Spec.Refs.Org "kubernetes"}}{{if eq .Spec.Refs.Repo "kubernetes"}}{{else}}{{.Spec.Refs.Repo}}/{{end}}{{else}}{{.Spec.Refs.Org}}_{{.Spec.Refs.Repo}}/{{end}}{{with index .Spec.Refs.Pulls 0}}{{.Number}}{{end}}). [Your PR dashboard](https://gubernator-internal.googleplex.com/pr/{{with index .Spec.Refs.Pulls 0}}{{.Author}}{{end}}).'
   pod_pending_timeout: 60m
+  default_decoration_config:
+    timeout: 7200000000000 # 2h
+    grace_period: 15000000000 # 15s
+    utility_images:
+      clonerefs: "gcr.io/k8s-prow/clonerefs@sha256:b62ba1f379ac19c5ec9ee7bcab14d3f0b3c31cea9cdd4bc491e98e2c5f346c07"
+      initupload: "gcr.io/k8s-prow/initupload@sha256:58f89f2aae68f7dc46aaf05c7e8204c4f26b53ec9ce30353d1c27ce44a60d121"
+      entrypoint: "gcr.io/k8s-prow/entrypoint:v20180512-0255926d1"
+      sidecar: "gcr.io/k8s-prow/sidecar@sha256:8807b2565f4d2699920542fcf890878824b1ede4198d7ff46bca53feb064ed44"
+    gcs_configuration:
+      bucket: "ela-prow"
+      path_strategy: "explicit"
+    gcs_credentials_secret: "service-account"
 
 prowjob_namespace: default
 pod_namespace: test-pods
@@ -82,7 +94,7 @@ presubmits:
     context: pull-elafros-elafros-test
     always_run: true
     rerun_command: "/test pull-elafros-elafros-test"
-    trigger: "(?m)^/test( all| pull-elafros-elafros-test),?(\\s+|$)"
+    trigger: "(?m)^/test (all|pull-elafros-elafros-test),?(\\s+|$)"
     labels:
       preset-service-account: true
       preset-bazel-scratch-dir: true
@@ -125,7 +137,7 @@ presubmits:
     context: pull-elafros-go-coverage-test
     always_run: true
     rerun_command: "/test pull-elafros-go-coverage-test"
-    trigger: "(?m)^/( all|test pull-elafros-go-coverage-test),?(\\s+|$)"
+    trigger: "(?m)^/test (all|pull-elafros-go-coverage-test),?(\\s+|$)"
     labels:
       preset-service-account: true
       preset-bazel-scratch-dir: true
@@ -156,13 +168,34 @@ presubmits:
           defaultMode: 256
           secretName: ssh-elafros
 
+  - name: pull-elafros-go-coverage
+    agent: kubernetes
+    #context: pull-elafros-go-coverage
+    always_run: true
+    skip_report: true
+    rerun_command: "/test pull-elafros-go-coverage"
+    trigger: "(?m)^/test (all|pull-elafros-go-coverage),?(\\s+|$)"
+    decorate: true
+    clone_uri: "git@github.com:elafros/elafros.git"
+    ssh_key_secrets:
+    - ssh-elafros
+    spec:
+      containers:
+      - image: gcr.io/elafros-e2e-tests/coverage:latest
+        imagePullPolicy: Always
+        command:
+        - "/coverage"
+        args:
+        - "--artifacts=$(ARTIFACTS)"
+        - "--cov-target=./pkg/"
+
   elafros/build:
   - name: pull-elafros-build-test
     agent: kubernetes
     context: pull-elafros-build-test
     always_run: true
     rerun_command: "/test pull-elafros-build-test"
-    trigger: "(?m)^/test( all| pull-elafros-build-test),?(\\s+|$)"
+    trigger: "(?m)^/test (all|pull-elafros-build-test),?(\\s+|$)"
     labels:
       preset-service-account: true
       preset-bazel-scratch-dir: true
@@ -206,7 +239,7 @@ presubmits:
     context: pull-test-infra-presubmit
     always_run: true
     rerun_command: "/test pull-test-infra-presubmit"
-    trigger: "(?m)^/test( all| pull-test-infra-presubmit),?(\\s+|$)"
+    trigger: "(?m)^/test (all|pull-test-infra-presubmit),?(\\s+|$)"
     labels:
       preset-service-account: true
     spec:
@@ -228,7 +261,7 @@ presubmits:
     context: pull-k8s-tpu-operator-unit
     always_run: true
     rerun_command: /test pull-k8s-tpu-operator-unit
-    trigger: (?m)^/test( all| pull-k8s-tpu-operator-unit),?(\s+|$)
+    trigger: (?m)^/test (all|pull-k8s-tpu-operator-unit),?(\s+|$)
     labels:
       preset-service-account: "true"
     spec:
@@ -267,7 +300,7 @@ presubmits:
     context: pull-k8s-tpu-operator-verify
     always_run: true
     rerun_command: /test pull-k8s-tpu-operator-verify
-    trigger: (?m)^/test( all| pull-k8s-tpu-operator-verify),?(\s+|$)
+    trigger: (?m)^/test (all|pull-k8s-tpu-operator-verify),?(\s+|$)
     labels:
       preset-service-account: "true"
     spec:
@@ -1126,6 +1159,23 @@ postsubmits:
         secret:
           defaultMode: 256
           secretName: ssh-elafros
+
+  - name: post-elafros-go-coverage
+    agent: kubernetes
+    decorate: true
+    clone_uri: "git@github.com:elafros/elafros.git"
+    ssh_key_secrets:
+    - ssh-elafros
+    spec:
+      containers:
+      - image: gcr.io/elafros-e2e-tests/coverage:latest
+        imagePullPolicy: Always
+        command:
+        - "/coverage"
+        args:
+        - "--artifacts=$(ARTIFACTS)"
+        - "--cov-target=./pkg/"
+
 
   GoogleCloudPlatform/k8s-tpu-operator:
   - name: k8s-tpu-operator-image-push

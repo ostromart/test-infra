@@ -1,0 +1,96 @@
+plank:
+  job_url_template: 'https://gubernator-internal.googleplex.com/build/gob-prow/{{if eq .Spec.Type "presubmit"}}pr-logs/pull{{else if eq .Spec.Type "batch"}}pr-logs/pull{{else}}logs{{end}}{{if ne .Spec.Refs.Org ""}}{{if ne .Spec.Refs.Org "kubernetes"}}/{{.Spec.Refs.Org}}_{{.Spec.Refs.Repo}}{{else if ne .Spec.Refs.Repo "kubernetes"}}/{{.Spec.Refs.Repo}}{{end}}{{end}}{{if eq .Spec.Type "presubmit"}}/{{with index .Spec.Refs.Pulls 0}}{{.Number}}{{end}}{{else if eq .Spec.Type "batch"}}/batch{{end}}/{{.Spec.Job}}/{{.Status.BuildID}}/'
+  report_template: '[Full PR test history](https://gubernator-internal.googleplex.com/pr/{{if eq .Spec.Refs.Org "kubernetes"}}{{if eq .Spec.Refs.Repo "kubernetes"}}{{else}}{{.Spec.Refs.Repo}}/{{end}}{{else}}{{.Spec.Refs.Org}}_{{.Spec.Refs.Repo}}/{{end}}{{with index .Spec.Refs.Pulls 0}}{{.Number}}{{end}}). [Your PR dashboard](https://gubernator-internal.googleplex.com/pr/{{with index .Spec.Refs.Pulls 0}}{{.Author}}{{end}}).'
+  pod_pending_timeout: 60m
+
+prowjob_namespace: default
+pod_namespace: test-pods
+log_level: info
+
+
+presets:
+- labels:
+    preset-service-account: true
+  env:
+  - name: GOOGLE_APPLICATION_CREDENTIALS
+    value: /etc/service-account/service-account.json
+  volumes:
+  - name: service
+    secret:
+      secretName: service-account
+  volumeMounts:
+  - name: service
+    mountPath: /etc/service-account
+    readOnly: true
+- labels:
+    preset-k8s-ssh: true
+  env:
+  - name: USER
+    value: prow
+  - name: JENKINS_GCE_SSH_PRIVATE_KEY_FILE
+    value: /etc/ssh-key-secret/ssh-private
+  - name: JENKINS_GCE_SSH_PUBLIC_KEY_FILE
+    value: /etc/ssh-key-secret/ssh-public
+  volumes:
+  - name: ssh
+    secret:
+      defaultMode: 0400
+      secretName: ssh-key-secret
+  volumeMounts:
+  - name: ssh
+    mountPath: /etc/ssh-key-secret
+    readOnly: true
+# storage / caching presets
+- labels:
+    preset-bazel-scratch-dir: true
+  env:
+  - name: TEST_TMPDIR
+    value: /bazel-scratch/.cache/bazel
+  volumes:
+  - name: bazel-scratch
+    emptyDir: {}
+  volumeMounts:
+  - name: bazel-scratch
+    mountPath: /bazel-scratch/.cache
+- labels:
+    preset-bazel-remote-cache-enabled: true
+  env:
+  - name: BAZEL_REMOTE_CACHE_ENABLED
+    value: "true"
+
+periodics:
+ - cron: '1 17 * * 0' # Run at 9:01PST (17:01 UTC) on sunday
+   agent: kubernetes
+   name: ci-kubernetes-e2e-gke-scale-correctness
+   labels:
+     preset-service-account: true
+     preset-k8s-ssh: true
+   spec:
+     containers:
+     - args:
+       - --timeout=660
+       - --bare
+       - --scenario=kubernetes_e2e
+       - --upload=gs://gob-prow/logs
+       - --
+       - --check-leaked-resources
+       - --cluster=gke-scale-cluster
+       - --deployment=gke
+       - --extract=gke-latest
+       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+       - --gcp-node-image=gci
+       - --gcp-project=k8s-scale-testing
+       - --gcp-zone=us-east1-a
+       - --ginkgo-parallel=30
+       - --gke-command-group=beta
+       - --gke-create-command=container clusters create --quiet --enable-ip-alias --create-subnetwork=ip-alias-subnet --cluster-ipv4-cidr=/11 --services-ipv4-cidr=/18
+       - --gke-environment=staging
+       - --gke-shape={"default":{"Nodes":99,"MachineType":"g1-small"},"heapster-pool":{"Nodes":1,"MachineType":"n1-standard-16"}} # Start with 99 nodes
+       - --provider=gke
+       - --test_args=--ginkgo.flakeAttempts=2 --ginkgo.skip=\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\]|\[DisabledForLargeClusters\] --allowed-not-ready-nodes=40 --node-schedulable-timeout=90m --minStartupPods=8
+       - --timeout=630m
+       image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
+       resources:
+         requests:
+           cpu: 6
+           memory: "16Gi"

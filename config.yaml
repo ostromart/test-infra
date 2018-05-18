@@ -1,5 +1,5 @@
 plank:
-  job_url_template: 'https://gubernator-internal.googleplex.com/build/{{if .Spec.Refs}}{{if eq .Spec.Refs.Org "elafros"}}ela-prow{{else}}gke-prow{{end}}{{else}}gke-prow{{end}}/{{if eq .Spec.Type "presubmit"}}pr-logs/pull{{else if eq .Spec.Type "batch"}}pr-logs/pull{{else}}logs{{end}}{{if .Spec.Refs}}{{if ne .Spec.Refs.Org ""}}{{if ne .Spec.Refs.Org "kubernetes"}}/{{.Spec.Refs.Org}}_{{.Spec.Refs.Repo}}{{else if ne .Spec.Refs.Repo "kubernetes"}}/{{.Spec.Refs.Repo}}{{end}}{{end}}{{end}}{{if eq .Spec.Type "presubmit"}}/{{with index .Spec.Refs.Pulls 0}}{{.Number}}{{end}}{{else if eq .Spec.Type "batch"}}/batch{{end}}/{{.Spec.Job}}/{{.Status.BuildID}}/'
+  job_url_template: 'https://gubernator-internal.googleplex.com/build/{{with .Spec.Refs}}{{if eq .Org "elafros"}}ela-prow{{else}}gke-prow{{end}}{{else}}{{if eq (printf "%.10s" .Spec.Job) "ci-elafros"}}ela-prow{{else}}gke-prow{{end}}{{end}}/{{if or (eq .Spec.Type "presubmit") (eq .Spec.Type "batch")}}pr-logs/pull{{with .Spec.Refs}}/{{.Org}}_{{.Repo}}{{end}}{{else}}logs{{end}}{{if eq .Spec.Type "presubmit"}}/{{with index .Spec.Refs.Pulls 0}}{{.Number}}{{end}}{{else if eq .Spec.Type "batch"}}/batch{{end}}/{{.Spec.Job}}/{{.Status.BuildID}}/'
   report_template: '[Full PR test history](https://gubernator-internal.googleplex.com/pr/{{if eq .Spec.Refs.Org "kubernetes"}}{{if eq .Spec.Refs.Repo "kubernetes"}}{{else}}{{.Spec.Refs.Repo}}/{{end}}{{else}}{{.Spec.Refs.Org}}_{{.Spec.Refs.Repo}}/{{end}}{{with index .Spec.Refs.Pulls 0}}{{.Number}}{{end}}). [Your PR dashboard](https://gubernator-internal.googleplex.com/pr/{{with index .Spec.Refs.Pulls 0}}{{.Author}}{{end}}).'
   pod_pending_timeout: 60m
   default_decoration_config:
@@ -585,13 +585,13 @@ periodics:
   name: ci-elafros-elafros-go-coverage
   agent: kubernetes
   decorate: true
-  clone_uri: "git@github.com:elafros/elafros.git"
   ssh_key_secrets:
   - ssh-elafros
   extra_refs:
   - org: elafros
     repo: elafros
     base_ref: master
+    clone_uri: "git@github.com:elafros/elafros.git"
   spec:
     containers:
     - image: gcr.io/elafros-e2e-tests/coverage:latest

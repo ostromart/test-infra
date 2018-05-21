@@ -23,5 +23,12 @@ resources:
   - k8s-gci-boskos-13
   - k8s-gci-boskos-14
   - k8s-gci-boskos-15
+  - kubekins-gce-gci-ci-1-4
+  - kubekins-gce-gci-ci-serial-1-4
+  - kubekins-gce-gci-ci-slow-1-4
+  - e2e-cos-docker-val
+  - e2e-cos-docker-val-serial
+  - e2e-cos-docker-val-slow
+  - cos-docker-validation-soak
   state: dirty
   type: gci-qa-project

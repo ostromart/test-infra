@@ -101,7 +101,7 @@ presubmits:
       preset-bazel-remote-cache-enabled: true
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180418-79a97ca02-experimental
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-1.9
         args:
         - "--ssh=/etc/ssh-elafros/ssh-elafros"
         - "--scenario=kubernetes_execute_bazel"
@@ -202,7 +202,7 @@ presubmits:
       preset-bazel-remote-cache-enabled: true
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180418-79a97ca02-experimental
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-1.9
         args:
         - "--ssh=/etc/ssh-elafros/ssh-elafros"
         - "--scenario=kubernetes_execute_bazel"
@@ -469,7 +469,7 @@ periodics:
     preset-bazel-remote-cache-enabled: true
   spec:
     containers:
-    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180418-79a97ca02-experimental
+    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-1.9
       args:
       - "--ssh=/etc/ssh-elafros/ssh-elafros"
       - "--scenario=kubernetes_execute_bazel"
@@ -509,7 +509,7 @@ periodics:
     preset-bazel-remote-cache-enabled: true
   spec:
     containers:
-    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180418-79a97ca02-experimental
+    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-1.9
       args:
       - "--ssh=/etc/ssh-elafros/ssh-elafros"
       - "--scenario=kubernetes_execute_bazel"
@@ -549,7 +549,7 @@ periodics:
     preset-bazel-remote-cache-enabled: true
   spec:
     containers:
-    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180418-79a97ca02-experimental
+    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-1.9
       args:
       - "--ssh=/etc/ssh-elafros/ssh-elafros"
       - "--scenario=kubernetes_execute_bazel"
@@ -612,7 +612,7 @@ periodics:
     preset-bazel-remote-cache-enabled: true
   spec:
     containers:
-    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180418-79a97ca02-experimental
+    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-1.9
       args:
       - "--ssh=/etc/ssh-elafros/ssh-elafros"
       - "--scenario=kubernetes_execute_bazel"

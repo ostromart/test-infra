@@ -1,7 +1,7 @@
 # These are the usual GKE variables.
 PROJECT       ?= gob-prow
 BUILD_PROJECT ?= gob-prow
-ZONE          ?= us-central1-f
+ZONE          ?= us-west1-a
 CLUSTER       ?= prow
 JOB_NAMESPACE ?= test-pods
 

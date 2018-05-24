@@ -58,7 +58,7 @@ presets:
     value: "true"
 
 periodics:
- - cron: '1 19 * * *' # Run at 12:01PST (19:01 UTC) everyday (temporary, until a schedule is fixed.)
+ - cron: '1 17 * * 0' # Run at 10:01PST (17:01 UTC) on sunday
    agent: kubernetes
    name: ci-kubernetes-e2e-gke-scale-correctness
    labels:
@@ -84,10 +84,45 @@ periodics:
        - --gke-command-group=beta
        - --gke-create-command=container clusters create --quiet --enable-ip-alias --create-subnetwork=ip-alias-subnet --cluster-ipv4-cidr=/11 --services-ipv4-cidr=/18
        - --gke-environment=staging
-       - --gke-shape={"default":{"Nodes":99,"MachineType":"g1-small"},"heapster-pool":{"Nodes":1,"MachineType":"n1-standard-16"}} # Start with 99 nodes
+       - --gke-shape={"default":{"Nodes":3999,"MachineType":"g1-small"},"heapster-pool":{"Nodes":1,"MachineType":"n1-standard-16"}}
        - --provider=gke
        - --test_args=--ginkgo.flakeAttempts=2 --ginkgo.skip=\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\]|\[DisabledForLargeClusters\] --allowed-not-ready-nodes=40 --node-schedulable-timeout=90m --minStartupPods=8
        - --timeout=630m
+       image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
+       resources:
+         requests:
+           memory: "6Gi"
+
+ - cron: '1 17 * * 6' # Run at 10:01PST (17:01 UTC) on saturday
+   agent: kubernetes
+   name: ci-kubernetes-e2e-gke-large-correctness
+   labels:
+     preset-service-account: true
+     preset-k8s-ssh: true
+   spec:
+     containers:
+     - args:
+       - --timeout=480
+       - --bare
+       - --scenario=kubernetes_e2e
+       - --upload=gs://gob-prow/logs
+       - --
+       - --check-leaked-resources
+       - --cluster=gke-scale-cluster
+       - --deployment=gke
+       - --extract=gke-latest
+       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+       - --gcp-node-image=gci
+       - --gcp-project=k8s-scale-testing
+       - --gcp-zone=us-east1-a
+       - --ginkgo-parallel=30
+       - --gke-command-group=beta
+       - --gke-create-command=container clusters create --quiet --enable-ip-alias --create-subnetwork=ip-alias-subnet --cluster-ipv4-cidr=/12 --services-ipv4-cidr=/19
+       - --gke-environment=staging
+       - --gke-shape={"default":{"Nodes":2000,"MachineType":"g1-small"},"heapster-pool":{"Nodes":1,"MachineType":"n1-standard-8"}}
+       - --provider=gke
+       - --test_args=--ginkgo.flakeAttempts=2 --ginkgo.skip=\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\]|\[DisabledForLargeClusters\]
+       - --timeout=450m
        image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
        resources:
          requests:

@@ -14,7 +14,7 @@ external_services:
     gcs_pull_prefix: ela-prow/pr-logs/pull
     prow_url: prow-internal.gcpnode.com
 jobs:
-  gke-prow/logs/:
+  gob-prow/logs/:
   - ci-kubernetes-build
   - ci-kubernetes-bazel-test
   - ci-kubernetes-integration

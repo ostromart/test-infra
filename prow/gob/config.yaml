@@ -108,7 +108,7 @@ periodics:
        - --gke-command-group=beta
        - --gke-create-command=container clusters create --quiet --enable-ip-alias --create-subnetwork name=ip-alias-subnet --cluster-ipv4-cidr=/11 --services-ipv4-cidr=/18
        - --gke-environment=staging
-       - --gke-shape={"default":{"Nodes":3999,"MachineType":"g1-small"},"heapster-pool":{"Nodes":1,"MachineType":"n1-standard-16"}}
+       - --gke-shape={"default":{"Nodes":4999,"MachineType":"g1-small"},"heapster-pool":{"Nodes":1,"MachineType":"n1-standard-16"}}
        - --provider=gke
        - --test_args=--ginkgo.flakeAttempts=2 --ginkgo.skip=\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\]|\[DisabledForLargeClusters\] --allowed-not-ready-nodes=40 --node-schedulable-timeout=90m --minStartupPods=8
        - --timeout=630m
@@ -152,100 +152,100 @@ periodics:
          requests:
            memory: "6Gi"
 
-- interval: 1h
-  name: ci-kubernetes-bazel-test
-  agent: kubernetes
-  labels:
-    preset-service-account: true
-    preset-bazel-scratch-dir: true
-  spec:
-    containers:
-    - image: gcr.io/k8s-testimages/bazelbuild:v20180201-0184a54dc-0.10.0
-      args:
-      - --clean
-      - --job=$(JOB_NAME)
-      - --repo=gke-internal.googlesource.com/kubernetes
-      - --service-account=/etc/service-account/service-account.json
-      - --upload=gs://gob-prow/logs
-      - --scenario=kubernetes_bazel
-      - -- # end bootstrap args, scenario args below
-      - --test=//... -//build/... -//vendor/...
-      - --manual-test=//hack:verify-all
-      - --test-args=--config=unit
-      - --test-args=--build_tag_filters=-e2e,-integration
-      - --test-args=--test_tag_filters=-e2e,-integration
-      - --test-args=--flaky_test_attempts=3
-      securityContext:
-        privileged: true
-      resources:
-        requests:
-          memory: "6Gi"
-- interval: 30m
-  name: ci-kubernetes-build
-  agent: kubernetes
-  labels:
-    preset-service-account: true
-  spec:
-    containers:
-    - image: gcr.io/k8s-testimages/bootstrap:v20180215-b2a89850e
-      args:
-      - --clean
-      - --repo=gke-internal.googlesource.com/kubernetes
-      - --repo=k8s.io/release
-      - --root=/go/src
-      - --timeout=30
-      - --scenario=kubernetes_build
-      - --upload=gs://gob-prow/logs
-      - --
-      - --fast
-      - --release=gob-prow
-      - --push-build-script=../../k8s.io/release/push-build.sh
-      env:
-      - name: DOCKER_IN_DOCKER_ENABLED
-        value: true
-      # docker-in-docker needs privileged mode
-      securityContext:
-        privileged: true
-      resources:
-        requests:
-          cpu: 3
-          memory: "8Gi"
-      volumeMounts:
-      - name: docker-graph
-        mountPath: /docker-graph
-    volumes:
-    - name: docker-graph
-      emptyDir: {}
-- interval: 1h
-  name: ci-kubernetes-integration
-  agent: kubernetes
-  labels:
-    preset-service-account: true
-  spec:
-    containers:
-    - image: gcr.io/k8s-testimages/bootstrap:v20180215-b2a89850e
-      args:
-      - --clean
-      - --repo=gke-internal.googlesource.com/kubernetes
-      - --timeout=100
-      - --scenario=kubernetes_verify
-      - --upload=gs://gob-prow/logs
-      - --
-      - --branch=master
-      - --force
-      - --prow
-      env:
-      - name: DOCKER_IN_DOCKER_ENABLED
-        value: true
-      # docker-in-docker needs privileged mode
-      securityContext:
-        privileged: true
-      resources:
-        requests:
-          cpu: 3
-      volumeMounts:
-      - name: docker-graph
-        mountPath: /docker-graph
-    volumes:
-    - name: docker-graph
-      emptyDir: {}
+ - interval: 1h
+   name: ci-kubernetes-bazel-test
+   agent: kubernetes
+   labels:
+     preset-service-account: true
+     preset-bazel-scratch-dir: true
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/bazelbuild:v20180201-0184a54dc-0.10.0
+       args:
+       - --clean
+       - --job=$(JOB_NAME)
+       - --repo=gke-internal.googlesource.com/kubernetes
+       - --service-account=/etc/service-account/service-account.json
+       - --upload=gs://gob-prow/logs
+       - --scenario=kubernetes_bazel
+       - -- # end bootstrap args, scenario args below
+       - --test=//... -//build/... -//vendor/...
+       - --manual-test=//hack:verify-all
+       - --test-args=--config=unit
+       - --test-args=--build_tag_filters=-e2e,-integration
+       - --test-args=--test_tag_filters=-e2e,-integration
+       - --test-args=--flaky_test_attempts=3
+       securityContext:
+         privileged: true
+       resources:
+         requests:
+           memory: "6Gi"
+ - interval: 30m
+   name: ci-kubernetes-build
+   agent: kubernetes
+   labels:
+     preset-service-account: true
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/bootstrap:v20180215-b2a89850e
+       args:
+       - --clean
+       - --repo=gke-internal.googlesource.com/kubernetes
+       - --repo=k8s.io/release
+       - --root=/go/src
+       - --timeout=30
+       - --scenario=kubernetes_build
+       - --upload=gs://gob-prow/logs
+       - --
+       - --fast
+       - --release=gob-prow
+       - --push-build-script=../../k8s.io/release/push-build.sh
+       env:
+       - name: DOCKER_IN_DOCKER_ENABLED
+         value: true
+       # docker-in-docker needs privileged mode
+       securityContext:
+         privileged: true
+       resources:
+         requests:
+           cpu: 3
+           memory: "8Gi"
+       volumeMounts:
+       - name: docker-graph
+         mountPath: /docker-graph
+     volumes:
+     - name: docker-graph
+       emptyDir: {}
+ - interval: 1h
+   name: ci-kubernetes-integration
+   agent: kubernetes
+   labels:
+     preset-service-account: true
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/bootstrap:v20180215-b2a89850e
+       args:
+       - --clean
+       - --repo=gke-internal.googlesource.com/kubernetes
+       - --timeout=100
+       - --scenario=kubernetes_verify
+       - --upload=gs://gob-prow/logs
+       - --
+       - --branch=master
+       - --force
+       - --prow
+       env:
+       - name: DOCKER_IN_DOCKER_ENABLED
+         value: true
+       # docker-in-docker needs privileged mode
+       securityContext:
+         privileged: true
+       resources:
+         requests:
+           cpu: 3
+       volumeMounts:
+       - name: docker-graph
+         mountPath: /docker-graph
+     volumes:
+     - name: docker-graph
+       emptyDir: {}

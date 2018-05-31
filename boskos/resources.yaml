@@ -32,3 +32,8 @@ resources:
   - cos-docker-validation-soak
   state: dirty
   type: gci-qa-project
+- names:
+  - gke-internal-gpu-boskos-01
+  - gke-internal-gpu-boskos-02
+  state: dirty
+  type: gpu-project

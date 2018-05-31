@@ -661,6 +661,30 @@ periodics:
       - --timeout=150m
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-master
 
+- interval: 2h
+  agent: kubernetes
+  name: ci-kubernetes-e2e-gce-gci-ci-device-plugin-gpu-master
+  labels:
+    preset-service-account: true
+    preset-k8s-ssh: true
+  spec:
+    containers:
+    - args:
+      - --timeout=70
+      - --bare
+      - --scenario=kubernetes_e2e
+      - --upload=gs://gke-prow/logs
+      - --
+      - --check-leaked-resources
+      - --extract=gci/gci-canary/latest
+      - --gcp-project-type=gpu-project
+      - --gcp-zone=us-west1-b
+      - --provider=gce
+      - --test_args=--ginkgo.focus=\[Feature:GPUDevicePlugin\] --minStartupPods=8
+      - --timeout=150m
+      - --env=NODE_ACCELERATORS=type=nvidia-tesla-k80,count=2
+      image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-master
+
 - interval: 30m
   agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-qa-m65

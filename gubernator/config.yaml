@@ -9,7 +9,7 @@ external_services:
     gcs_bucket: gke-prow/
     gcs_pull_prefix: gke-prow/pr-logs/pull
     prow_url: prow-internal.gcpnode.com
-  elafros:
+  knative:
     gcs_bucket: ela-prow/
     gcs_pull_prefix: ela-prow/pr-logs/pull
     prow_url: prow-internal.gcpnode.com
@@ -19,10 +19,12 @@ jobs:
   - ci-kubernetes-bazel-test
   - ci-kubernetes-integration
   ela-prow/pr-logs/directory/:
-  - pull-elafros-elafros-test
-  - pull-elafros-build-test
-  - ci-elafros-build-release
-  - ci-elafros-elafros-continuous
-  - ci-elafros-elafros-release
-  - ci-elafros-elafros-playground
+  - pull-knative-serving-build-tests
+  - pull-knative-serving-integration-tests
+  - pull-knative-serving-unit-tests
+  - pull-knative-build-test
+  - ci-knative-build-release
+  - ci-knative-serving-continuous
+  - ci-knative-serving-release
+  - ci-knative-serving-playground
 recursive_artifacts: false

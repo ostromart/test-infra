@@ -1,5 +1,5 @@
 plank:
-  job_url_template: 'https://gubernator-internal.googleplex.com/build/{{with .Spec.Refs}}{{if eq .Org "elafros"}}ela-prow{{else}}gke-prow{{end}}{{else}}{{if eq (printf "%.10s" .Spec.Job) "ci-elafros"}}ela-prow{{else}}gke-prow{{end}}{{end}}/{{if or (eq .Spec.Type "presubmit") (eq .Spec.Type "batch")}}pr-logs/pull{{with .Spec.Refs}}/{{.Org}}_{{.Repo}}{{end}}{{else}}logs{{end}}{{if eq .Spec.Type "presubmit"}}/{{with index .Spec.Refs.Pulls 0}}{{.Number}}{{end}}{{else if eq .Spec.Type "batch"}}/batch{{end}}/{{.Spec.Job}}/{{.Status.BuildID}}/'
+  job_url_template: 'https://gubernator-internal.googleplex.com/build/{{with .Spec.Refs}}{{if eq .Org "knative"}}ela-prow{{else}}gke-prow{{end}}{{else}}{{if eq (printf "%.10s" .Spec.Job) "ci-knative"}}ela-prow{{else}}gke-prow{{end}}{{end}}/{{if or (eq .Spec.Type "presubmit") (eq .Spec.Type "batch")}}pr-logs/pull{{with .Spec.Refs}}/{{.Org}}_{{.Repo}}{{end}}{{else}}logs{{end}}{{if eq .Spec.Type "presubmit"}}/{{with index .Spec.Refs.Pulls 0}}{{.Number}}{{end}}{{else if eq .Spec.Type "batch"}}/batch{{end}}/{{.Spec.Job}}/{{.Status.BuildID}}/'
   report_template: '[Full PR test history](https://gubernator-internal.googleplex.com/pr/{{if eq .Spec.Refs.Org "kubernetes"}}{{if eq .Spec.Refs.Repo "kubernetes"}}{{else}}{{.Spec.Refs.Repo}}/{{end}}{{else}}{{.Spec.Refs.Org}}_{{.Spec.Refs.Repo}}/{{end}}{{with index .Spec.Refs.Pulls 0}}{{.Number}}{{end}}). [Your PR dashboard](https://gubernator-internal.googleplex.com/pr/{{with index .Spec.Refs.Pulls 0}}{{.Author}}{{end}}).'
   pod_pending_timeout: 60m
   default_decoration_config:
@@ -23,10 +23,10 @@ tide:
   queries:
   - repos:
     - GoogleCloudPlatform/k8s-tpu-operator
-    - elafros/build
-    - elafros/elafros
-    - elafros/eventing
-    - elafros/install
+    - knative/build
+    - knative/serving
+    - knative/eventing
+    - knative/install
     labels:
     - lgtm
     - approved
@@ -34,7 +34,7 @@ tide:
     - do-not-merge/hold
     - do-not-merge/work-in-progress
   merge_method:
-    elafros: squash
+    knative: squash
   target_url: https://prow-internal.gcpnode.com/tide.html
 
 presets:
@@ -88,13 +88,13 @@ presets:
     value: "true"
 
 presubmits:
-  elafros/elafros:
-  - name: pull-elafros-elafros-build-tests
+  knative/serving:
+  - name: pull-knative-serving-build-tests
     agent: kubernetes
-    context: pull-elafros-elafros-build-tests
+    context: pull-knative-serving-build-tests
     always_run: true
-    rerun_command: "/test pull-elafros-elafros-build-tests"
-    trigger: "(?m)^/test (all|pull-elafros-elafros-build-tests),?(\\s+|$)"
+    rerun_command: "/test pull-knative-serving-build-tests"
+    trigger: "(?m)^/test (all|pull-knative-serving-build-tests),?(\\s+|$)"
     labels:
       preset-service-account: true
       preset-bazel-scratch-dir: true
@@ -130,12 +130,12 @@ presubmits:
           defaultMode: 256
           secretName: ssh-elafros
 
-  - name: pull-elafros-elafros-unit-tests
+  - name: pull-knative-serving-unit-tests
     agent: kubernetes
-    context: pull-elafros-elafros-unit-tests
+    context: pull-knative-serving-unit-tests
     always_run: true
-    rerun_command: "/test pull-elafros-elafros-unit-tests"
-    trigger: "(?m)^/test (all|pull-elafros-elafros-unit-tests),?(\\s+|$)"
+    rerun_command: "/test pull-knative-serving-unit-tests"
+    trigger: "(?m)^/test (all|pull-knative-serving-unit-tests),?(\\s+|$)"
     labels:
       preset-service-account: true
       preset-bazel-scratch-dir: true
@@ -171,12 +171,12 @@ presubmits:
           defaultMode: 256
           secretName: ssh-elafros
 
-  - name: pull-elafros-elafros-integration-tests
+  - name: pull-knative-serving-integration-tests
     agent: kubernetes
-    context: pull-elafros-elafros-integration-tests
+    context: pull-knative-serving-integration-tests
     always_run: true
-    rerun_command: "/test pull-elafros-elafros-integration-tests"
-    trigger: "(?m)^/test (all|pull-elafros-elafros-integration-tests),?(\\s+|$)"
+    rerun_command: "/test pull-knative-serving-integration-tests"
+    trigger: "(?m)^/test (all|pull-knative-serving-integration-tests),?(\\s+|$)"
     labels:
       preset-service-account: true
       preset-bazel-scratch-dir: true
@@ -212,12 +212,12 @@ presubmits:
           defaultMode: 256
           secretName: ssh-elafros
 
-  - name: pull-elafros-go-coverage-test
+  - name: pull-knative-serving-go-coverage-test
     agent: kubernetes
-    context: pull-elafros-go-coverage-test
+    context: pull-knative-serving-go-coverage-test
     always_run: true
-    rerun_command: "/test pull-elafros-go-coverage-test"
-    trigger: "(?m)^/test (all|pull-elafros-go-coverage-test),?(\\s+|$)"
+    rerun_command: "/test pull-knative-serving-go-coverage-test"
+    trigger: "(?m)^/test (all|pull-knative-serving-go-coverage-test),?(\\s+|$)"
     labels:
       preset-service-account: true
       preset-bazel-scratch-dir: true
@@ -248,15 +248,15 @@ presubmits:
           defaultMode: 256
           secretName: ssh-elafros
 
-  - name: pull-elafros-elafros-go-coverage
+  - name: pull-knative-serving-go-coverage
     agent: kubernetes
-    #context: pull-elafros-elafros-go-coverage
+    #context: pull-knative-serving-go-coverage
     always_run: true
     skip_report: true
-    rerun_command: "/test pull-elafros-elafros-go-coverage"
-    trigger: "(?m)^/test (all|pull-elafros-elafros-go-coverage),?(\\s+|$)"
+    rerun_command: "/test pull-knative-serving-go-coverage"
+    trigger: "(?m)^/test (all|pull-knative-serving-go-coverage),?(\\s+|$)"
     decorate: true
-    clone_uri: "git@github.com:elafros/elafros.git"
+    clone_uri: "git@github.com:knative/serving.git"
     ssh_key_secrets:
     - ssh-elafros
     spec:
@@ -269,13 +269,13 @@ presubmits:
         - "--artifacts=$(ARTIFACTS)"
         - "--cov-target=./pkg/"
 
-  elafros/build:
-  - name: pull-elafros-build-test
+  knative/build:
+  - name: pull-knative-build-test
     agent: kubernetes
-    context: pull-elafros-build-test
+    context: pull-knative-build-test
     always_run: true
-    rerun_command: "/test pull-elafros-build-test"
-    trigger: "(?m)^/test (all|pull-elafros-build-test),?(\\s+|$)"
+    rerun_command: "/test pull-knative-build-test"
+    trigger: "(?m)^/test (all|pull-knative-build-test),?(\\s+|$)"
     labels:
       preset-service-account: true
       preset-bazel-scratch-dir: true
@@ -419,7 +419,7 @@ periodics:
       - --timeout=50m
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-master
 - cron: "1 * * * *" # Run every hour and one minute
-  name: ci-elafros-elafros-continuous
+  name: ci-knative-serving-continuous
   agent: kubernetes
   labels:
     preset-service-account: true
@@ -433,7 +433,7 @@ periodics:
       - "--scenario=kubernetes_execute_bazel"
       - "--clean"
       - "--job=$(JOB_NAME)"
-      - "--repo=github.com/elafros/elafros"
+      - "--repo=github.com/knative/serving"
       - "--root=/go/src"
       - "--service-account=/etc/service-account/service-account.json"
       - "--upload=gs://ela-prow/logs"
@@ -456,7 +456,7 @@ periodics:
          defaultMode: 256
          secretName: ssh-elafros
 - cron: "1 6 * * *" # Run at 23:01PST every day (06:01 UTC following day)
-  name: ci-elafros-elafros-release
+  name: ci-knative-serving-release
   agent: kubernetes
   labels:
     preset-service-account: true
@@ -470,7 +470,7 @@ periodics:
       - "--scenario=kubernetes_execute_bazel"
       - "--clean"
       - "--job=$(JOB_NAME)"
-      - "--repo=github.com/elafros/elafros"
+      - "--repo=github.com/knative/serving"
       - "--root=/go/src"
       - "--service-account=/etc/service-account/service-account.json"
       - "--upload=gs://ela-prow/logs"
@@ -493,7 +493,7 @@ periodics:
          defaultMode: 256
          secretName: ssh-elafros
 - cron: "1 8 * * 6" # Run at 01:01PST every Saturday (08:01 UTC Saturday)
-  name: ci-elafros-elafros-playground
+  name: ci-knative-serving-playground
   agent: kubernetes
   labels:
     preset-service-account: true
@@ -507,7 +507,7 @@ periodics:
       - "--scenario=kubernetes_execute_bazel"
       - "--clean"
       - "--job=$(JOB_NAME)"
-      - "--repo=github.com/elafros/elafros"
+      - "--repo=github.com/knative/serving"
       - "--root=/go/src"
       - "--service-account=/etc/service-account/service-account.json"
       - "--upload=gs://ela-prow/logs"
@@ -531,16 +531,16 @@ periodics:
          defaultMode: 256
          secretName: ssh-elafros
 - cron: "1 * * * *" #Run at the first minute of each hour
-  name: ci-elafros-elafros-go-coverage
+  name: ci-knative-serving-go-coverage
   agent: kubernetes
   decorate: true
   ssh_key_secrets:
   - ssh-elafros
   extra_refs:
-  - org: elafros
-    repo: elafros
+  - org: knative
+    repo: serving
     base_ref: master
-    clone_uri: "git@github.com:elafros/elafros.git"
+    clone_uri: "git@github.com:knative/serving.git"
   spec:
     containers:
     - image: gcr.io/elafros-e2e-tests/coverage:latest
@@ -553,7 +553,7 @@ periodics:
 
 
 - cron: "31 6 * * *" # Run at 23:31PST every day (06:31 UTC following day)
-  name: ci-elafros-build-release
+  name: ci-knative-build-release
   agent: kubernetes
   labels:
     preset-service-account: true
@@ -567,7 +567,7 @@ periodics:
       - "--scenario=kubernetes_execute_bazel"
       - "--clean"
       - "--job=$(JOB_NAME)"
-      - "--repo=github.com/elafros/build"
+      - "--repo=github.com/knative/build"
       - "--root=/go/src"
       - "--service-account=/etc/service-account/service-account.json"
       - "--upload=gs://ela-prow/logs"
@@ -1053,7 +1053,7 @@ periodics:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-master
 
 postsubmits:
-  elafros/elafros:
+  knative/serving:
   - name: coverage-postsubmit
     agent: kubernetes
     labels:
@@ -1086,10 +1086,10 @@ postsubmits:
           defaultMode: 256
           secretName: ssh-elafros
 
-  - name: post-elafros-elafros-go-coverage
+  - name: post-knative-serving-go-coverage
     agent: kubernetes
     decorate: true
-    clone_uri: "git@github.com:elafros/elafros.git"
+    clone_uri: "git@github.com:knative/serving.git"
     ssh_key_secrets:
     - ssh-elafros
     spec:

@@ -1,11 +1,11 @@
 approve:
 - repos:
-  - elafros
+  - knative
   - GoogleCloudPlatform/k8s-tpu-operator
   implicit_self_approve: true
 
 plugins:
-  elafros:
+  knative:
   - approve
   - assign
   - buildifier

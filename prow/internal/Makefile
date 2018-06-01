@@ -19,11 +19,11 @@ update-cluster: get-cluster-credentials
 
 .PHONY: update-boskos
 update-boskos: get-cluster-credentials
-	kubectl apply -f boskos/boskos.yaml
+	kubectl apply -f ../../boskos/boskos.yaml
 
 .PHONY: update-boskos-config
 update-boskos-config: get-cluster-credentials
-	kubectl create configmap resources --from-file=config=boskos/resources.yaml --dry-run -o yaml | kubectl --namespace="$(JOB_NAMESPACE)" replace configmap resources -f -
+	kubectl create configmap resources --from-file=config=../../boskos/resources.yaml --dry-run -o yaml | kubectl --namespace="$(JOB_NAMESPACE)" replace configmap resources -f -
 
 .PHONY: create-secrets
 create-secrets: get-cluster-credentials

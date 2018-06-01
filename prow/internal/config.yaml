@@ -268,6 +268,15 @@ presubmits:
         args:
         - "--artifacts=$(ARTIFACTS)"
         - "--cov-target=./pkg/"
+        - "--github-token=/etc/github-token/token"
+        volumeMounts:
+        - name: github-token
+          mountPath: /etc/github-token
+          readOnly: true
+      volumes:
+      - name: github-token
+        secret:
+          secretName: covbot-token
 
   knative/build:
   - name: pull-knative-build-test

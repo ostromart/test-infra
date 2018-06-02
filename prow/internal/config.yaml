@@ -249,6 +249,8 @@ presubmits:
           secretName: ssh-elafros
 
   - name: pull-knative-serving-go-coverage
+    labels:
+      preset-service-account: true
     agent: kubernetes
     #context: pull-knative-serving-go-coverage
     always_run: true
@@ -266,7 +268,10 @@ presubmits:
         command:
         - "/coverage"
         args:
+        - "--postsubmit-gcs-bucket=ela-prow"
+        - "--postsubmit-job-name=post-knative-serving-go-coverage"
         - "--artifacts=$(ARTIFACTS)"
+        - "--profile-name=coverage_profile.txt"
         - "--cov-target=./pkg/"
         - "--github-token=/etc/github-token/token"
         volumeMounts:
@@ -531,6 +536,7 @@ periodics:
       - "/coverage"
       args:
       - "--artifacts=$(ARTIFACTS)"
+      - "--profile-name=coverage_profile.txt"
       - "--cov-target=./pkg/"
 
 
@@ -1106,6 +1112,7 @@ postsubmits:
         - "/coverage"
         args:
         - "--artifacts=$(ARTIFACTS)"
+        - "--profile-name=coverage_profile.txt"
         - "--cov-target=./pkg/"
 
 

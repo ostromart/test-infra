@@ -517,7 +517,7 @@ periodics:
        secret:
          defaultMode: 256
          secretName: ssh-elafros
-- cron: "1 * * * *" #Run at the first minute of each hour
+- cron: "0 1 * * *" # Run at 01:00 every day
   name: ci-knative-serving-go-coverage
   agent: kubernetes
   decorate: true

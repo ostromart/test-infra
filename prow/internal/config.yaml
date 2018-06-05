@@ -252,9 +252,8 @@ presubmits:
     labels:
       preset-service-account: true
     agent: kubernetes
-    #context: pull-knative-serving-go-coverage
+    context: pull-knative-serving-go-coverage
     always_run: true
-    skip_report: true
     rerun_command: "/test pull-knative-serving-go-coverage"
     trigger: "(?m)^/test (all|pull-knative-serving-go-coverage),?(\\s+|$)"
     decorate: true

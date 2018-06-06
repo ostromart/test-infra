@@ -1193,6 +1193,8 @@ postsubmits:
           secretName: ssh-elafros
 
   - name: post-knative-serving-go-coverage
+    branches:
+    - master
     agent: kubernetes
     decorate: true
     clone_uri: "git@github.com:knative/serving.git"

@@ -212,42 +212,6 @@ presubmits:
           defaultMode: 256
           secretName: ssh-elafros
 
-  - name: pull-knative-serving-go-coverage-test
-    agent: kubernetes
-    context: pull-knative-serving-go-coverage-test
-    always_run: true
-    rerun_command: "/test pull-knative-serving-go-coverage-test"
-    trigger: "(?m)^/test (all|pull-knative-serving-go-coverage-test),?(\\s+|$)"
-    labels:
-      preset-service-account: true
-      preset-bazel-scratch-dir: true
-    spec:
-      containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-master
-        args:
-        - "--ssh=/etc/ssh-elafros/ssh-elafros"
-        - "--scenario=kubernetes_execute_bazel"
-        - "--clean"
-        - "--job=$(JOB_NAME)"
-        - "--repo=github.com/$(REPO_OWNER)/$(REPO_NAME)=$(PULL_REFS)"
-        - "--root=/go/src"
-        - "--service-account=/etc/service-account/service-account.json"
-        - "--upload=gs://ela-prow/pr-logs"
-        - "--" # end bootstrap args, scenario args below
-        - "--" # end kubernetes_execute_bazel flags (consider following flags as text)
-        - "./hack/project-coverage.sh"
-        env:
-        - name: USER
-          value: prow
-        volumeMounts:
-        - mountPath: /etc/ssh-elafros
-          name: ssh-elafros
-      volumes:
-      - name: ssh-elafros
-        secret:
-          defaultMode: 256
-          secretName: ssh-elafros
-
   - name: pull-knative-serving-go-coverage
     labels:
       preset-service-account: true
@@ -1134,40 +1098,6 @@ periodics:
       - --timeout=600m
       - --up=false
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-master
-
-postsubmits:
-  knative/serving:
-  - name: coverage-postsubmit
-    agent: kubernetes
-    labels:
-      preset-service-account: true
-      preset-bazel-scratch-dir: true
-    spec:
-      containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180322-179eac85b-experimental
-        args:
-        - "--ssh=/etc/ssh-elafros/ssh-elafros"
-        - "--scenario=kubernetes_execute_bazel"
-        - "--clean"
-        - "--job=$(JOB_NAME)"
-        - "--repo=github.com/$(REPO_OWNER)/$(REPO_NAME)=$(PULL_REFS)"
-        - "--root=/go/src"
-        - "--service-account=/etc/service-account/service-account.json"
-        - "--upload=gs://ela-prow/logs"
-        - "--" # end bootstrap args, scenario args below
-        - "--" # end kubernetes_execute_bazel flags (consider following flags as text)
-        - "./hack/project-coverage.sh"
-        env:
-        - name: USER
-          value: prow
-        volumeMounts:
-        - mountPath: /etc/ssh-elafros
-          name: ssh-elafros
-      volumes:
-      - name: ssh-elafros
-        secret:
-          defaultMode: 256
-          secretName: ssh-elafros
 
   - name: post-knative-serving-go-coverage
     agent: kubernetes

@@ -10,7 +10,7 @@ log_level: info
 
 presets:
 - labels:
-    preset-service-account: true
+    preset-service-account: "true"
   env:
   - name: GOOGLE_APPLICATION_CREDENTIALS
     value: /etc/service-account/service-account.json
@@ -23,7 +23,7 @@ presets:
     mountPath: /etc/service-account
     readOnly: true
 - labels:
-    preset-k8s-ssh: true
+    preset-k8s-ssh: "true"
   env:
   - name: USER
     value: prow
@@ -42,7 +42,7 @@ presets:
     readOnly: true
 # storage / caching presets
 - labels:
-    preset-bazel-scratch-dir: true
+    preset-bazel-scratch-dir: "true"
   env:
   - name: TEST_TMPDIR
     value: /bazel-scratch/.cache/bazel
@@ -53,7 +53,7 @@ presets:
   - name: bazel-scratch
     mountPath: /bazel-scratch/.cache
 - labels:
-    preset-bazel-remote-cache-enabled: true
+    preset-bazel-remote-cache-enabled: "true"
   env:
   - name: BAZEL_REMOTE_CACHE_ENABLED
     value: "true"
@@ -67,7 +67,7 @@ presubmits:
     rerun_command: "/test pull-test-infra-presubmit"
     trigger: "(?m)^/test (all|pull-test-infra-presubmit),?(\\s+|$)"
     labels:
-      preset-service-account: true
+      preset-service-account: "true"
     spec:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-master
@@ -86,8 +86,8 @@ periodics:
    agent: kubernetes
    name: ci-kubernetes-e2e-gke-scale-correctness
    labels:
-     preset-service-account: true
-     preset-k8s-ssh: true
+     preset-service-account: "true"
+     preset-k8s-ssh: "true"
    spec:
      containers:
      - args:
@@ -121,8 +121,8 @@ periodics:
    agent: kubernetes
    name: ci-kubernetes-e2e-gke-large-correctness
    labels:
-     preset-service-account: true
-     preset-k8s-ssh: true
+     preset-service-account: "true"
+     preset-k8s-ssh: "true"
    spec:
      containers:
      - args:
@@ -156,8 +156,8 @@ periodics:
    name: ci-kubernetes-bazel-test
    agent: kubernetes
    labels:
-     preset-service-account: true
-     preset-bazel-scratch-dir: true
+     preset-service-account: "true"
+     preset-bazel-scratch-dir: "true"
    spec:
      containers:
      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-master
@@ -184,7 +184,7 @@ periodics:
    name: ci-kubernetes-build
    agent: kubernetes
    labels:
-     preset-service-account: true
+     preset-service-account: "true"
    spec:
      containers:
      - image: gcr.io/k8s-testimages/bootstrap:v20180215-b2a89850e
@@ -202,7 +202,7 @@ periodics:
        - --push-build-script=../../k8s.io/release/push-build.sh
        env:
        - name: DOCKER_IN_DOCKER_ENABLED
-         value: true
+         value: "true"
        # docker-in-docker needs privileged mode
        securityContext:
          privileged: true
@@ -220,7 +220,7 @@ periodics:
    name: ci-kubernetes-integration
    agent: kubernetes
    labels:
-     preset-service-account: true
+     preset-service-account: "true"
    spec:
      containers:
      - image: gcr.io/k8s-testimages/bootstrap:v20180215-b2a89850e
@@ -236,7 +236,7 @@ periodics:
        - --prow
        env:
        - name: DOCKER_IN_DOCKER_ENABLED
-         value: true
+         value: "true"
        # docker-in-docker needs privileged mode
        securityContext:
          privileged: true
@@ -253,8 +253,8 @@ periodics:
    agent: kubernetes
    name: ci-kubernetes-e2e-gob-gke
    labels:
-     preset-service-account: true
-     preset-k8s-ssh: true
+     preset-service-account: "true"
+     preset-k8s-ssh: "true"
    spec:
      containers:
      - args:

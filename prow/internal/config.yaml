@@ -1100,6 +1100,8 @@ periodics:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-master
 
   - name: post-knative-serving-go-coverage
+    branches:
+    - master
     agent: kubernetes
     decorate: true
     clone_uri: "git@github.com:knative/serving.git"

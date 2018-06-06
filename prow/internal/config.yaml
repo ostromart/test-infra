@@ -1099,6 +1099,98 @@ periodics:
       - --up=false
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-master
 
+- interval: 6h
+  agent: kubernetes
+  name: ci-gke-guitar-projects-janitor
+  labels:
+    preset-service-account: true
+  spec:
+    containers:
+    - args:
+      - --timeout=70
+      - --bare
+      - --scenario=kubernetes_janitor
+      - --upload=gs://gke-prow/logs
+      - --
+      # TODO(senlu): figure out a way to sync the project list
+      - --projects=cloud-kubernetes-test-guitar,\
+                  cloud-kubernetes-test-guitar-1,\
+                  cloud-kubernetes-test-guitar-2,\
+                  cloud-kubernetes-test-guitar-3,\
+                  cloud-kubernetes-test-guitar-4,\
+                  cloud-kubernetes-test-guitar-5,\
+                  cloud-kubernetes-test-guitar-6,\
+                  cloud-kubernetes-test-guitar-7,\
+                  cloud-kubernetes-test-guitar-8,\
+                  cloud-kubernetes-test-guitar-9,\
+                  cloud-kubernetes-guitar-10,\
+                  cloud-kubernetes-guitar-11,\
+                  cloud-kubernetes-guitar-12,\
+                  cloud-kubernetes-guitar-13,\
+                  cloud-kubernetes-guitar-14,\
+                  cloud-kubernetes-guitar-15,\
+                  cloud-kubernetes-guitar-16,\
+                  cloud-kubernetes-guitar-17,\
+                  cloud-kubernetes-guitar-18,\
+                  cloud-kubernetes-guitar-19,\
+                  cloud-kubernetes-guitar-20,\
+                  cloud-kubernetes-guitar-21,\
+                  cloud-kubernetes-guitar-22,\
+                  cloud-kubernetes-guitar-23,\
+                  cloud-kubernetes-guitar-24,\
+                  cloud-kubernetes-guitar-25,\
+                  cloud-kubernetes-guitar-26,\
+                  cloud-kubernetes-guitar-27,\
+                  cloud-kubernetes-guitar-28,\
+                  cloud-kubernetes-guitar-29,\
+                  cloud-k8s-guitar-xpn-host,\
+                  cloud-k8s-guitar-xpn-svc-1,\
+                  cloud-k8s-guitar-xpn-svc-2,\
+                  gke-e2e-binauthz-prod,\
+                  gke-e2e-binauthz-test,\
+                  gke-e2e-createdelete,\
+                  gke-e2e-guitar-accelerators-1,\
+                  gke-e2e-jenkins-oneoff,\
+                  gke-e2e-pull-config,\
+                  gke-e2e-regional-createdelete,\
+                  gke-gcestaging-e2e
+      - --age=240 # 10 days for guitar projects
+      image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-master
+
+postsubmits:
+  knative/serving:
+  - name: coverage-postsubmit
+    agent: kubernetes
+    labels:
+      preset-service-account: true
+      preset-bazel-scratch-dir: true
+    spec:
+      containers:
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180322-179eac85b-experimental
+        args:
+        - "--ssh=/etc/ssh-elafros/ssh-elafros"
+        - "--scenario=kubernetes_execute_bazel"
+        - "--clean"
+        - "--job=$(JOB_NAME)"
+        - "--repo=github.com/$(REPO_OWNER)/$(REPO_NAME)=$(PULL_REFS)"
+        - "--root=/go/src"
+        - "--service-account=/etc/service-account/service-account.json"
+        - "--upload=gs://ela-prow/logs"
+        - "--" # end bootstrap args, scenario args below
+        - "--" # end kubernetes_execute_bazel flags (consider following flags as text)
+        - "./hack/project-coverage.sh"
+        env:
+        - name: USER
+          value: prow
+        volumeMounts:
+        - mountPath: /etc/ssh-elafros
+          name: ssh-elafros
+      volumes:
+      - name: ssh-elafros
+        secret:
+          defaultMode: 256
+          secretName: ssh-elafros
+
   - name: post-knative-serving-go-coverage
     agent: kubernetes
     decorate: true

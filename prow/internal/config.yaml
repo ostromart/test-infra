@@ -1112,6 +1112,7 @@ periodics:
       - --scenario=kubernetes_janitor
       - --upload=gs://gke-prow/logs
       - --
+      - --mode=custom
       # TODO(senlu): figure out a way to sync the project list
       - --projects=cloud-kubernetes-test-guitar,\
                   cloud-kubernetes-test-guitar-1,\

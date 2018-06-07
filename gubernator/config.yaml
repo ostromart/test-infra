@@ -22,6 +22,9 @@ jobs:
   - pull-knative-serving-build-tests
   - pull-knative-serving-integration-tests
   - pull-knative-serving-unit-tests
+  - pull-knative-eventing-build-tests
+  - pull-knative-eventing-integration-tests
+  - pull-knative-eventing-unit-tests
   - pull-knative-build-test
   - ci-knative-build-release
   - ci-knative-serving-continuous

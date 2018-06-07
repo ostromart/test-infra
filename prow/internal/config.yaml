@@ -19,6 +19,16 @@ prowjob_namespace: default
 pod_namespace: test-pods
 log_level: info
 
+branch-protection:
+  orgs:
+    knative:
+      # Protect all branches in knative
+      # This means all prow jobs with "always_run" set are required
+      # to pass before tide can merge the PR.
+      protect: true
+      # Admins can overrule checks
+      enforce_admins: false
+
 tide:
   queries:
   - repos:

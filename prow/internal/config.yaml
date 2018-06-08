@@ -1314,7 +1314,7 @@ periodics:
       - --repo=github.com/containerd/cri=master
       - --repo=github.com/Random-Liu/runsc-scripts=master
       - --root=/go/src
-      - --upload=gs://gke-prow/pr-logs
+      - --upload=gs://gke-prow/logs
       - --scenario=kubernetes_e2e
       - --timeout=90
       - --

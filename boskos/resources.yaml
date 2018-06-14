@@ -5,6 +5,11 @@ resources:
   - gke-gerrit-boskos-03
   - gke-gerrit-boskos-04
   - gke-gerrit-boskos-05
+  - gke-gerrit-boskos-06
+  - gke-gerrit-boskos-07
+  - gke-gerrit-boskos-08
+  - gke-gerrit-boskos-09
+  - gke-gerrit-boskos-10
   state: dirty
   type: gke-project
 - names:

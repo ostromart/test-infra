@@ -1288,6 +1288,8 @@ periodics:
                   gke-e2e-binauthz-test,
                   gke-e2e-createdelete,
                   gke-e2e-guitar-accelerators-1,
+                  gke-e2e-guitar-accelerators-2,
+                  gke-e2e-guitar-accelerators-3,
                   gke-e2e-jenkins-oneoff,
                   gke-e2e-pull-config,
                   gke-e2e-regional-createdelete,

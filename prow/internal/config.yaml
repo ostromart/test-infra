@@ -1243,7 +1243,7 @@ periodics:
   spec:
     containers:
     - args:
-      - --timeout=70
+      - --timeout=150
       - --bare
       - --scenario=kubernetes_janitor
       - --upload=gs://gke-prow/logs

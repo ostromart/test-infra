@@ -102,7 +102,7 @@ spec:
       terminationGracePeriodSeconds: 300
       containers:
       - name: boskos-janitor
-        image: gcr.io/k8s-testimages/janitor:v20180402-43203f868
+        image: gcr.io/k8s-testimages/janitor:v20180619-83c62c891
         args:
         - --service-account=/etc/service-account/service-account.json
         - --resource-type=gke-project,gci-qa-project,gpu-project

@@ -308,9 +308,9 @@ presubmits:
     rerun_command: "/test pull-knative-build-unit-tests"
     trigger: "(?m)^/test (all|pull-knative-build-unit-tests),?(\\s+|$)"
     labels:
-      preset-service-account: true
-      preset-bazel-scratch-dir: true
-      preset-bazel-remote-cache-enabled: true
+      preset-service-account: "true"
+      preset-bazel-scratch-dir: "true"
+      preset-bazel-remote-cache-enabled: "true"
     spec:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180604-68e777553-experimental
@@ -349,9 +349,9 @@ presubmits:
     rerun_command: "/test pull-knative-build-integration-tests"
     trigger: "(?m)^/test (all|pull-knative-build-integration-tests),?(\\s+|$)"
     labels:
-      preset-service-account: true
-      preset-bazel-scratch-dir: true
-      preset-bazel-remote-cache-enabled: true
+      preset-service-account: "true"
+      preset-bazel-scratch-dir: "true"
+      preset-bazel-remote-cache-enabled: "true"
     spec:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180604-68e777553-experimental

@@ -51,7 +51,7 @@ tide:
 
 presets:
 - labels:
-    preset-service-account: true
+    preset-service-account: "true"
   env:
   - name: GOOGLE_APPLICATION_CREDENTIALS
     value: /etc/service-account/service-account.json
@@ -64,7 +64,7 @@ presets:
     mountPath: /etc/service-account
     readOnly: true
 - labels:
-    preset-k8s-ssh: true
+    preset-k8s-ssh: "true"
   env:
   - name: USER
     value: prow
@@ -83,7 +83,7 @@ presets:
     readOnly: true
 # storage / caching presets
 - labels:
-    preset-bazel-scratch-dir: true
+    preset-bazel-scratch-dir: "true"
   env:
   - name: TEST_TMPDIR
     value: /bazel-scratch/.cache/bazel
@@ -94,7 +94,7 @@ presets:
   - name: bazel-scratch
     mountPath: /bazel-scratch/.cache
 - labels:
-    preset-bazel-remote-cache-enabled: true
+    preset-bazel-remote-cache-enabled: "true"
   env:
   - name: BAZEL_REMOTE_CACHE_ENABLED
     value: "true"
@@ -108,9 +108,9 @@ presubmits:
     rerun_command: "/test pull-knative-serving-build-tests"
     trigger: "(?m)^/test (all|pull-knative-serving-build-tests),?(\\s+|$)"
     labels:
-      preset-service-account: true
-      preset-bazel-scratch-dir: true
-      preset-bazel-remote-cache-enabled: true
+      preset-service-account: "true"
+      preset-bazel-scratch-dir: "true"
+      preset-bazel-remote-cache-enabled: "true"
     spec:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180604-68e777553-experimental
@@ -149,9 +149,9 @@ presubmits:
     rerun_command: "/test pull-knative-serving-unit-tests"
     trigger: "(?m)^/test (all|pull-knative-serving-unit-tests),?(\\s+|$)"
     labels:
-      preset-service-account: true
-      preset-bazel-scratch-dir: true
-      preset-bazel-remote-cache-enabled: true
+      preset-service-account: "true"
+      preset-bazel-scratch-dir: "true"
+      preset-bazel-remote-cache-enabled: "true"
     spec:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180604-68e777553-experimental
@@ -190,9 +190,9 @@ presubmits:
     rerun_command: "/test pull-knative-serving-integration-tests"
     trigger: "(?m)^/test (all|pull-knative-serving-integration-tests),?(\\s+|$)"
     labels:
-      preset-service-account: true
-      preset-bazel-scratch-dir: true
-      preset-bazel-remote-cache-enabled: true
+      preset-service-account: "true"
+      preset-bazel-scratch-dir: "true"
+      preset-bazel-remote-cache-enabled: "true"
     spec:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180604-68e777553-experimental
@@ -226,12 +226,13 @@ presubmits:
 
   - name: pull-knative-serving-go-coverage
     labels:
-      preset-service-account: true
+      preset-service-account: "true"
     agent: kubernetes
     context: pull-knative-serving-go-coverage
     always_run: true
     rerun_command: "/test pull-knative-serving-go-coverage"
     trigger: "(?m)^/test (all|pull-knative-serving-go-coverage),?(\\s+|$)"
+    optional: true
     decorate: true
     clone_uri: "git@github.com:knative/serving.git"
     ssh_key_secrets:
@@ -266,9 +267,9 @@ presubmits:
     rerun_command: "/test pull-knative-build-test"
     trigger: "(?m)^/test (all|pull-knative-build-test),?(\\s+|$)"
     labels:
-      preset-service-account: true
-      preset-bazel-scratch-dir: true
-      preset-bazel-remote-cache-enabled: true
+      preset-service-account: "true"
+      preset-bazel-scratch-dir: "true"
+      preset-bazel-remote-cache-enabled: "true"
     spec:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180604-68e777553-experimental
@@ -307,9 +308,9 @@ presubmits:
     rerun_command: "/test pull-knative-eventing-build-tests"
     trigger: "(?m)^/test (all|pull-knative-eventing-build-tests),?(\\s+|$)"
     labels:
-      preset-service-account: true
-      preset-bazel-scratch-dir: true
-      preset-bazel-remote-cache-enabled: true
+      preset-service-account: "true"
+      preset-bazel-scratch-dir: "true"
+      preset-bazel-remote-cache-enabled: "true"
     spec:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180604-68e777553-experimental
@@ -348,9 +349,9 @@ presubmits:
     rerun_command: "/test pull-knative-eventing-unit-tests"
     trigger: "(?m)^/test (all|pull-knative-eventing-unit-tests),?(\\s+|$)"
     labels:
-      preset-service-account: true
-      preset-bazel-scratch-dir: true
-      preset-bazel-remote-cache-enabled: true
+      preset-service-account: "true"
+      preset-bazel-scratch-dir: "true"
+      preset-bazel-remote-cache-enabled: "true"
     spec:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180604-68e777553-experimental
@@ -389,9 +390,9 @@ presubmits:
     rerun_command: "/test pull-knative-eventing-integration-tests"
     trigger: "(?m)^/test (all|pull-knative-eventing-integration-tests),?(\\s+|$)"
     labels:
-      preset-service-account: true
-      preset-bazel-scratch-dir: true
-      preset-bazel-remote-cache-enabled: true
+      preset-service-account: "true"
+      preset-bazel-scratch-dir: "true"
+      preset-bazel-remote-cache-enabled: "true"
     spec:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180604-68e777553-experimental
@@ -447,7 +448,7 @@ presubmits:
         - test
         env:
         - name: DOCKER_IN_DOCKER_ENABLED
-          value: true
+          value: "true"
         # docker-in-docker needs privileged mode
         securityContext:
           privileged: true
@@ -486,7 +487,7 @@ presubmits:
         - verify
         env:
         - name: DOCKER_IN_DOCKER_ENABLED
-          value: true
+          value: "true"
         # docker-in-docker needs privileged mode
         securityContext:
           privileged: true
@@ -508,9 +509,9 @@ periodics:
   name: ci-knative-serving-continuous
   agent: kubernetes
   labels:
-    preset-service-account: true
-    preset-bazel-scratch-dir: true
-    preset-bazel-remote-cache-enabled: true
+    preset-service-account: "true"
+    preset-bazel-scratch-dir: "true"
+    preset-bazel-remote-cache-enabled: "true"
   spec:
     containers:
     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180604-68e777553-experimental
@@ -545,9 +546,9 @@ periodics:
   name: ci-knative-serving-release
   agent: kubernetes
   labels:
-    preset-service-account: true
-    preset-bazel-scratch-dir: true
-    preset-bazel-remote-cache-enabled: true
+    preset-service-account: "true"
+    preset-bazel-scratch-dir: "true"
+    preset-bazel-remote-cache-enabled: "true"
   spec:
     containers:
     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180604-68e777553-experimental
@@ -583,9 +584,9 @@ periodics:
   name: ci-knative-serving-playground
   agent: kubernetes
   labels:
-    preset-service-account: true
-    preset-bazel-scratch-dir: true
-    preset-bazel-remote-cache-enabled: true
+    preset-service-account: "true"
+    preset-bazel-scratch-dir: "true"
+    preset-bazel-remote-cache-enabled: "true"
   spec:
     containers:
     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180604-68e777553-experimental
@@ -644,9 +645,9 @@ periodics:
   name: ci-knative-build-release
   agent: kubernetes
   labels:
-    preset-service-account: true
-    preset-bazel-scratch-dir: true
-    preset-bazel-remote-cache-enabled: true
+    preset-service-account: "true"
+    preset-bazel-scratch-dir: "true"
+    preset-bazel-remote-cache-enabled: "true"
   spec:
     containers:
     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180604-68e777553-experimental
@@ -682,8 +683,8 @@ periodics:
   agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-ci-master
   labels:
-    preset-service-account: true
-    preset-k8s-ssh: true
+    preset-service-account: "true"
+    preset-k8s-ssh: "true"
   spec:
     containers:
     - args:
@@ -706,8 +707,8 @@ periodics:
   agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-ci-serial-master
   labels:
-    preset-service-account: true
-    preset-k8s-ssh: true
+    preset-service-account: "true"
+    preset-k8s-ssh: "true"
   spec:
     containers:
     - args:
@@ -729,8 +730,8 @@ periodics:
   agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-ci-slow-master
   labels:
-    preset-service-account: true
-    preset-k8s-ssh: true
+    preset-service-account: "true"
+    preset-k8s-ssh: "true"
   spec:
     containers:
     - args:
@@ -753,8 +754,8 @@ periodics:
   agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-ci-device-plugin-gpu-master
   labels:
-    preset-service-account: true
-    preset-k8s-ssh: true
+    preset-service-account: "true"
+    preset-k8s-ssh: "true"
   spec:
     containers:
     - args:
@@ -777,8 +778,8 @@ periodics:
   agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-qa-m65
   labels:
-    preset-service-account: true
-    preset-k8s-ssh: true
+    preset-service-account: "true"
+    preset-k8s-ssh: "true"
   spec:
     containers:
     - args:
@@ -801,8 +802,8 @@ periodics:
   agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-qa-m66
   labels:
-    preset-service-account: true
-    preset-k8s-ssh: true
+    preset-service-account: "true"
+    preset-k8s-ssh: "true"
   spec:
     containers:
     - args:
@@ -825,8 +826,8 @@ periodics:
   agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-qa-m67
   labels:
-    preset-service-account: true
-    preset-k8s-ssh: true
+    preset-service-account: "true"
+    preset-k8s-ssh: "true"
   spec:
     containers:
     - args:
@@ -849,8 +850,8 @@ periodics:
   agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-qa-m68
   labels:
-    preset-service-account: true
-    preset-k8s-ssh: true
+    preset-service-account: "true"
+    preset-k8s-ssh: "true"
   spec:
     containers:
     - args:
@@ -873,8 +874,8 @@ periodics:
   agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-qa-master
   labels:
-    preset-service-account: true
-    preset-k8s-ssh: true
+    preset-service-account: "true"
+    preset-k8s-ssh: "true"
   spec:
     containers:
     - args:
@@ -897,8 +898,8 @@ periodics:
   agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-qa-serial-m65
   labels:
-    preset-service-account: true
-    preset-k8s-ssh: true
+    preset-service-account: "true"
+    preset-k8s-ssh: "true"
   spec:
     containers:
     - args:
@@ -920,8 +921,8 @@ periodics:
   agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-qa-serial-m66
   labels:
-    preset-service-account: true
-    preset-k8s-ssh: true
+    preset-service-account: "true"
+    preset-k8s-ssh: "true"
   spec:
     containers:
     - args:
@@ -943,8 +944,8 @@ periodics:
   agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-qa-serial-m67
   labels:
-    preset-service-account: true
-    preset-k8s-ssh: true
+    preset-service-account: "true"
+    preset-k8s-ssh: "true"
   spec:
     containers:
     - args:
@@ -966,8 +967,8 @@ periodics:
   agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-qa-serial-m68
   labels:
-    preset-service-account: true
-    preset-k8s-ssh: true
+    preset-service-account: "true"
+    preset-k8s-ssh: "true"
   spec:
     containers:
     - args:
@@ -989,8 +990,8 @@ periodics:
   agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-qa-serial-master
   labels:
-    preset-service-account: true
-    preset-k8s-ssh: true
+    preset-service-account: "true"
+    preset-k8s-ssh: "true"
   spec:
     containers:
     - args:
@@ -1012,8 +1013,8 @@ periodics:
   agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-qa-slow-m65
   labels:
-    preset-service-account: true
-    preset-k8s-ssh: true
+    preset-service-account: "true"
+    preset-k8s-ssh: "true"
   spec:
     containers:
     - args:
@@ -1036,8 +1037,8 @@ periodics:
   agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-qa-slow-m66
   labels:
-    preset-service-account: true
-    preset-k8s-ssh: true
+    preset-service-account: "true"
+    preset-k8s-ssh: "true"
   spec:
     containers:
     - args:
@@ -1060,8 +1061,8 @@ periodics:
   agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-qa-slow-m67
   labels:
-    preset-service-account: true
-    preset-k8s-ssh: true
+    preset-service-account: "true"
+    preset-k8s-ssh: "true"
   spec:
     containers:
     - args:
@@ -1084,8 +1085,8 @@ periodics:
   agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-qa-slow-m68
   labels:
-    preset-service-account: true
-    preset-k8s-ssh: true
+    preset-service-account: "true"
+    preset-k8s-ssh: "true"
   spec:
     containers:
     - args:
@@ -1108,8 +1109,8 @@ periodics:
   agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-qa-slow-master
   labels:
-    preset-service-account: true
-    preset-k8s-ssh: true
+    preset-service-account: "true"
+    preset-k8s-ssh: "true"
   spec:
     containers:
     - args:
@@ -1133,8 +1134,8 @@ periodics:
   agent: kubernetes
   name: ci-kubernetes-e2e-cos-docker-validation
   labels:
-    preset-service-account: true
-    preset-k8s-ssh: true
+    preset-service-account: "true"
+    preset-k8s-ssh: "true"
   spec:
     containers:
     - args:
@@ -1159,8 +1160,8 @@ periodics:
   agent: kubernetes
   name: ci-kubernetes-e2e-cos-docker-validation-serial
   labels:
-    preset-service-account: true
-    preset-k8s-ssh: true
+    preset-service-account: "true"
+    preset-k8s-ssh: "true"
   spec:
     containers:
     - args:
@@ -1184,8 +1185,8 @@ periodics:
   agent: kubernetes
   name: ci-kubernetes-e2e-cos-docker-validation-slow
   labels:
-    preset-service-account: true
-    preset-k8s-ssh: true
+    preset-service-account: "true"
+    preset-k8s-ssh: "true"
   spec:
     containers:
     - args:
@@ -1210,8 +1211,8 @@ periodics:
   agent: kubernetes
   name: ci-kubernetes-soak-cos-docker-validation
   labels:
-    preset-service-account: true
-    preset-k8s-ssh: true
+    preset-service-account: "true"
+    preset-k8s-ssh: "true"
   spec:
     containers:
     - args:
@@ -1239,7 +1240,7 @@ periodics:
   agent: kubernetes
   name: ci-gke-guitar-projects-janitor
   labels:
-    preset-service-account: true
+    preset-service-account: "true"
   spec:
     containers:
     - args:
@@ -1371,8 +1372,8 @@ postsubmits:
     - master
     - release-0.0
     labels:
-      preset-service-account: true
-      preset-k8s-ssh: true
+      preset-service-account: "true"
+      preset-k8s-ssh: "true"
     spec:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-master
@@ -1388,7 +1389,7 @@ postsubmits:
         - push
         env:
         - name: DOCKER_IN_DOCKER_ENABLED
-          value: true
+          value: "true"
         # docker-in-docker needs privileged mode
         securityContext:
           privileged: true

@@ -260,12 +260,12 @@ presubmits:
           secretName: covbot-token
 
   knative/build:
-  - name: pull-knative-build-test
+  - name: pull-knative-build-build-tests
     agent: kubernetes
-    context: pull-knative-build-test
+    context: pull-knative-build-build-tests
     always_run: true
-    rerun_command: "/test pull-knative-build-test"
-    trigger: "(?m)^/test (all|pull-knative-build-test),?(\\s+|$)"
+    rerun_command: "/test pull-knative-build-build-tests"
+    trigger: "(?m)^/test (all|pull-knative-build-build-tests),?(\\s+|$)"
     labels:
       preset-service-account: "true"
       preset-bazel-scratch-dir: "true"
@@ -285,6 +285,89 @@ presubmits:
         - "--" # end bootstrap args, scenario args below
         - "--" # end kubernetes_execute_bazel flags (consider following flags as text)
         - "./tests/presubmit-tests.sh"
+        - "--build-tests"
+        # Bazel needs privileged mode in order to sandbox builds.
+        securityContext:
+          privileged: true
+        resources:
+          requests:
+            memory: "6Gi"
+        volumeMounts:
+        - mountPath: /etc/ssh-elafros
+          name: ssh-elafros
+      volumes:
+      - name: ssh-elafros
+        secret:
+          defaultMode: 256
+          secretName: ssh-elafros
+
+  - name: pull-knative-build-unit-tests
+    agent: kubernetes
+    context: pull-knative-build-unit-tests
+    always_run: true
+    rerun_command: "/test pull-knative-build-unit-tests"
+    trigger: "(?m)^/test (all|pull-knative-build-unit-tests),?(\\s+|$)"
+    labels:
+      preset-service-account: true
+      preset-bazel-scratch-dir: true
+      preset-bazel-remote-cache-enabled: true
+    spec:
+      containers:
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180604-68e777553-experimental
+        args:
+        - "--ssh=/etc/ssh-elafros/ssh-elafros"
+        - "--scenario=kubernetes_execute_bazel"
+        - "--clean"
+        - "--job=$(JOB_NAME)"
+        - "--repo=github.com/$(REPO_OWNER)/$(REPO_NAME)=$(PULL_REFS)"
+        - "--root=/go/src"
+        - "--service-account=/etc/service-account/service-account.json"
+        - "--upload=gs://ela-prow/pr-logs"
+        - "--" # end bootstrap args, scenario args below
+        - "--" # end kubernetes_execute_bazel flags (consider following flags as text)
+        - "./tests/presubmit-tests.sh"
+        - "--unit-tests"
+        # Bazel needs privileged mode in order to sandbox builds.
+        securityContext:
+          privileged: true
+        resources:
+          requests:
+            memory: "6Gi"
+        volumeMounts:
+        - mountPath: /etc/ssh-elafros
+          name: ssh-elafros
+      volumes:
+      - name: ssh-elafros
+        secret:
+          defaultMode: 256
+          secretName: ssh-elafros
+
+  - name: pull-knative-build-integration-tests
+    agent: kubernetes
+    context: pull-knative-build-integration-tests
+    always_run: true
+    rerun_command: "/test pull-knative-build-integration-tests"
+    trigger: "(?m)^/test (all|pull-knative-build-integration-tests),?(\\s+|$)"
+    labels:
+      preset-service-account: true
+      preset-bazel-scratch-dir: true
+      preset-bazel-remote-cache-enabled: true
+    spec:
+      containers:
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180604-68e777553-experimental
+        args:
+        - "--ssh=/etc/ssh-elafros/ssh-elafros"
+        - "--scenario=kubernetes_execute_bazel"
+        - "--clean"
+        - "--job=$(JOB_NAME)"
+        - "--repo=github.com/$(REPO_OWNER)/$(REPO_NAME)=$(PULL_REFS)"
+        - "--root=/go/src"
+        - "--service-account=/etc/service-account/service-account.json"
+        - "--upload=gs://ela-prow/pr-logs"
+        - "--" # end bootstrap args, scenario args below
+        - "--" # end kubernetes_execute_bazel flags (consider following flags as text)
+        - "./tests/presubmit-tests.sh"
+        - "--integration-tests"
         # Bazel needs privileged mode in order to sandbox builds.
         securityContext:
           privileged: true

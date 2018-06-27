@@ -1,0 +1,9 @@
+resources:
+- names:
+  - prow-gob-boskos-01
+  - prow-gob-boskos-02
+  - prow-gob-boskos-03
+  - prow-gob-boskos-04
+  - prow-gob-boskos-05
+  state: dirty
+  type: gke-project

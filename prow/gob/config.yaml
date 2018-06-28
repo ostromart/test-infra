@@ -1,5 +1,5 @@
 plank:
-  job_url_template: 'https://gubernator-internal.googleplex.com/build/gob-prow/{{if or (eq .Spec.Type "presubmit") (eq .Spec.Type "batch")}}pr-logs/pull{{with .Spec.Refs}}/{{if (eq .Org "https://gke-internal-review.googlesource.com/test-infra")}}gke-internal.googlesource.com{{else}}{{.Org}}_{{.Repo}}{{end}}{{else}}logs{{end}}{{if eq .Spec.Type "presubmit"}}/{{with index .Spec.Refs.Pulls 0}}{{.Number}}{{end}}{{else if eq .Spec.Type "batch"}}/batch{{end}}/{{.Spec.Job}}/{{.Status.BuildID}}/'
+  job_url_template: 'https://gubernator-internal.googleplex.com/build/gob-prow/{{if or (eq .Spec.Type "presubmit") (eq .Spec.Type "batch")}}pr-logs/pull{{with .Spec.Refs}}/{{if eq .Org "https://gke-internal-review.googlesource.com"}}gke-internal.googlesource.com{{else}}{{.Org}}{{end}}_{{.Repo}}{{end}}{{else}}logs{{end}}{{if eq .Spec.Type "presubmit"}}/{{with index .Spec.Refs.Pulls 0}}{{.Number}}{{end}}{{else if eq .Spec.Type "batch"}}/batch{{end}}/{{.Spec.Job}}/{{.Status.BuildID}}/'
   report_template: '[Full PR test history](https://gubernator-internal.googleplex.com/pr/{{if eq .Spec.Refs.Org "kubernetes"}}{{if eq .Spec.Refs.Repo "kubernetes"}}{{else}}{{.Spec.Refs.Repo}}/{{end}}{{else}}{{.Spec.Refs.Org}}_{{.Spec.Refs.Repo}}/{{end}}{{with index .Spec.Refs.Pulls 0}}{{.Number}}{{end}}). [Your PR dashboard](https://gubernator-internal.googleplex.com/pr/{{with index .Spec.Refs.Pulls 0}}{{.Author}}{{end}}).'
   pod_pending_timeout: 60m
 prowjob_namespace: default
@@ -74,7 +74,7 @@ presubmits:
         - --upload=gs://gob-prow/pr-logs
         - --scenario=execute
         - -- # end bootstrap args, scenario args below
-        - /workspace/gke-internal.googlesource.com/test-infra/prow/hack/verify_config.sh
+        - /workspace/gke-internal.googlesource.com/test-infra/prow/hack/verify-config.sh
 periodics:
  - cron: '1 17 * * 0' # Run at 10:01PST (17:01 UTC) on sunday
    agent: kubernetes

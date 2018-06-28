@@ -2,12 +2,9 @@ plank:
   job_url_template: 'https://gubernator-internal.googleplex.com/build/gob-prow/{{if or (eq .Spec.Type "presubmit") (eq .Spec.Type "batch")}}pr-logs/pull{{with .Spec.Refs}}/{{.Org}}_{{.Repo}}{{end}}{{else}}logs{{end}}{{if eq .Spec.Type "presubmit"}}/{{with index .Spec.Refs.Pulls 0}}{{.Number}}{{end}}{{else if eq .Spec.Type "batch"}}/batch{{end}}/{{.Spec.Job}}/{{.Status.BuildID}}/'
   report_template: '[Full PR test history](https://gubernator-internal.googleplex.com/pr/{{if eq .Spec.Refs.Org "kubernetes"}}{{if eq .Spec.Refs.Repo "kubernetes"}}{{else}}{{.Spec.Refs.Repo}}/{{end}}{{else}}{{.Spec.Refs.Org}}_{{.Spec.Refs.Repo}}/{{end}}{{with index .Spec.Refs.Pulls 0}}{{.Number}}{{end}}). [Your PR dashboard](https://gubernator-internal.googleplex.com/pr/{{with index .Spec.Refs.Pulls 0}}{{.Author}}{{end}}).'
   pod_pending_timeout: 60m
-
 prowjob_namespace: default
 pod_namespace: test-pods
 log_level: info
-
-
 presets:
 - labels:
     preset-service-account: "true"
@@ -57,7 +54,6 @@ presets:
   env:
   - name: BAZEL_REMOTE_CACHE_ENABLED
     value: "true"
-
 presubmits:
   https://gke-internal-review.googlesource.com/test-infra:
   - name: pull-test-infra-presubmit
@@ -78,9 +74,7 @@ presubmits:
         - --upload=gs://gob-prow/pr-logs
         - --scenario=execute
         - -- # end bootstrap args, scenario args below
-        - echo
-        - 'test-infra presubmit placeholder'
-
+        - prow/hack/verify_config.sh
 periodics:
  - cron: '1 17 * * 0' # Run at 10:01PST (17:01 UTC) on sunday
    agent: kubernetes
@@ -116,7 +110,6 @@ periodics:
        resources:
          requests:
            memory: "6Gi"
-
  - cron: '1 17 * * 6' # Run at 10:01PST (17:01 UTC) on saturday
    agent: kubernetes
    name: ci-kubernetes-e2e-gke-large-correctness
@@ -151,7 +144,6 @@ periodics:
        resources:
          requests:
            memory: "6Gi"
-
  - interval: 1h
    name: ci-kubernetes-bazel-test
    agent: kubernetes

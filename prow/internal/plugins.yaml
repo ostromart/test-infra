@@ -34,3 +34,12 @@ plugins:
   - size
   - trigger
   - wip
+  googleprivate/ml:
+  - size
+  - assign
+  - dog
+  - golint
+  - lgtm
+  - milestone
+  - trigger
+  - wip

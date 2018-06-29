@@ -268,3 +268,40 @@ periodics:
        - --test_args=--ginkgo.skip=\[Slow\]|\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\] --minStartupPods=8
        - --timeout=50m
        image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-master
+        - interval: 30m
+
+   # gke autoscaling jobs
+   name: ci-autoscaling-image-build
+   agent: kubernetes
+   labels:
+     preset-service-account: "true"
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-master
+       args:
+       - --clean
+       - --repo=gke-internal.googlesource.com/gke-autoscaling
+       - --root=/go/src
+       - --timeout=30
+       - --scenario=execute
+       - --upload=gs://gob-prow/logs
+       - -- # stop bootstrap flags
+       - --env=TAG=ci_latest
+       - --env=REGISTRY=gcr.io/gke-autoscaling-gcr
+       - make
+       - --
+       - -C
+       - cluster-autoscaler
+       - release-ci
+       env:
+       - name: DOCKER_IN_DOCKER_ENABLED
+         value: "true"
+       # docker-in-docker needs privileged mode
+       securityContext:
+         privileged: true
+       volumeMounts:
+       - name: docker-graph
+         mountPath: /docker-graph
+     volumes:
+     - name: docker-graph
+       emptyDir: {}

@@ -7,7 +7,7 @@ JOB_NAMESPACE ?= test-pods
 
 .PHONY: update-config
 update-config: get-cluster-credentials
-	kubectl create configmap config --from-file=config=config.yaml --dry-run -o yaml | kubectl replace configmap config -f -
+	kubectl create configmap config --from-file=config.yaml=config.yaml --dry-run -o yaml | kubectl replace configmap config -f -
 
 .PHONY: update-cluster
 update-cluster: get-cluster-credentials

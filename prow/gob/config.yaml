@@ -75,6 +75,112 @@ presubmits:
         - --scenario=execute
         - -- # end bootstrap args, scenario args below
         - /workspace/gke-internal.googlesource.com/test-infra/prow/hack/verify-config.sh
+  https://gke-internal-review.googlesource.com/kubernetes:
+  - name: pull-gob-kubernetes-build
+    agent: kubernetes
+    context: pull-gob-kubernetes-build
+    always_run: true
+    rerun_command: "/test pull-gob-kubernetes-build"
+    trigger: "(?m)^/test (all|pull-gob-kubernetes-build),?(\\s+|$)"
+    labels:
+      preset-service-account: "true"
+    spec:
+      containers:
+      - image: gcr.io/k8s-testimages/bootstrap:v20180215-b2a89850e
+        args:
+        - --clean
+        - --repo=gke-internal.googlesource.com/kubernetes=$(PULL_REFS)
+        - --repo=k8s.io/release
+        - --root=/go/src
+        - --timeout=30
+        - --scenario=kubernetes_build
+        - --upload=gs://gob-prow/logs
+        - --
+        - --fast
+        - --release=gob-prow
+        - --push-build-script=../../k8s.io/release/push-build.sh
+        env:
+        - name: DOCKER_IN_DOCKER_ENABLED
+          value: "true"
+        # docker-in-docker needs privileged mode
+        securityContext:
+          privileged: true
+        resources:
+          requests:
+            cpu: 3
+            memory: "8Gi"
+        volumeMounts:
+        - name: docker-graph
+          mountPath: /docker-graph
+      volumes:
+      - name: docker-graph
+        emptyDir: {}
+  - name: pull-gob-kubernetes-unit
+    agent: kubernetes
+    context: pull-gob-kubernetes-unit
+    always_run: true
+    rerun_command: "/test pull-gob-kubernetes-unit"
+    trigger: "(?m)^/test (all|pull-gob-kubernetes-unit),?(\\s+|$)"
+    labels:
+      preset-service-account: "true"
+      preset-bazel-scratch-dir: "true"
+    spec:
+      containers:
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-master
+        args:
+        - --clean
+        - --repo=gke-internal.googlesource.com/kubernetes=$(PULL_REFS)
+        - --service-account=/etc/service-account/service-account.json
+        - --upload=gs://gob-prow/logs
+        - --scenario=kubernetes_bazel
+        - -- # end bootstrap args, scenario args below
+        - --test=//... -//build/... -//vendor/...
+        - --manual-test=//hack:verify-all
+        - --test-args=--config=unit
+        - --test-args=--build_tag_filters=-e2e,-integration
+        - --test-args=--test_tag_filters=-e2e,-integration
+        - --test-args=--flaky_test_attempts=3
+        securityContext:
+          privileged: true
+        resources:
+          requests:
+            memory: "6Gi"
+  - name: pull-gob-kubernetes-integration
+    agent: kubernetes
+    context: pull-gob-kubernetes-integration
+    always_run: true
+    rerun_command: "/test pull-gob-kubernetes-integration"
+    trigger: "(?m)^/test (all|pull-gob-kubernetes-integration),?(\\s+|$)"
+    labels:
+      preset-service-account: "true"
+    spec:
+      containers:
+      - image: gcr.io/k8s-testimages/bootstrap:v20180215-b2a89850e
+        args:
+        - --clean
+        - --repo=gke-internal.googlesource.com/kubernetes=$(PULL_REFS)
+        - --timeout=100
+        - --scenario=kubernetes_verify
+        - --upload=gs://gob-prow/logs
+        - --
+        - --branch=master
+        - --force
+        - --prow
+        env:
+        - name: DOCKER_IN_DOCKER_ENABLED
+          value: "true"
+        # docker-in-docker needs privileged mode
+        securityContext:
+          privileged: true
+        resources:
+          requests:
+            cpu: 3
+        volumeMounts:
+        - name: docker-graph
+          mountPath: /docker-graph
+      volumes:
+      - name: docker-graph
+        emptyDir: {}  
 periodics:
  - cron: '1 17 * * 0' # Run at 10:01PST (17:01 UTC) on sunday
    agent: kubernetes
@@ -253,7 +359,7 @@ periodics:
        - --timeout=70
        - --bare
        - --upload=gs://gob-prow/logs
-       -  --scenario=kubernetes_e2e
+       - --scenario=kubernetes_e2e
        - --
        - --check-leaked-resources
        - --cluster=

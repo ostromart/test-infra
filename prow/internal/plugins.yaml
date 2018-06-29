@@ -37,9 +37,5 @@ plugins:
   googleprivate/ml:
   - size
   - assign
-  - dog
-  - golint
   - lgtm
   - milestone
-  - trigger
-  - wip

@@ -8,6 +8,7 @@ plugins:
   knative:
   - approve
   - assign
+  - blunderbuss
   - buildifier
   - cat
   - dog

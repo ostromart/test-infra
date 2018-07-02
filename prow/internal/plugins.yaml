@@ -1,6 +1,7 @@
 approve:
 - repos:
   - knative
+  implicit_self_approve: true
   review_acts_as_approve: true
 - repos:
   - GoogleCloudPlatform/k8s-tpu-operator
@@ -20,6 +21,7 @@ plugins:
   - hold
   - label
   - lgtm
+  - lifecycle
   - shrug
   - size
   - skip

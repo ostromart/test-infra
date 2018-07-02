@@ -1,6 +1,8 @@
 approve:
 - repos:
   - knative
+  review_acts_as_approve: true
+- repos:
   - GoogleCloudPlatform/k8s-tpu-operator
   implicit_self_approve: true
 

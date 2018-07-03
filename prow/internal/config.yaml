@@ -115,7 +115,7 @@ presubmits:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180604-68e777553-experimental
         args:
-        - "--ssh=/etc/ssh-elafros/ssh-elafros"
+        - "--ssh=/etc/ssh-knative/ssh-knative"
         - "--scenario=kubernetes_execute_bazel"
         - "--clean"
         - "--job=$(JOB_NAME)"
@@ -134,13 +134,13 @@ presubmits:
           requests:
             memory: "6Gi"
         volumeMounts:
-        - mountPath: /etc/ssh-elafros
-          name: ssh-elafros
+        - mountPath: /etc/ssh-knative
+          name: ssh-knative
       volumes:
-      - name: ssh-elafros
+      - name: ssh-knative
         secret:
           defaultMode: 256
-          secretName: ssh-elafros
+          secretName: ssh-knative
 
   - name: pull-knative-serving-unit-tests
     agent: kubernetes
@@ -156,7 +156,7 @@ presubmits:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180604-68e777553-experimental
         args:
-        - "--ssh=/etc/ssh-elafros/ssh-elafros"
+        - "--ssh=/etc/ssh-knative/ssh-knative"
         - "--scenario=kubernetes_execute_bazel"
         - "--clean"
         - "--job=$(JOB_NAME)"
@@ -175,13 +175,13 @@ presubmits:
           requests:
             memory: "6Gi"
         volumeMounts:
-        - mountPath: /etc/ssh-elafros
-          name: ssh-elafros
+        - mountPath: /etc/ssh-knative
+          name: ssh-knative
       volumes:
-      - name: ssh-elafros
+      - name: ssh-knative
         secret:
           defaultMode: 256
-          secretName: ssh-elafros
+          secretName: ssh-knative
 
   - name: pull-knative-serving-integration-tests
     agent: kubernetes
@@ -197,7 +197,7 @@ presubmits:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180604-68e777553-experimental
         args:
-        - "--ssh=/etc/ssh-elafros/ssh-elafros"
+        - "--ssh=/etc/ssh-knative/ssh-knative"
         - "--scenario=kubernetes_execute_bazel"
         - "--clean"
         - "--job=$(JOB_NAME)"
@@ -216,13 +216,13 @@ presubmits:
           requests:
             memory: "6Gi"
         volumeMounts:
-        - mountPath: /etc/ssh-elafros
-          name: ssh-elafros
+        - mountPath: /etc/ssh-knative
+          name: ssh-knative
       volumes:
-      - name: ssh-elafros
+      - name: ssh-knative
         secret:
           defaultMode: 256
-          secretName: ssh-elafros
+          secretName: ssh-knative
 
   - name: pull-knative-serving-go-coverage
     labels:
@@ -236,7 +236,7 @@ presubmits:
     decorate: true
     clone_uri: "git@github.com:knative/serving.git"
     ssh_key_secrets:
-    - ssh-elafros
+    - ssh-knative
     spec:
       containers:
       - image: gcr.io/elafros-e2e-tests/coverage:latest
@@ -274,7 +274,7 @@ presubmits:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180604-68e777553-experimental
         args:
-        - "--ssh=/etc/ssh-elafros/ssh-elafros"
+        - "--ssh=/etc/ssh-knative/ssh-knative"
         - "--scenario=kubernetes_execute_bazel"
         - "--clean"
         - "--job=$(JOB_NAME)"
@@ -293,13 +293,13 @@ presubmits:
           requests:
             memory: "6Gi"
         volumeMounts:
-        - mountPath: /etc/ssh-elafros
-          name: ssh-elafros
+        - mountPath: /etc/ssh-knative
+          name: ssh-knative
       volumes:
-      - name: ssh-elafros
+      - name: ssh-knative
         secret:
           defaultMode: 256
-          secretName: ssh-elafros
+          secretName: ssh-knative
 
   - name: pull-knative-build-unit-tests
     agent: kubernetes
@@ -315,7 +315,7 @@ presubmits:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180604-68e777553-experimental
         args:
-        - "--ssh=/etc/ssh-elafros/ssh-elafros"
+        - "--ssh=/etc/ssh-knative/ssh-knative"
         - "--scenario=kubernetes_execute_bazel"
         - "--clean"
         - "--job=$(JOB_NAME)"
@@ -334,13 +334,13 @@ presubmits:
           requests:
             memory: "6Gi"
         volumeMounts:
-        - mountPath: /etc/ssh-elafros
-          name: ssh-elafros
+        - mountPath: /etc/ssh-knative
+          name: ssh-knative
       volumes:
-      - name: ssh-elafros
+      - name: ssh-knative
         secret:
           defaultMode: 256
-          secretName: ssh-elafros
+          secretName: ssh-knative
 
   - name: pull-knative-build-integration-tests
     agent: kubernetes
@@ -356,7 +356,7 @@ presubmits:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180604-68e777553-experimental
         args:
-        - "--ssh=/etc/ssh-elafros/ssh-elafros"
+        - "--ssh=/etc/ssh-knative/ssh-knative"
         - "--scenario=kubernetes_execute_bazel"
         - "--clean"
         - "--job=$(JOB_NAME)"
@@ -375,13 +375,13 @@ presubmits:
           requests:
             memory: "6Gi"
         volumeMounts:
-        - mountPath: /etc/ssh-elafros
-          name: ssh-elafros
+        - mountPath: /etc/ssh-knative
+          name: ssh-knative
       volumes:
-      - name: ssh-elafros
+      - name: ssh-knative
         secret:
           defaultMode: 256
-          secretName: ssh-elafros
+          secretName: ssh-knative
 
   knative/eventing:
   - name: pull-knative-eventing-build-tests
@@ -398,7 +398,7 @@ presubmits:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180604-68e777553-experimental
         args:
-        - "--ssh=/etc/ssh-elafros/ssh-elafros"
+        - "--ssh=/etc/ssh-knative/ssh-knative"
         - "--scenario=kubernetes_execute_bazel"
         - "--clean"
         - "--job=$(JOB_NAME)"
@@ -417,13 +417,13 @@ presubmits:
           requests:
             memory: "6Gi"
         volumeMounts:
-        - mountPath: /etc/ssh-elafros
-          name: ssh-elafros
+        - mountPath: /etc/ssh-knative
+          name: ssh-knative
       volumes:
-      - name: ssh-elafros
+      - name: ssh-knative
         secret:
           defaultMode: 256
-          secretName: ssh-elafros
+          secretName: ssh-knative
 
   - name: pull-knative-eventing-unit-tests
     agent: kubernetes
@@ -439,7 +439,7 @@ presubmits:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180604-68e777553-experimental
         args:
-        - "--ssh=/etc/ssh-elafros/ssh-elafros"
+        - "--ssh=/etc/ssh-knative/ssh-knative"
         - "--scenario=kubernetes_execute_bazel"
         - "--clean"
         - "--job=$(JOB_NAME)"
@@ -458,13 +458,13 @@ presubmits:
           requests:
             memory: "6Gi"
         volumeMounts:
-        - mountPath: /etc/ssh-elafros
-          name: ssh-elafros
+        - mountPath: /etc/ssh-knative
+          name: ssh-knative
       volumes:
-      - name: ssh-elafros
+      - name: ssh-knative
         secret:
           defaultMode: 256
-          secretName: ssh-elafros
+          secretName: ssh-knative
 
   - name: pull-knative-eventing-integration-tests
     agent: kubernetes
@@ -480,7 +480,7 @@ presubmits:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180604-68e777553-experimental
         args:
-        - "--ssh=/etc/ssh-elafros/ssh-elafros"
+        - "--ssh=/etc/ssh-knative/ssh-knative"
         - "--scenario=kubernetes_execute_bazel"
         - "--clean"
         - "--job=$(JOB_NAME)"
@@ -499,13 +499,13 @@ presubmits:
           requests:
             memory: "6Gi"
         volumeMounts:
-        - mountPath: /etc/ssh-elafros
-          name: ssh-elafros
+        - mountPath: /etc/ssh-knative
+          name: ssh-knative
       volumes:
-      - name: ssh-elafros
+      - name: ssh-knative
         secret:
           defaultMode: 256
-          secretName: ssh-elafros
+          secretName: ssh-knative
 
   GoogleCloudPlatform/k8s-tpu-operator:
   - name: pull-k8s-tpu-operator-unit
@@ -524,7 +524,7 @@ presubmits:
         - --repo=github.com/GoogleCloudPlatform/$(REPO_NAME)=$(PULL_REFS)
         - --service-account=/etc/service-account/service-account.json
         - --upload=gs://gke-prow/pr-logs
-        - --ssh=/etc/tpu-ssh/ssh-elafros
+        - --ssh=/etc/tpu-ssh/ssh-knative
         - --scenario=execute
         - -- # end bootstrap args, scenario args below
         - make
@@ -544,7 +544,7 @@ presubmits:
       - name: tpu-ssh
         secret:
           defaultMode: 0400
-          secretName: ssh-elafros
+          secretName: ssh-knative
       - name: docker-graph
         emptyDir: {}
   - name: pull-k8s-tpu-operator-verify
@@ -563,7 +563,7 @@ presubmits:
         - --repo=github.com/GoogleCloudPlatform/$(REPO_NAME)=$(PULL_REFS)
         - --service-account=/etc/service-account/service-account.json
         - --upload=gs://gke-prow/pr-logs
-        - --ssh=/etc/tpu-ssh/ssh-elafros
+        - --ssh=/etc/tpu-ssh/ssh-knative
         - --scenario=execute
         - -- # end bootstrap args, scenario args below
         - make
@@ -583,7 +583,7 @@ presubmits:
       - name: tpu-ssh
         secret:
           defaultMode: 0400
-          secretName: ssh-elafros
+          secretName: ssh-knative
       - name: docker-graph
         emptyDir: {}
 
@@ -599,7 +599,7 @@ periodics:
     containers:
     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180604-68e777553-experimental
       args:
-      - "--ssh=/etc/ssh-elafros/ssh-elafros"
+      - "--ssh=/etc/ssh-knative/ssh-knative"
       - "--scenario=kubernetes_execute_bazel"
       - "--clean"
       - "--job=$(JOB_NAME)"
@@ -620,13 +620,13 @@ periodics:
         requests:
           memory: "6Gi"
       volumeMounts:
-      - mountPath: /etc/ssh-elafros
-        name: ssh-elafros
+      - mountPath: /etc/ssh-knative
+        name: ssh-knative
     volumes:
-     - name: ssh-elafros
+     - name: ssh-knative
        secret:
          defaultMode: 256
-         secretName: ssh-elafros
+         secretName: ssh-knative
 - cron: "1 6 * * *" # Run at 23:01PST every day (06:01 UTC following day)
   name: ci-knative-serving-release
   agent: kubernetes
@@ -638,7 +638,7 @@ periodics:
     containers:
     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180604-68e777553-experimental
       args:
-      - "--ssh=/etc/ssh-elafros/ssh-elafros"
+      - "--ssh=/etc/ssh-knative/ssh-knative"
       - "--scenario=kubernetes_execute_bazel"
       - "--clean"
       - "--job=$(JOB_NAME)"
@@ -658,13 +658,13 @@ periodics:
         requests:
           memory: "6Gi"
       volumeMounts:
-      - mountPath: /etc/ssh-elafros
-        name: ssh-elafros
+      - mountPath: /etc/ssh-knative
+        name: ssh-knative
     volumes:
-     - name: ssh-elafros
+     - name: ssh-knative
        secret:
          defaultMode: 256
-         secretName: ssh-elafros
+         secretName: ssh-knative
 - cron: "1 8 * * 6" # Run at 01:01PST every Saturday (08:01 UTC Saturday)
   name: ci-knative-serving-playground
   agent: kubernetes
@@ -676,7 +676,7 @@ periodics:
     containers:
     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180604-68e777553-experimental
       args:
-      - "--ssh=/etc/ssh-elafros/ssh-elafros"
+      - "--ssh=/etc/ssh-knative/ssh-knative"
       - "--scenario=kubernetes_execute_bazel"
       - "--clean"
       - "--job=$(JOB_NAME)"
@@ -696,13 +696,13 @@ periodics:
         requests:
           memory: "6Gi"
       volumeMounts:
-      - mountPath: /etc/ssh-elafros
-        name: ssh-elafros
+      - mountPath: /etc/ssh-knative
+        name: ssh-knative
     volumes:
-     - name: ssh-elafros
+     - name: ssh-knative
        secret:
          defaultMode: 256
-         secretName: ssh-elafros
+         secretName: ssh-knative
 - cron: "5 8 * * *" # Run at 01:05PST every day (08:05 UTC next day)
   name: ci-knative-serving-latency
   agent: kubernetes
@@ -710,7 +710,7 @@ periodics:
     preset-service-account: "true"
   decorate: true
   ssh_key_secrets:
-  - ssh-elafros
+  - ssh-knative
   extra_refs:
   - org: knative
     repo: serving
@@ -730,7 +730,7 @@ periodics:
   agent: kubernetes
   decorate: true
   ssh_key_secrets:
-  - ssh-elafros
+  - ssh-knative
   extra_refs:
   - org: knative
     repo: serving
@@ -759,7 +759,7 @@ periodics:
     containers:
     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180604-68e777553-experimental
       args:
-      - "--ssh=/etc/ssh-elafros/ssh-elafros"
+      - "--ssh=/etc/ssh-knative/ssh-knative"
       - "--scenario=kubernetes_execute_bazel"
       - "--clean"
       - "--job=$(JOB_NAME)"
@@ -778,13 +778,13 @@ periodics:
         requests:
           memory: "6Gi"
       volumeMounts:
-      - mountPath: /etc/ssh-elafros
-        name: ssh-elafros
+      - mountPath: /etc/ssh-knative
+        name: ssh-knative
     volumes:
-     - name: ssh-elafros
+     - name: ssh-knative
        secret:
          defaultMode: 256
-         secretName: ssh-elafros
+         secretName: ssh-knative
 
 - interval: 1h
   agent: kubernetes
@@ -1504,7 +1504,7 @@ postsubmits:
     decorate: true
     clone_uri: "git@github.com:knative/serving.git"
     ssh_key_secrets:
-    - ssh-elafros
+    - ssh-knative
     spec:
       containers:
       - image: gcr.io/elafros-e2e-tests/coverage:latest
@@ -1534,7 +1534,7 @@ postsubmits:
         - --repo=github.com/GoogleCloudPlatform/$(REPO_NAME)=$(PULL_REFS)
         - --service-account=/etc/service-account/service-account.json
         - --upload=gs://gke-prow/logs
-        - --ssh=/etc/tpu-ssh/ssh-elafros
+        - --ssh=/etc/tpu-ssh/ssh-knative
         - --scenario=execute
         - -- # end bootstrap args, scenario args below
         - make
@@ -1554,6 +1554,6 @@ postsubmits:
       - name: tpu-ssh
         secret:
           defaultMode: 0400
-          secretName: ssh-elafros
+          secretName: ssh-knative
       - name: docker-graph
         emptyDir: {}

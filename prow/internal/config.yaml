@@ -239,7 +239,7 @@ presubmits:
     - ssh-knative
     spec:
       containers:
-      - image: gcr.io/elafros-e2e-tests/coverage:latest
+      - image: gcr.io/knative-tests/test-infra/coverage:latest
         imagePullPolicy: Always
         command:
         - "/coverage"
@@ -718,7 +718,7 @@ periodics:
     clone_uri: "git@github.com:knative/serving.git"
   spec:
     containers:
-    - image: gcr.io/elafros-e2e-tests/metrics:latest
+    - image: gcr.io/knative-tests/test-infra/metrics:latest
       imagePullPolicy: Always
       command:
       - "/metrics"
@@ -738,7 +738,7 @@ periodics:
     clone_uri: "git@github.com:knative/serving.git"
   spec:
     containers:
-    - image: gcr.io/elafros-e2e-tests/coverage:latest
+    - image: gcr.io/knative-tests/test-infra/coverage:latest
       imagePullPolicy: Always
       command:
       - "/coverage"
@@ -1507,7 +1507,7 @@ postsubmits:
     - ssh-knative
     spec:
       containers:
-      - image: gcr.io/elafros-e2e-tests/coverage:latest
+      - image: gcr.io/knative-tests/test-infra/coverage:latest
         imagePullPolicy: Always
         command:
         - "/coverage"

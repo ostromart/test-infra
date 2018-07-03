@@ -249,6 +249,7 @@ presubmits:
         - "--artifacts=$(ARTIFACTS)"
         - "--profile-name=coverage_profile.txt"
         - "--cov-target=./pkg/"
+        - "--cov-threshold-percentage=50"
         - "--github-token=/etc/github-token/token"
         volumeMounts:
         - name: github-token
@@ -870,6 +871,7 @@ periodics:
       - "--artifacts=$(ARTIFACTS)"
       - "--profile-name=coverage_profile.txt"
       - "--cov-target=./pkg/"
+      - "--cov-threshold-percentage=80"
 
 
 - cron: "31 6 * * *" # Run at 23:31PST every day (06:31 UTC following day)
@@ -1622,6 +1624,7 @@ postsubmits:
         - "--artifacts=$(ARTIFACTS)"
         - "--profile-name=coverage_profile.txt"
         - "--cov-target=./pkg/"
+        - "--cov-threshold-percentage=0"
 
 
   GoogleCloudPlatform/k8s-tpu-operator:

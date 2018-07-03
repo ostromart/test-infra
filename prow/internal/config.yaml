@@ -1398,23 +1398,6 @@ periodics:
       - --
       - /go/src/github.com/Random-Liu/runsc-scripts/build.sh
 
-- name: ci-runsc-build-multicontainer
-  interval: 30m
-  agent: kubernetes
-  labels:
-    preset-service-account: "true"
-  spec:
-    containers:
-    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-experimental
-      args:
-      - --repo=github.com/google/gvisor=master
-      - --repo=github.com/Random-Liu/runsc-scripts=master
-      - --root=/go/src
-      - --upload=gs://gke-prow/logs
-      - --scenario=execute
-      - --
-      - /go/src/github.com/Random-Liu/runsc-scripts/build-mc.sh
-
 - interval: 1h
   agent: kubernetes
   name: ci-containerd-runsc-node-e2e

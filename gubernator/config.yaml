@@ -10,15 +10,15 @@ external_services:
     gcs_pull_prefix: gke-prow/pr-logs/pull
     prow_url: prow-internal.gcpnode.com
   knative:
-    gcs_bucket: ela-prow/
-    gcs_pull_prefix: ela-prow/pr-logs/pull
+    gcs_bucket: knative-prow/
+    gcs_pull_prefix: knative-prow/pr-logs/pull
     prow_url: prow-internal.gcpnode.com
 jobs:
   gob-prow/logs/:
   - ci-kubernetes-build
   - ci-kubernetes-bazel-test
   - ci-kubernetes-integration
-  ela-prow/pr-logs/directory/:
+  knative-prow/pr-logs/directory/:
   - pull-knative-serving-build-tests
   - pull-knative-serving-integration-tests
   - pull-knative-serving-unit-tests

@@ -1,5 +1,5 @@
 plank:
-  job_url_template: 'https://gubernator-internal.googleplex.com/build/{{with .Spec.Refs}}{{if eq .Org "knative"}}ela-prow{{else}}gke-prow{{end}}{{else}}{{if eq (printf "%.10s" .Spec.Job) "ci-knative"}}ela-prow{{else}}gke-prow{{end}}{{end}}/{{if or (eq .Spec.Type "presubmit") (eq .Spec.Type "batch")}}pr-logs/pull{{with .Spec.Refs}}/{{.Org}}_{{.Repo}}{{end}}{{else}}logs{{end}}{{if eq .Spec.Type "presubmit"}}/{{with index .Spec.Refs.Pulls 0}}{{.Number}}{{end}}{{else if eq .Spec.Type "batch"}}/batch{{end}}/{{.Spec.Job}}/{{.Status.BuildID}}/'
+  job_url_template: 'https://gubernator-internal.googleplex.com/build/{{with .Spec.Refs}}{{if eq .Org "knative"}}knative-prow{{else}}gke-prow{{end}}{{else}}{{if eq (printf "%.10s" .Spec.Job) "ci-knative"}}knative-prow{{else}}gke-prow{{end}}{{end}}/{{if or (eq .Spec.Type "presubmit") (eq .Spec.Type "batch")}}pr-logs/pull{{with .Spec.Refs}}/{{.Org}}_{{.Repo}}{{end}}{{else}}logs{{end}}{{if eq .Spec.Type "presubmit"}}/{{with index .Spec.Refs.Pulls 0}}{{.Number}}{{end}}{{else if eq .Spec.Type "batch"}}/batch{{end}}/{{.Spec.Job}}/{{.Status.BuildID}}/'
   report_template: '[Full PR test history](https://gubernator-internal.googleplex.com/pr/{{if eq .Spec.Refs.Org "kubernetes"}}{{if eq .Spec.Refs.Repo "kubernetes"}}{{else}}{{.Spec.Refs.Repo}}/{{end}}{{else}}{{.Spec.Refs.Org}}_{{.Spec.Refs.Repo}}/{{end}}{{with index .Spec.Refs.Pulls 0}}{{.Number}}{{end}}). [Your PR dashboard](https://gubernator-internal.googleplex.com/pr/{{with index .Spec.Refs.Pulls 0}}{{.Author}}{{end}}).'
   pod_pending_timeout: 60m
   default_decoration_config:
@@ -11,7 +11,7 @@ plank:
       entrypoint: "gcr.io/k8s-prow/entrypoint:v20180512-0255926d1"
       sidecar: "gcr.io/k8s-prow/sidecar@sha256:8807b2565f4d2699920542fcf890878824b1ede4198d7ff46bca53feb064ed44"
     gcs_configuration:
-      bucket: "ela-prow"
+      bucket: "knative-prow"
       path_strategy: "explicit"
     gcs_credentials_secret: "service-account"
 
@@ -122,7 +122,7 @@ presubmits:
         - "--repo=github.com/$(REPO_OWNER)/$(REPO_NAME)=$(PULL_REFS)"
         - "--root=/go/src"
         - "--service-account=/etc/service-account/service-account.json"
-        - "--upload=gs://ela-prow/pr-logs"
+        - "--upload=gs://knative-prow/pr-logs"
         - "--" # end bootstrap args, scenario args below
         - "--" # end kubernetes_execute_bazel flags (consider following flags as text)
         - "./test/presubmit-tests.sh"
@@ -163,7 +163,7 @@ presubmits:
         - "--repo=github.com/$(REPO_OWNER)/$(REPO_NAME)=$(PULL_REFS)"
         - "--root=/go/src"
         - "--service-account=/etc/service-account/service-account.json"
-        - "--upload=gs://ela-prow/pr-logs"
+        - "--upload=gs://knative-prow/pr-logs"
         - "--" # end bootstrap args, scenario args below
         - "--" # end kubernetes_execute_bazel flags (consider following flags as text)
         - "./test/presubmit-tests.sh"
@@ -204,7 +204,7 @@ presubmits:
         - "--repo=github.com/$(REPO_OWNER)/$(REPO_NAME)=$(PULL_REFS)"
         - "--root=/go/src"
         - "--service-account=/etc/service-account/service-account.json"
-        - "--upload=gs://ela-prow/pr-logs"
+        - "--upload=gs://knative-prow/pr-logs"
         - "--" # end bootstrap args, scenario args below
         - "--" # end kubernetes_execute_bazel flags (consider following flags as text)
         - "./test/presubmit-tests.sh"
@@ -244,7 +244,7 @@ presubmits:
         command:
         - "/coverage"
         args:
-        - "--postsubmit-gcs-bucket=ela-prow"
+        - "--postsubmit-gcs-bucket=knative-prow"
         - "--postsubmit-job-name=post-knative-serving-go-coverage"
         - "--artifacts=$(ARTIFACTS)"
         - "--profile-name=coverage_profile.txt"
@@ -281,7 +281,7 @@ presubmits:
         - "--repo=github.com/$(REPO_OWNER)/$(REPO_NAME)=$(PULL_REFS)"
         - "--root=/go/src"
         - "--service-account=/etc/service-account/service-account.json"
-        - "--upload=gs://ela-prow/pr-logs"
+        - "--upload=gs://knative-prow/pr-logs"
         - "--" # end bootstrap args, scenario args below
         - "--" # end kubernetes_execute_bazel flags (consider following flags as text)
         - "./tests/presubmit-tests.sh"
@@ -322,7 +322,7 @@ presubmits:
         - "--repo=github.com/$(REPO_OWNER)/$(REPO_NAME)=$(PULL_REFS)"
         - "--root=/go/src"
         - "--service-account=/etc/service-account/service-account.json"
-        - "--upload=gs://ela-prow/pr-logs"
+        - "--upload=gs://knative-prow/pr-logs"
         - "--" # end bootstrap args, scenario args below
         - "--" # end kubernetes_execute_bazel flags (consider following flags as text)
         - "./tests/presubmit-tests.sh"
@@ -363,7 +363,7 @@ presubmits:
         - "--repo=github.com/$(REPO_OWNER)/$(REPO_NAME)=$(PULL_REFS)"
         - "--root=/go/src"
         - "--service-account=/etc/service-account/service-account.json"
-        - "--upload=gs://ela-prow/pr-logs"
+        - "--upload=gs://knative-prow/pr-logs"
         - "--" # end bootstrap args, scenario args below
         - "--" # end kubernetes_execute_bazel flags (consider following flags as text)
         - "./tests/presubmit-tests.sh"
@@ -405,7 +405,7 @@ presubmits:
         - "--repo=github.com/$(REPO_OWNER)/$(REPO_NAME)=$(PULL_REFS)"
         - "--root=/go/src"
         - "--service-account=/etc/service-account/service-account.json"
-        - "--upload=gs://ela-prow/pr-logs"
+        - "--upload=gs://knative-prow/pr-logs"
         - "--" # end bootstrap args, scenario args below
         - "--" # end kubernetes_execute_bazel flags (consider following flags as text)
         - "./test/presubmit-tests.sh"
@@ -446,7 +446,7 @@ presubmits:
         - "--repo=github.com/$(REPO_OWNER)/$(REPO_NAME)=$(PULL_REFS)"
         - "--root=/go/src"
         - "--service-account=/etc/service-account/service-account.json"
-        - "--upload=gs://ela-prow/pr-logs"
+        - "--upload=gs://knative-prow/pr-logs"
         - "--" # end bootstrap args, scenario args below
         - "--" # end kubernetes_execute_bazel flags (consider following flags as text)
         - "./test/presubmit-tests.sh"
@@ -487,7 +487,7 @@ presubmits:
         - "--repo=github.com/$(REPO_OWNER)/$(REPO_NAME)=$(PULL_REFS)"
         - "--root=/go/src"
         - "--service-account=/etc/service-account/service-account.json"
-        - "--upload=gs://ela-prow/pr-logs"
+        - "--upload=gs://knative-prow/pr-logs"
         - "--" # end bootstrap args, scenario args below
         - "--" # end kubernetes_execute_bazel flags (consider following flags as text)
         - "./test/presubmit-tests.sh"
@@ -606,7 +606,7 @@ periodics:
       - "--repo=github.com/knative/serving"
       - "--root=/go/src"
       - "--service-account=/etc/service-account/service-account.json"
-      - "--upload=gs://ela-prow/logs"
+      - "--upload=gs://knative-prow/logs"
       - "--timeout=50" # Avoid overrun
       - "--" # end bootstrap args, scenario args below
       - "--" # end kubernetes_execute_bazel flags (consider following flags as text)
@@ -645,7 +645,7 @@ periodics:
       - "--repo=github.com/knative/serving"
       - "--root=/go/src"
       - "--service-account=/etc/service-account/service-account.json"
-      - "--upload=gs://ela-prow/logs"
+      - "--upload=gs://knative-prow/logs"
       - "--timeout=90" # 1.5h
       - "--" # end bootstrap args, scenario args below
       - "--" # end kubernetes_execute_bazel flags (consider following flags as text)
@@ -683,7 +683,7 @@ periodics:
       - "--repo=github.com/knative/serving"
       - "--root=/go/src"
       - "--service-account=/etc/service-account/service-account.json"
-      - "--upload=gs://ela-prow/logs"
+      - "--upload=gs://knative-prow/logs"
       - "--timeout=90" # 1.5h
       - "--" # end bootstrap args, scenario args below
       - "--" # end kubernetes_execute_bazel flags (consider following flags as text)
@@ -766,7 +766,7 @@ periodics:
       - "--repo=github.com/knative/build"
       - "--root=/go/src"
       - "--service-account=/etc/service-account/service-account.json"
-      - "--upload=gs://ela-prow/logs"
+      - "--upload=gs://knative-prow/logs"
       - "--timeout=90" # 1.5h
       - "--" # end bootstrap args, scenario args below
       - "--" # end kubernetes_execute_bazel flags (consider following flags as text)

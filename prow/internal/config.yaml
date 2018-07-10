@@ -40,6 +40,7 @@ tide:
     - knative/serving
     - knative/eventing
     - knative/docs
+    - knative/test-infra
     labels:
     - lgtm
     - approved

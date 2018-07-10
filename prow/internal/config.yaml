@@ -114,7 +114,8 @@ presubmits:
       preset-bazel-remote-cache-enabled: "true"
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180604-68e777553-experimental
+      - image: gcr.io/knative-tests/test-infra/prow-tests:latest
+        imagePullPolicy: Always
         args:
         - "--ssh=/etc/ssh-knative/ssh-knative"
         - "--scenario=kubernetes_execute_bazel"
@@ -155,7 +156,8 @@ presubmits:
       preset-bazel-remote-cache-enabled: "true"
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180604-68e777553-experimental
+      - image: gcr.io/knative-tests/test-infra/prow-tests:latest
+        imagePullPolicy: Always
         args:
         - "--ssh=/etc/ssh-knative/ssh-knative"
         - "--scenario=kubernetes_execute_bazel"
@@ -196,7 +198,8 @@ presubmits:
       preset-bazel-remote-cache-enabled: "true"
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180604-68e777553-experimental
+      - image: gcr.io/knative-tests/test-infra/prow-tests:latest
+        imagePullPolicy: Always
         args:
         - "--ssh=/etc/ssh-knative/ssh-knative"
         - "--scenario=kubernetes_execute_bazel"
@@ -310,7 +313,8 @@ presubmits:
       preset-bazel-remote-cache-enabled: "true"
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180604-68e777553-experimental
+      - image: gcr.io/knative-tests/test-infra/prow-tests:latest
+        imagePullPolicy: Always
         args:
         - "--ssh=/etc/ssh-knative/ssh-knative"
         - "--scenario=kubernetes_execute_bazel"
@@ -351,7 +355,8 @@ presubmits:
       preset-bazel-remote-cache-enabled: "true"
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180604-68e777553-experimental
+      - image: gcr.io/knative-tests/test-infra/prow-tests:latest
+        imagePullPolicy: Always
         args:
         - "--ssh=/etc/ssh-knative/ssh-knative"
         - "--scenario=kubernetes_execute_bazel"
@@ -392,7 +397,8 @@ presubmits:
       preset-bazel-remote-cache-enabled: "true"
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180604-68e777553-experimental
+      - image: gcr.io/knative-tests/test-infra/prow-tests:latest
+        imagePullPolicy: Always
         args:
         - "--ssh=/etc/ssh-knative/ssh-knative"
         - "--scenario=kubernetes_execute_bazel"
@@ -434,7 +440,8 @@ presubmits:
       preset-bazel-remote-cache-enabled: "true"
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180604-68e777553-experimental
+      - image: gcr.io/knative-tests/test-infra/prow-tests:latest
+        imagePullPolicy: Always
         args:
         - "--ssh=/etc/ssh-knative/ssh-knative"
         - "--scenario=kubernetes_execute_bazel"
@@ -475,7 +482,8 @@ presubmits:
       preset-bazel-remote-cache-enabled: "true"
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180604-68e777553-experimental
+      - image: gcr.io/knative-tests/test-infra/prow-tests:latest
+        imagePullPolicy: Always
         args:
         - "--ssh=/etc/ssh-knative/ssh-knative"
         - "--scenario=kubernetes_execute_bazel"
@@ -516,7 +524,8 @@ presubmits:
       preset-bazel-remote-cache-enabled: "true"
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180604-68e777553-experimental
+      - image: gcr.io/knative-tests/test-infra/prow-tests:latest
+        imagePullPolicy: Always
         args:
         - "--ssh=/etc/ssh-knative/ssh-knative"
         - "--scenario=kubernetes_execute_bazel"
@@ -558,7 +567,8 @@ presubmits:
       preset-bazel-remote-cache-enabled: "true"
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180604-68e777553-experimental
+      - image: gcr.io/knative-tests/test-infra/prow-tests:latest
+        imagePullPolicy: Always
         args:
         - "--ssh=/etc/ssh-knative/ssh-knative"
         - "--scenario=kubernetes_execute_bazel"
@@ -599,7 +609,8 @@ presubmits:
       preset-bazel-remote-cache-enabled: "true"
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180604-68e777553-experimental
+      - image: gcr.io/knative-tests/test-infra/prow-tests:latest
+        imagePullPolicy: Always
         args:
         - "--ssh=/etc/ssh-knative/ssh-knative"
         - "--scenario=kubernetes_execute_bazel"
@@ -640,7 +651,8 @@ presubmits:
       preset-bazel-remote-cache-enabled: "true"
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180604-68e777553-experimental
+      - image: gcr.io/knative-tests/test-infra/prow-tests:latest
+        imagePullPolicy: Always
         args:
         - "--ssh=/etc/ssh-knative/ssh-knative"
         - "--scenario=kubernetes_execute_bazel"
@@ -682,7 +694,8 @@ presubmits:
       preset-bazel-remote-cache-enabled: "true"
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180604-68e777553-experimental
+      - image: gcr.io/knative-tests/test-infra/prow-tests:latest
+        imagePullPolicy: Always
         args:
         - "--ssh=/etc/ssh-elafros/ssh-elafros"
         - "--scenario=kubernetes_execute_bazel"
@@ -723,7 +736,8 @@ presubmits:
       preset-bazel-remote-cache-enabled: "true"
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180604-68e777553-experimental
+      - image: gcr.io/knative-tests/test-infra/prow-tests:latest
+        imagePullPolicy: Always
         args:
         - "--ssh=/etc/ssh-elafros/ssh-elafros"
         - "--scenario=kubernetes_execute_bazel"
@@ -764,7 +778,8 @@ presubmits:
       preset-bazel-remote-cache-enabled: "true"
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180604-68e777553-experimental
+      - image: gcr.io/knative-tests/test-infra/prow-tests:latest
+        imagePullPolicy: Always
         args:
         - "--ssh=/etc/ssh-elafros/ssh-elafros"
         - "--scenario=kubernetes_execute_bazel"
@@ -915,7 +930,8 @@ periodics:
     preset-bazel-remote-cache-enabled: "true"
   spec:
     containers:
-    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180604-68e777553-experimental
+    - image: gcr.io/knative-tests/test-infra/prow-tests:latest
+      imagePullPolicy: Always
       args:
       - "--ssh=/etc/ssh-knative/ssh-knative"
       - "--scenario=kubernetes_execute_bazel"
@@ -954,7 +970,8 @@ periodics:
     preset-bazel-remote-cache-enabled: "true"
   spec:
     containers:
-    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180604-68e777553-experimental
+    - image: gcr.io/knative-tests/test-infra/prow-tests:latest
+      imagePullPolicy: Always
       args:
       - "--ssh=/etc/ssh-knative/ssh-knative"
       - "--scenario=kubernetes_execute_bazel"
@@ -992,7 +1009,8 @@ periodics:
     preset-bazel-remote-cache-enabled: "true"
   spec:
     containers:
-    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180604-68e777553-experimental
+    - image: gcr.io/knative-tests/test-infra/prow-tests:latest
+      imagePullPolicy: Always
       args:
       - "--ssh=/etc/ssh-knative/ssh-knative"
       - "--scenario=kubernetes_execute_bazel"
@@ -1076,7 +1094,8 @@ periodics:
     preset-bazel-remote-cache-enabled: "true"
   spec:
     containers:
-    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180604-68e777553-experimental
+    - image: gcr.io/knative-tests/test-infra/prow-tests:latest
+      imagePullPolicy: Always
       args:
       - "--ssh=/etc/ssh-knative/ssh-knative"
       - "--scenario=kubernetes_execute_bazel"

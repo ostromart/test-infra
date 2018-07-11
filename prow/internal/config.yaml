@@ -966,7 +966,7 @@ presubmits:
     agent: kubernetes
     context: mlpipeline-presubmit-e2e-test
     always_run: true
-    skip_report: true
+    skip_report: false
     rerun_command: /test mlpipeline-presubmit-e2e-test
     trigger: (?m)^/test (all|mlpipeline-presubmit-e2e-test),?(\s+|$)
     labels:
@@ -1000,7 +1000,7 @@ presubmits:
     agent: kubernetes
     context: mlpipeline-presubmit-unit-test
     always_run: true
-    skip_report: true
+    skip_report: false
     rerun_command: /test mlpipeline-presubmit-unit-test
     trigger: (?m)^/test (all|mlpipeline-presubmit-unit-test),?(\s+|$)
     labels:

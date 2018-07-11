@@ -45,3 +45,4 @@ plugins:
   - lgtm
   - milestone
   - trigger
+  - wip

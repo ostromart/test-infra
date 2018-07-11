@@ -770,7 +770,7 @@ presubmits:
       - image: gcr.io/knative-tests/test-infra/prow-tests:latest
         imagePullPolicy: Always
         args:
-        - "--ssh=/etc/ssh-elafros/ssh-elafros"
+        - "--ssh=/etc/ssh-knative/ssh-knative"
         - "--scenario=kubernetes_execute_bazel"
         - "--clean"
         - "--job=$(JOB_NAME)"
@@ -789,13 +789,13 @@ presubmits:
           requests:
             memory: "6Gi"
         volumeMounts:
-        - mountPath: /etc/ssh-elafros
-          name: ssh-elafros
+        - mountPath: /etc/ssh-knative
+          name: ssh-knative
       volumes:
-      - name: ssh-elafros
+      - name: ssh-knative
         secret:
           defaultMode: 256
-          secretName: ssh-elafros
+          secretName: ssh-knative
 
   - name: pull-knative-build-templates-unit-tests
     agent: kubernetes
@@ -812,7 +812,7 @@ presubmits:
       - image: gcr.io/knative-tests/test-infra/prow-tests:latest
         imagePullPolicy: Always
         args:
-        - "--ssh=/etc/ssh-elafros/ssh-elafros"
+        - "--ssh=/etc/ssh-knative/ssh-knative"
         - "--scenario=kubernetes_execute_bazel"
         - "--clean"
         - "--job=$(JOB_NAME)"
@@ -831,13 +831,13 @@ presubmits:
           requests:
             memory: "6Gi"
         volumeMounts:
-        - mountPath: /etc/ssh-elafros
-          name: ssh-elafros
+        - mountPath: /etc/ssh-knative
+          name: ssh-knative
       volumes:
-      - name: ssh-elafros
+      - name: ssh-knative
         secret:
           defaultMode: 256
-          secretName: ssh-elafros
+          secretName: ssh-knative
 
   - name: pull-knative-build-templates-integration-tests
     agent: kubernetes
@@ -854,7 +854,7 @@ presubmits:
       - image: gcr.io/knative-tests/test-infra/prow-tests:latest
         imagePullPolicy: Always
         args:
-        - "--ssh=/etc/ssh-elafros/ssh-elafros"
+        - "--ssh=/etc/ssh-knative/ssh-knative"
         - "--scenario=kubernetes_execute_bazel"
         - "--clean"
         - "--job=$(JOB_NAME)"
@@ -873,13 +873,13 @@ presubmits:
           requests:
             memory: "6Gi"
         volumeMounts:
-        - mountPath: /etc/ssh-elafros
-          name: ssh-elafros
+        - mountPath: /etc/ssh-knative
+          name: ssh-knative
       volumes:
-      - name: ssh-elafros
+      - name: ssh-knative
         secret:
           defaultMode: 256
-          secretName: ssh-elafros
+          secretName: ssh-knative
 
   GoogleCloudPlatform/k8s-tpu-operator:
   - name: pull-k8s-tpu-operator-unit

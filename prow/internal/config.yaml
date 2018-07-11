@@ -983,7 +983,11 @@ presubmits:
         - --scenario=execute
         - -- # end bootstrap args, scenario args below
         - -- # end kubernetes_execute_bazel flags (consider following flags as text)
-        - ./test/presubmit-e2e-tests.sh
+        - ./test/presubmit-tests.sh
+        - "--workflow_file"
+        - "integration_test_gke.yaml"
+        - "--test_result_folder"
+        - "api_integration_test"
         volumeMounts:
         - mountPath: /etc/ssh-knative
           name: ssh-knative
@@ -1013,7 +1017,11 @@ presubmits:
         - --scenario=execute
         - -- # end bootstrap args, scenario args below
         - -- # end kubernetes_execute_bazel flags (consider following flags as text)
-        - ./test/presubmit-unit-tests.sh
+        - ./test/presubmit-tests.sh
+        - "--workflow_file"
+        - "unit_test_gke.yaml"
+        - "--test_result_folder"
+        - "backend_unit_test"
         volumeMounts:
         - mountPath: /etc/ssh-knative
           name: ssh-knative

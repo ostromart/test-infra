@@ -302,41 +302,41 @@ presubmits:
           secretName: covbot-token
 
   knative/build:
-   - name: pull-knative-build-go-coverage
-      labels:
-        preset-service-account: "true"
-      agent: kubernetes
-      context: pull-knative-build-go-coverage
-      always_run: true
-      rerun_command: "/test pull-knative-build-go-coverage"
-      trigger: "(?m)^/test (all|pull-knative-build-go-coverage),?(\\s+|$)"
-      optional: true
-      decorate: true
-      clone_uri: "git@github.com:knative/build.git"
-      ssh_key_secrets:
-      - ssh-knative
-      spec:
-        containers:
-        - image: gcr.io/knative-tests/test-infra/coverage:latest
-          imagePullPolicy: Always
-          command:
-          - "/coverage"
-          args:
-          - "--postsubmit-gcs-bucket=knative-prow"
-          - "--postsubmit-job-name=post-knative-build-go-coverage"
-          - "--artifacts=$(ARTIFACTS)"
-          - "--profile-name=coverage_profile.txt"
-          - "--cov-target=./pkg/"
-          - "--cov-threshold-percentage=50"
-          - "--github-token=/etc/github-token/token"
-          volumeMounts:
-          - name: github-token
-            mountPath: /etc/github-token
-            readOnly: true
-        volumes:
+  - name: pull-knative-build-go-coverage
+    labels:
+      preset-service-account: "true"
+    agent: kubernetes
+    context: pull-knative-build-go-coverage
+    always_run: true
+    rerun_command: "/test pull-knative-build-go-coverage"
+    trigger: "(?m)^/test (all|pull-knative-build-go-coverage),?(\\s+|$)"
+    optional: true
+    decorate: true
+    clone_uri: "git@github.com:knative/build.git"
+    ssh_key_secrets:
+    - ssh-knative
+    spec:
+      containers:
+      - image: gcr.io/knative-tests/test-infra/coverage:latest
+        imagePullPolicy: Always
+        command:
+        - "/coverage"
+        args:
+        - "--postsubmit-gcs-bucket=knative-prow"
+        - "--postsubmit-job-name=post-knative-build-go-coverage"
+        - "--artifacts=$(ARTIFACTS)"
+        - "--profile-name=coverage_profile.txt"
+        - "--cov-target=./pkg/"
+        - "--cov-threshold-percentage=50"
+        - "--github-token=/etc/github-token/token"
+        volumeMounts:
         - name: github-token
-          secret:
-            secretName: covbot-token
+          mountPath: /etc/github-token
+          readOnly: true
+      volumes:
+      - name: github-token
+        secret:
+          secretName: covbot-token
 
   - name: pull-knative-build-build-tests
     agent: kubernetes

@@ -302,6 +302,42 @@ presubmits:
           secretName: covbot-token
 
   knative/build:
+   - name: pull-knative-build-go-coverage
+      labels:
+        preset-service-account: "true"
+      agent: kubernetes
+      context: pull-knative-build-go-coverage
+      always_run: true
+      rerun_command: "/test pull-knative-build-go-coverage"
+      trigger: "(?m)^/test (all|pull-knative-build-go-coverage),?(\\s+|$)"
+      optional: true
+      decorate: true
+      clone_uri: "git@github.com:knative/build.git"
+      ssh_key_secrets:
+      - ssh-knative
+      spec:
+        containers:
+        - image: gcr.io/knative-tests/test-infra/coverage:latest
+          imagePullPolicy: Always
+          command:
+          - "/coverage"
+          args:
+          - "--postsubmit-gcs-bucket=knative-prow"
+          - "--postsubmit-job-name=post-knative-build-go-coverage"
+          - "--artifacts=$(ARTIFACTS)"
+          - "--profile-name=coverage_profile.txt"
+          - "--cov-target=./pkg/"
+          - "--cov-threshold-percentage=50"
+          - "--github-token=/etc/github-token/token"
+          volumeMounts:
+          - name: github-token
+            mountPath: /etc/github-token
+            readOnly: true
+        volumes:
+        - name: github-token
+          secret:
+            secretName: covbot-token
+
   - name: pull-knative-build-build-tests
     agent: kubernetes
     context: pull-knative-build-build-tests
@@ -1085,6 +1121,29 @@ periodics:
       - "--cov-target=./pkg/"
       - "--cov-threshold-percentage=80"
 
+- cron: "0 1 * * *" # Run at 01:00 every day
+  name: ci-knative-build-go-coverage
+  agent: kubernetes
+  decorate: true
+  ssh_key_secrets:
+  - ssh-knative
+  extra_refs:
+  - org: knative
+    repo: build
+    base_ref: master
+    clone_uri: "git@github.com:knative/build.git"
+  spec:
+    containers:
+    - image: gcr.io/knative-tests/test-infra/coverage:latest
+      imagePullPolicy: Always
+      command:
+      - "/coverage"
+      args:
+      - "--artifacts=$(ARTIFACTS)"
+      - "--profile-name=coverage_profile.txt"
+      - "--cov-target=./pkg/"
+      - "--cov-threshold-percentage=80"
+
 
 - cron: "31 6 * * *" # Run at 23:31PST every day (06:31 UTC following day)
   name: ci-knative-build-release
@@ -1818,6 +1877,27 @@ periodics:
       - --timeout=65m
 
 postsubmits:
+  knative/build:
+  - name: post-knative-build-go-coverage
+    branches:
+    - master
+    agent: kubernetes
+    decorate: true
+    clone_uri: "git@github.com:knative/build.git"
+    ssh_key_secrets:
+    - ssh-knative
+    spec:
+      containers:
+      - image: gcr.io/knative-tests/test-infra/coverage:latest
+        imagePullPolicy: Always
+        command:
+        - "/coverage"
+        args:
+        - "--artifacts=$(ARTIFACTS)"
+        - "--profile-name=coverage_profile.txt"
+        - "--cov-target=./pkg/"
+        - "--cov-threshold-percentage=0"
+
   knative/serving:
   - name: post-knative-serving-go-coverage
     branches:

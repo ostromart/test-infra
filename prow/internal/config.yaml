@@ -1274,6 +1274,46 @@ periodics:
          defaultMode: 256
          secretName: ssh-knative
 
+- cron: "16 6 * * *" # Run at 23:16PST every day (06:16 UTC following day)
+  name: ci-knative-eventing-release
+  agent: kubernetes
+  labels:
+    preset-service-account: "true"
+    preset-bazel-scratch-dir: "true"
+    preset-bazel-remote-cache-enabled: "true"
+  spec:
+    containers:
+    - image: gcr.io/knative-tests/test-infra/prow-tests:latest
+      imagePullPolicy: Always
+      args:
+      - "--ssh=/etc/ssh-knative/ssh-knative"
+      - "--scenario=kubernetes_execute_bazel"
+      - "--clean"
+      - "--job=$(JOB_NAME)"
+      - "--repo=github.com/knative/eventing"
+      - "--root=/go/src"
+      - "--service-account=/etc/service-account/service-account.json"
+      - "--upload=gs://knative-prow/logs"
+      - "--timeout=90" # 1.5h
+      - "--" # end bootstrap args, scenario args below
+      - "--" # end kubernetes_execute_bazel flags (consider following flags as text)
+      - "./hack/release.sh"
+      - "--tag-release"
+      # Bazel needs privileged mode in order to sandbox builds.
+      securityContext:
+        privileged: true
+      resources:
+        requests:
+          memory: "6Gi"
+      volumeMounts:
+      - mountPath: /etc/ssh-knative
+        name: ssh-knative
+    volumes:
+     - name: ssh-knative
+       secret:
+         defaultMode: 256
+         secretName: ssh-knative
+
 - interval: 1h
   agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-ci-master

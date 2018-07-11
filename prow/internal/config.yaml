@@ -713,18 +713,18 @@ presubmits:
         emptyDir: {}
 
   googleprivate/ml:
-  - name: mlpipeline-presubmit
+  - name: mlpipeline-presubmit-e2e-test
     agent: kubernetes
-    context: mlpipeline-presubmit
+    context: mlpipeline-presubmit-e2e-test
     always_run: true
     skip_report: true
-    rerun_command: /test mlpipeline-presubmit
-    trigger: (?m)^/test (all|mlpipeline-presubmit),?(\s+|$)
+    rerun_command: /test mlpipeline-presubmit-e2e-test
+    trigger: (?m)^/test (all|mlpipeline-presubmit-e2e-test),?(\s+|$)
     labels:
       preset-service-account: "true"
     spec:
       containers:
-      - image: gcr.io/ml-pipeline/test-worker:v20180706-6952045-e3b0c4
+      - image: gcr.io/ml-pipeline/test-worker:v20180711-cb64c3d-e3b0c4
         args:
         - --clean
         - --repo=github.com/googleprivate/$(REPO_NAME)=$(PULL_REFS)
@@ -734,7 +734,37 @@ presubmits:
         - --scenario=execute
         - -- # end bootstrap args, scenario args below
         - -- # end kubernetes_execute_bazel flags (consider following flags as text)
-        - ./test/presubmit-tests.sh
+        - ./test/presubmit-e2e-tests.sh
+        volumeMounts:
+        - mountPath: /etc/ssh-knative
+          name: ssh-knative
+      volumes:
+      - name: ssh-knative
+        secret:
+          defaultMode: 0400
+          secretName: ssh-knative
+  - name: mlpipeline-presubmit-unit-test
+    agent: kubernetes
+    context: mlpipeline-presubmit-unit-test
+    always_run: true
+    skip_report: true
+    rerun_command: /test mlpipeline-presubmit-unit-test
+    trigger: (?m)^/test (all|mlpipeline-presubmit-unit-test),?(\s+|$)
+    labels:
+      preset-service-account: "true"
+    spec:
+      containers:
+      - image: gcr.io/ml-pipeline/test-worker:v20180711-cb64c3d-e3b0c4
+        args:
+        - --clean
+        - --repo=github.com/googleprivate/$(REPO_NAME)=$(PULL_REFS)
+        - --service-account=/etc/service-account/service-account.json
+        - --upload=gs://gke-prow/pr-logs
+        - --ssh=/etc/ssh-knative/ssh-knative
+        - --scenario=execute
+        - -- # end bootstrap args, scenario args below
+        - -- # end kubernetes_execute_bazel flags (consider following flags as text)
+        - ./test/presubmit-unit-tests.sh
         volumeMounts:
         - mountPath: /etc/ssh-knative
           name: ssh-knative

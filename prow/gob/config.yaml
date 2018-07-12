@@ -411,3 +411,37 @@ periodics:
      volumes:
      - name: docker-graph
        emptyDir: {}
+
+   # managed certs in gke jobs
+ - interval: 30m
+   name: ci-managed-certs-gke-image-build
+   agent: kubernetes
+   labels:
+     preset-service-account: "true"
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-master
+       args:
+       - --clean
+       - --repo=gke-internal.googlesource.com/managed-certs-gke
+       - --root=/go/src
+       - --timeout=30
+       - --scenario=execute
+       - --upload=gs://gob-prow/logs
+       - -- # stop bootstrap flags
+       - --env=TAG=ci_latest
+       - make
+       - --
+       - release-ci
+       env:
+       - name: DOCKER_IN_DOCKER_ENABLED
+         value: "true"
+       # docker-in-docker needs privileged mode
+       securityContext:
+         privileged: true
+       volumeMounts:
+       - name: docker-graph
+         mountPath: /docker-graph
+     volumes:
+     - name: docker-graph
+       emptyDir: {}

@@ -1072,7 +1072,7 @@ periodics:
        secret:
          defaultMode: 256
          secretName: ssh-knative
-- cron: "1 6 * * *" # Run at 23:01PST every day (06:01 UTC following day)
+- cron: "1 8 * * *" # Run at 01:01PST every day (08:01 UTC)
   name: ci-knative-serving-release
   agent: kubernetes
   labels:
@@ -1111,7 +1111,7 @@ periodics:
        secret:
          defaultMode: 256
          secretName: ssh-knative
-- cron: "1 8 * * 6" # Run at 01:01PST every Saturday (08:01 UTC Saturday)
+- cron: "1 9 * * 6" # Run at 02:01PST every Saturday (09:01 UTC)
   name: ci-knative-serving-playground
   agent: kubernetes
   labels:
@@ -1151,7 +1151,7 @@ periodics:
          defaultMode: 256
          secretName: ssh-knative
 
-- cron: "5 8 * * *" # Run at 01:05PST every day (08:05 UTC next day)
+- cron: "5 8 * * *" # Run at 01:05PST every day (08:05 UTC)
   name: ci-knative-serving-latency
   agent: kubernetes
   labels:
@@ -1243,7 +1243,7 @@ periodics:
       - "--cov-threshold-percentage=80"
 
 
-- cron: "31 6 * * *" # Run at 23:31PST every day (06:31 UTC following day)
+- cron: "31 8 * * *" # Run at 01:31PST every day (08:31 UTC)
   name: ci-knative-build-release
   agent: kubernetes
   labels:
@@ -1282,7 +1282,7 @@ periodics:
          defaultMode: 256
          secretName: ssh-knative
 
-- cron: "16 6 * * *" # Run at 23:16PST every day (06:16 UTC following day)
+- cron: "16 9 * * *" # Run at 02:16PST every day (09:16 UTC)
   name: ci-knative-eventing-release
   agent: kubernetes
   labels:

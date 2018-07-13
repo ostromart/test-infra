@@ -363,7 +363,7 @@ presubmits:
         - "--upload=gs://knative-prow/pr-logs"
         - "--" # end bootstrap args, scenario args below
         - "--" # end kubernetes_execute_bazel flags (consider following flags as text)
-        - "./tests/presubmit-tests.sh"
+        - "./test/presubmit-tests.sh"
         - "--build-tests"
         # Bazel needs privileged mode in order to sandbox builds.
         securityContext:
@@ -405,7 +405,7 @@ presubmits:
         - "--upload=gs://knative-prow/pr-logs"
         - "--" # end bootstrap args, scenario args below
         - "--" # end kubernetes_execute_bazel flags (consider following flags as text)
-        - "./tests/presubmit-tests.sh"
+        - "./test/presubmit-tests.sh"
         - "--unit-tests"
         # Bazel needs privileged mode in order to sandbox builds.
         securityContext:
@@ -447,7 +447,7 @@ presubmits:
         - "--upload=gs://knative-prow/pr-logs"
         - "--" # end bootstrap args, scenario args below
         - "--" # end kubernetes_execute_bazel flags (consider following flags as text)
-        - "./tests/presubmit-tests.sh"
+        - "./test/presubmit-tests.sh"
         - "--integration-tests"
         # Bazel needs privileged mode in order to sandbox builds.
         securityContext:
@@ -1266,7 +1266,7 @@ periodics:
       - "--timeout=50" # Avoid overrun
       - "--" # end bootstrap args, scenario args below
       - "--" # end kubernetes_execute_bazel flags (consider following flags as text)
-      - "./tests/presubmit-tests.sh"
+      - "./test/presubmit-tests.sh"
       - "--all-tests"
       # Bazel needs privileged mode in order to sandbox builds.
       securityContext:

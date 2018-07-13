@@ -282,6 +282,8 @@ presubmits:
       containers:
       - image: gcr.io/knative-tests/test-infra/coverage:latest-dev
         imagePullPolicy: Always
+        securityContext:
+          runAsNonRoot: true
         command:
         - "/coverage"
         args:

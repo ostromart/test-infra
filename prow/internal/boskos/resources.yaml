@@ -28,6 +28,11 @@ resources:
   - k8s-gci-boskos-13
   - k8s-gci-boskos-14
   - k8s-gci-boskos-15
+  - k8s-gci-boskos-16
+  - k8s-gci-boskos-17
+  - k8s-gci-boskos-18
+  - k8s-gci-boskos-19
+  - k8s-gci-boskos-20
   - kubekins-gce-gci-ci-1-4
   - kubekins-gce-gci-ci-serial-1-4
   - kubekins-gce-gci-ci-slow-1-4

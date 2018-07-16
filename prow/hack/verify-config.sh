@@ -1,10 +1,5 @@
 #!/usr/bin/env bash
 
-set -o errexit
-set -o nounset
-set -o pipefail
-set -o xtrace
-
 TESTINFRA_ROOT=$(git rev-parse --show-toplevel)
 PROW_GOB_CONFIG="${TESTINFRA_ROOT}/prow/gob/config.yaml"
 PROW_INTERNAL_CONFIG="${TESTINFRA_ROOT}/prow/internal/config.yaml"

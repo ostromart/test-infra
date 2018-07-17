@@ -636,7 +636,7 @@ presubmits:
       preset-service-account: "true"
     agent: kubernetes
     context: pull-knative-docs-go-coverage
-    always_run: false
+    always_run: true
     rerun_command: "/test pull-knative-docs-go-coverage"
     trigger: "(?m)^/test (all|pull-knative-docs-go-coverage),?(\\s+|$)"
     optional: true

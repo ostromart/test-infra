@@ -180,7 +180,28 @@ presubmits:
           mountPath: /docker-graph
       volumes:
       - name: docker-graph
-        emptyDir: {}  
+        emptyDir: {}
+  https://gke-internal-review.googlesource.com/net/mci:
+  - name: pull-test-infra-presubmit
+    agent: kubernetes
+    context: pull-test-infra-presubmit
+    always_run: true
+    rerun_command: "/test pull-test-infra-presubmit"
+    trigger: "(?m)^/test (all|pull-test-infra-presubmit),?(\\s+|$)"
+    labels:
+      preset-service-account: "true"
+    spec:
+      containers:
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-master
+        args:
+        - --clean
+        - --repo=gke-internal.googlesource.com/net/mci=$(PULL_REFS)
+        - --service-account=/etc/service-account/service-account.json
+        - --upload=gs://gob-prow/pr-logs
+        - --scenario=execute
+        - -- # end bootstrap args, scenario args below
+        - "make"
+        - "test"
 periodics:
  - cron: '1 17 * * 0' # Run at 10:01PST (17:01 UTC) on sunday
    agent: kubernetes

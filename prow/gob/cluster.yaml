@@ -258,7 +258,7 @@ spec:
         - ./gerrit
         - --storage=/store/gerrit
         - --gerrit-instance=https://gke-internal-review.googlesource.com
-        - --gerrit-projects=test-infra,kubernetes
+        - --gerrit-projects=test-infra,kubernetes,net/mci
         volumeMounts:
         - name: config
           mountPath: /etc/config

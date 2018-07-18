@@ -182,12 +182,12 @@ presubmits:
       - name: docker-graph
         emptyDir: {}
   https://gke-internal-review.googlesource.com/net/mci:
-  - name: pull-test-infra-presubmit
+  - name: pull-mci-unit
     agent: kubernetes
-    context: pull-test-infra-presubmit
+    context: pull-mci-unit
     always_run: true
-    rerun_command: "/test pull-test-infra-presubmit"
-    trigger: "(?m)^/test (all|pull-test-infra-presubmit),?(\\s+|$)"
+    rerun_command: "/test pull-mci-unit"
+    trigger: "(?m)^/test (all|pull-mci-unit),?(\\s+|$)"
     labels:
       preset-service-account: "true"
     spec:

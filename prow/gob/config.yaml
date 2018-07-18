@@ -202,6 +202,18 @@ presubmits:
         - -- # end bootstrap args, scenario args below
         - "make"
         - "test"
+        env:
+        - name: DOCKER_IN_DOCKER_ENABLED
+          value: "true"
+        volumeMounts:
+        - name: docker-graph
+          mountPath: /docker-graph
+        # docker-in-docker needs privileged mode
+        securityContext:
+          privileged: true
+      volumes:
+      - name: docker-graph
+        emptyDir: {}
 periodics:
  - cron: '1 17 * * 0' # Run at 10:01PST (17:01 UTC) on sunday
    agent: kubernetes

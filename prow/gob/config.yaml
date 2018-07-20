@@ -445,6 +445,34 @@ periodics:
      - name: docker-graph
        emptyDir: {}
 
+ - interval: 6h
+   name: ci-autoscaling-e2e-tests
+   agent: kubernetes
+   labels:
+     preset-k8s-ssh: "true"
+     preset-service-account: "true"
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-master
+       args:
+       - --timeout=600
+       - --bare
+       - --upload=gs://gob-prow/logs
+       - --scenario=kubernetes_e2e
+       - --
+       - --check-leaked-resources
+       - --cluster=gke-autoscaling-cluster
+       - --deployment=gke
+       - --extract=gs://kubernetes-release-gke-internal/ci/latest-autoscaling.txt
+       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+       - --gcp-node-image=gci
+       - --gcp-zone=us-central1-f
+       - --ginkgo-parallel=1
+       - --gke-environment=test
+       - --provider=gke
+       - --test_args=--ginkgo.focus=\[Feature:ClusterSizeAutoscalingScaleUp\]|\[Feature:ClusterSizeAutoscalingScaleDown\]|\[Feature:ClusterSizeAutoscalingScaleWithNAP\] --ginkgo.skip=\[Flaky\] --minStartupPods=8
+       - --timeout=10h
+
    # managed certs in gke jobs
  - interval: 30m
    name: ci-managed-certs-gke-image-build
@@ -509,31 +537,3 @@ periodics:
        - --test=false
        - --test-cmd=../hack/e2e.sh
        - --timeout=45m
-
- - interval: 6h
-   name: ci-autoscaling-e2e-tests
-   agent: kubernetes
-   labels:
-     preset-k8s-ssh: "true"
-     preset-service-account: "true"
-   spec:
-     containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-master
-       args:
-       - --timeout=600
-       - --bare
-       - --upload=gs://gob-prow/logs
-       - --scenario=kubernetes_e2e
-       - --
-       - --check-leaked-resources
-       - --cluster=gke-autoscaling-cluster
-       - --deployment=gke
-       - --extract=gs://kubernetes-release-gke-internal/ci/latest-autoscaling.txt
-       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
-       - --gcp-node-image=gci
-       - --gcp-zone=us-central1-f
-       - --ginkgo-parallel=1
-       - --gke-environment=test
-       - --provider=gke
-       - --test_args=--ginkgo.focus=\[Feature:ClusterSizeAutoscalingScaleUp\]|\[Feature:ClusterSizeAutoscalingScaleDown\]|\[Feature:ClusterSizeAutoscalingScaleWithNAP\] --ginkgo.skip=\[Flaky\] --minStartupPods=8
-       - --timeout=10h

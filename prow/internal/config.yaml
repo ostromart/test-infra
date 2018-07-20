@@ -2365,6 +2365,46 @@ periodics:
       - '--test_args=--nodes=8 --focus="\[NodeConformance\]|\[NodeFeature:FSGroup\]|\[NodeFeature:\sImageID\]" --skip="\[Flaky\]|\[Serial\]" --flakeAttempts=2'
       - --timeout=65m
 
+- interval: 1h
+  agent: kubernetes
+  name: ci-containerd-runsc-e2e
+  labels:
+    preset-service-account: "true"
+    preset-k8s-ssh: "true"
+  spec:
+    containers:
+    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-master
+      args:
+      - --repo=github.com/containerd/cri=master
+      - --repo=github.com/Random-Liu/runsc-scripts=master
+      - --upload=gs://gke-prow/logs
+      - --scenario=kubernetes_e2e
+      - --timeout=70
+      - --
+      - --check-leaked-resources
+      - --env=KUBE_MASTER_EXTRA_METADATA=user-data=/workspace/github.com/containerd/cri/test/e2e/master.yaml,containerd-configure-sh=/workspace/github.com/containerd/cri/cluster/gce/configure.sh,containerd-extra-init-sh</go/src/github.com/Random-Liu/runsc-scripts/runsc-e2e-init.sh,containerd-env</go/src/github.com/Random-Liu/runsc-scripts/env
+      - --env=KUBE_NODE_EXTRA_METADATA=user-data=/workspace/github.com/containerd/cri/test/e2e/node.yaml,containerd-configure-sh=/workspace/github.com/containerd/cri/cluster/gce/configure.sh,containerd-extra-init-sh</go/src/github.com/Random-Liu/runsc-scripts/runsc-e2e-init.sh,containerd-env</go/src/github.com/Random-Liu/runsc-scripts/env
+      - --env=STORAGE_BACKEND=etcd2
+      - --env=TEST_ETCD_IMAGE=2.2.1
+      - --env=TEST_ETCD_VERSION=2.2.1
+      - --env=ENABLE_POD_SECURITY_POLICY=true
+      - --env=LOG_DUMP_SYSTEMD_SERVICES=containerd containerd-installation
+      - --env=KUBE_CONTAINER_RUNTIME=remote
+      - --env=KUBE_CONTAINER_RUNTIME_ENDPOINT=unix:///run/containerd/containerd.sock
+      - --env=KUBE_CONTAINER_RUNTIME_NAME=containerd
+      - --env=KUBE_LOAD_IMAGE_COMMAND=/home/containerd/usr/local/bin/ctr cri load
+      - --env=NETWORK_PROVIDER=
+      - --env=NON_MASQUERADE_CIDR=0.0.0.0/0
+      - --env=KUBELET_TEST_ARGS=--runtime-cgroups=/system.slice/containerd.service
+      - --extract=ci/latest
+      - --gcp-node-image=gci
+      - --gcp-nodes=4
+      - --gcp-zone=us-central1-f
+      - --ginkgo-parallel=30
+      - --provider=gce
+      - --test_args=--ginkgo.focus=Conformance --minStartupPods=8",
+      - --timeout=50m
+
 postsubmits:
   knative/build:
   - name: post-knative-build-go-coverage

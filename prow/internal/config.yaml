@@ -2397,6 +2397,7 @@ periodics:
       - --env=NON_MASQUERADE_CIDR=0.0.0.0/0
       - --env=KUBELET_TEST_ARGS=--runtime-cgroups=/system.slice/containerd.service
       - --extract=ci/latest
+      - --gcp-project=cri-containerd-node-e2e
       - --gcp-node-image=gci
       - --gcp-nodes=4
       - --gcp-zone=us-central1-f

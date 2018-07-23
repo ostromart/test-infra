@@ -214,6 +214,26 @@ presubmits:
       volumes:
       - name: docker-graph
         emptyDir: {}
+  https://team-review.googlesource.com/alphabetcloud/galu:
+  - name: pull-galu-presubmit
+    agent: kubernetes
+    context: pull-galu-presubmit
+    always_run: true
+    rerun_command: "/test pull-galu-presubmit"
+    trigger: "(?m)^/test (all|pull-galu-presubmit),?(\\s+|$)"
+    labels:
+      preset-service-account: "true"
+    spec:
+      containers:
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-master
+        args:
+        - --clean
+        - --repo=team.googlesource.com/alphabetcloud/galu/=$(PULL_REFS)
+        - --service-account=/etc/service-account/service-account.json
+        - --upload=gs://gob-prow/pr-logs
+        - --scenario=execute
+        - -- # end bootstrap args, scenario args below
+        - /workspace/team.googlesource.com/alphabetcloud/galu/prow/presubmit.sh
 periodics:
  - cron: '1 17 * * 0' # Run at 10:01PST (17:01 UTC) on sunday
    agent: kubernetes

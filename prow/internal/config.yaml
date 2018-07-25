@@ -41,6 +41,7 @@ tide:
     - knative/eventing
     - knative/docs
     - knative/test-infra
+    - knative/pkg
     labels:
     - lgtm
     - approved

@@ -324,7 +324,7 @@ spec:
         - ./gerrit
         - --storage=/store/gerrit-team
         - --gerrit-instance=https://team-review.googlesource.com
-        - --gerrit-projects=alphabetcloud/galu
+        - --gerrit-projects=alphabetcloud/galu,gke-kubernetes-enterprise-control/prototype
         volumeMounts:
         - name: config
           mountPath: /etc/config

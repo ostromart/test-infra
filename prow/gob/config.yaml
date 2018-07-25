@@ -306,6 +306,39 @@ presubmits:
         - --scenario=execute
         - -- # end bootstrap args, scenario args below
         - /go/src/gke-internal.googlesource.com/syllogi/cluster-management/cluster-api/scripts/ci-test.sh
+  # TODO(senlu): Consider a rewrite of this into the modern prow format.
+  https://team-review.googlesource.com/gke-kubernetes-enterprise-control/prototype:
+  - name: nomos-presubmit
+    context: nomos-presubmit
+    always_run: true
+    rerun_command: "/test nomos-presubmit"
+    agent: kubernetes
+    labels:
+      preset-service-account: "true"
+    spec:
+      containers:
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-master
+        args:
+        - --clean
+        - --timeout=300
+        - --repo=team-review.googlesource.com/gke-kubernetes-enterprise-control/prototype=$(PULL_REFS)
+        - --scenario=execute
+        - --upload=gs://gob-prow/pr-logs
+        - --
+        - make
+        - test
+        env:
+        - name: DOCKER_IN_DOCKER_ENABLED
+          value: "true"
+        # docker-in-docker needs privileged mode
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - name: docker-graph
+          mountPath: /docker-graph
+      volumes:
+      - name: docker-graph
+        emptyDir: {}
 periodics:
  - cron: '1 17 * * 0' # Run at 10:01PST (17:01 UTC) on sunday
    agent: kubernetes

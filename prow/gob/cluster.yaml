@@ -272,3 +272,40 @@ spec:
       - name: gerrit-volume
         persistentVolumeClaim:
           claimName: gerrit-storage
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: gerrit-team
+  labels:
+    app: gerrit-team
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: gerrit-team
+    spec:
+      terminationGracePeriodSeconds: 30
+      containers:
+      - name: gerrit-team
+        image: gcr.io/gob-prow/gerrit:latest # TODO(senlu): create a stable tag
+        imagePullPolicy: Always
+        args:
+        - ./gerrit
+        - --storage=/store/gerrit-team
+        - --gerrit-instance=https://team-review.git.corp.google.com
+        - --gerrit-projects=alphabetcloud/galu
+        volumeMounts:
+        - name: config
+          mountPath: /etc/config
+          readOnly: true
+        - mountPath: /store
+          name: gerrit-volume
+      volumes:
+      - name: config
+        configMap:
+          name: config
+      - name: gerrit-volume
+        persistentVolumeClaim:
+          claimName: gerrit-storage

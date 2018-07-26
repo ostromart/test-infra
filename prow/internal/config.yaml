@@ -2382,8 +2382,8 @@ periodics:
       - --timeout=70
       - --
       - --check-leaked-resources
-      - --env=KUBE_MASTER_EXTRA_METADATA=user-data=/workspace/github.com/containerd/cri/test/e2e/master.yaml,containerd-configure-sh=/workspace/github.com/containerd/cri/cluster/gce/configure.sh,containerd-extra-init-sh=/go/src/github.com/Random-Liu/runsc-scripts/runsc-e2e-init.sh,containerd-env=/go/src/github.com/Random-Liu/runsc-scripts/env
-      - --env=KUBE_NODE_EXTRA_METADATA=user-data=/workspace/github.com/containerd/cri/test/e2e/node.yaml,containerd-configure-sh=/workspace/github.com/containerd/cri/cluster/gce/configure.sh,containerd-extra-init-sh=/go/src/github.com/Random-Liu/runsc-scripts/runsc-e2e-init.sh,containerd-env=/go/src/github.com/Random-Liu/runsc-scripts/env
+      - --env=KUBE_MASTER_EXTRA_METADATA=user-data=/workspace/github.com/containerd/cri/test/e2e/master.yaml,containerd-configure-sh=/workspace/github.com/containerd/cri/cluster/gce/configure.sh,containerd-extra-init-sh=/workspace/github.com/Random-Liu/runsc-scripts/runsc-e2e-init.sh,containerd-env=/workspace/github.com/Random-Liu/runsc-scripts/env
+      - --env=KUBE_NODE_EXTRA_METADATA=user-data=/workspace/github.com/containerd/cri/test/e2e/node.yaml,containerd-configure-sh=/workspace/github.com/containerd/cri/cluster/gce/configure.sh,containerd-extra-init-sh=/workspace/github.com/Random-Liu/runsc-scripts/runsc-e2e-init.sh,containerd-env=/workspace/github.com/Random-Liu/runsc-scripts/env
       - --env=STORAGE_BACKEND=etcd2
       - --env=TEST_ETCD_IMAGE=2.2.1
       - --env=TEST_ETCD_VERSION=2.2.1

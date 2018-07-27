@@ -273,6 +273,35 @@ spec:
         persistentVolumeClaim:
           claimName: gerrit-storage
 ---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  labels:
+    app: gerrit-team
+  name: gerrit-team-storage
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  gcePersistentDisk:
+    pdName: gerrit-storage
+    fsType: ext4
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  labels:
+    app: gerrit-team
+  name: gerrit-team-storage
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
@@ -294,18 +323,18 @@ spec:
         args:
         - ./gerrit
         - --storage=/store/gerrit-team
-        - --gerrit-instance=https://team-review.git.corp.google.com
+        - --gerrit-instance=https://team-review.googlesource.com
         - --gerrit-projects=alphabetcloud/galu
         volumeMounts:
         - name: config
           mountPath: /etc/config
           readOnly: true
         - mountPath: /store
-          name: gerrit-volume
+          name: gerrit-team-volume
       volumes:
       - name: config
         configMap:
           name: config
-      - name: gerrit-volume
+      - name: gerrit-team-volume
         persistentVolumeClaim:
-          claimName: gerrit-storage
+          claimName: gerrit-team-storage

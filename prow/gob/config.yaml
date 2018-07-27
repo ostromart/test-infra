@@ -254,8 +254,7 @@ presubmits:
         - --upload=gs://syllogi-gob-prow/pr-logs
         - --scenario=execute
         - -- # end bootstrap args, scenario args below
-        - /workspace/gke-internal.googlesource.com/syllogi/cluster-management/cluster-api/scripts/ci-build.sh
-  https://gke-internal-review.googlesource.com/syllogi/cluster-management:
+        - /go/src/gke-internal.googlesource.com/syllogi/cluster-management/cluster-api/scripts/ci-build.sh
   - name: pull-syllogi-cluster-api-make
     agent: kubernetes
     context: pull-syllogi-cluster-api-make
@@ -276,7 +275,7 @@ presubmits:
         - --timeout=90
         - --scenario=execute
         - -- # end bootstrap args, scenario args below
-        - /workspace/gke-internal.googlesource.com/syllogi/cluster-management/cluster-api/scripts/ci-make.sh
+        - /go/src/gke-internal.googlesource.com/syllogi/cluster-management/cluster-api/scripts/ci-make.sh
         env:
         - name: DOCKER_IN_DOCKER_ENABLED
           value: "true"
@@ -287,7 +286,6 @@ presubmits:
         resources:
           requests:
             memory: "6Gi"
-  https://gke-internal-review.googlesource.com/syllogi/cluster-management:
   - name: pull-syllogi-cluster-api-unittest
     agent: kubernetes
     context: pull-syllogi-cluster-api-unittest
@@ -307,7 +305,7 @@ presubmits:
         - --upload=gs://syllogi-gob-prow/pr-logs
         - --scenario=execute
         - -- # end bootstrap args, scenario args below
-        - /workspace/gke-internal.googlesource.com/syllogi/cluster-management/cluster-api/scripts/ci-test.sh
+        - /go/src/gke-internal.googlesource.com/syllogi/cluster-management/cluster-api/scripts/ci-test.sh
 periodics:
  - cron: '1 17 * * 0' # Run at 10:01PST (17:01 UTC) on sunday
    agent: kubernetes

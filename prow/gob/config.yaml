@@ -678,7 +678,7 @@ periodics:
        - --clean
        - --repo=gke-internal.googlesource.com/syllogi/cluster-management
        - --root=/go/src
-       - --upload=gs://syllogi-gob-prow/pr-logs
+       - --upload=gs://syllogi-gob-prow/logs
        - --scenario=execute
        - --
        - /go/src/gke-internal.googlesource.com/syllogi/cluster-management/cluster-api/scripts/ci-build.sh
@@ -696,7 +696,7 @@ periodics:
        - --clean
        - --repo=gke-internal.googlesource.com/syllogi/cluster-management
        - --root=/go/src
-       - --upload=gs://syllogi-gob-prow//logs
+       - --upload=gs://syllogi-gob-prow/logs
        - --scenario=execute
        - --
-       - /go/src/gke-internal.googlesource.com/syllogi/cluster-management/cluster-api/scripts/ci-test.sh`
+       - /go/src/gke-internal.googlesource.com/syllogi/cluster-management/cluster-api/scripts/ci-test.sh

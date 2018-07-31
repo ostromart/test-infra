@@ -524,7 +524,7 @@ periodics:
        - --check-leaked-resources
        - --cluster=
        - --deployment=gke
-       - --extract=gs://gob-prow/ci/latest.txt
+       - --extract=gke-latest
        - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
        - --gcp-node-image=gci
        - --gcp-zone=us-central1-f

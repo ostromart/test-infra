@@ -1,5 +1,18 @@
 resources:
 - names:
+  - gce-gerrit-boskos-01
+  - gce-gerrit-boskos-02
+  - gce-gerrit-boskos-03
+  - gce-gerrit-boskos-04
+  - gce-gerrit-boskos-05
+  - gce-gerrit-boskos-06
+  - gce-gerrit-boskos-07
+  - gce-gerrit-boskos-08
+  - gce-gerrit-boskos-09
+  - gce-gerrit-boskos-10
+  state: dirty
+  type: gce-project
+- names:
   - gke-gerrit-boskos-01
   - gke-gerrit-boskos-02
   - gke-gerrit-boskos-03
@@ -10,6 +23,16 @@ resources:
   - gke-gerrit-boskos-08
   - gke-gerrit-boskos-09
   - gke-gerrit-boskos-10
+  - gke-gerrit-boskos-11
+  - gke-gerrit-boskos-12
+  - gke-gerrit-boskos-13
+  - gke-gerrit-boskos-14
+  - gke-gerrit-boskos-15
+  - gke-gerrit-boskos-16
+  - gke-gerrit-boskos-17
+  - gke-gerrit-boskos-18
+  - gke-gerrit-boskos-19
+  - gke-gerrit-boskos-20
   state: dirty
   type: gke-project
 - names:

@@ -1,5 +1,5 @@
 plank:
-  job_url_template: 'https://gubernator-internal.googleplex.com/build/{{if eq .Spec.Refs.Repo "syllogi/cluster-management"}}syllogi-gob-prow{{else}}gob-prow{{end}}/{{if or (eq .Spec.Type "presubmit") (eq .Spec.Type "batch")}}pr-logs/pull{{with .Spec.Refs}}/{{if eq .Org "https://gke-internal-review.googlesource.com"}}gke-internal.googlesource.com{{else if eq .Org "https://team-review.googlesource.com"}}team-review.googlesource.com{{else}}{{.Org}}{{end}}_{{.Repo}}{{end}}{{else}}logs{{end}}{{if eq .Spec.Type "presubmit"}}/{{with index .Spec.Refs.Pulls 0}}{{.Number}}{{end}}{{else if eq .Spec.Type "batch"}}/batch{{end}}/{{.Spec.Job}}/{{.Status.BuildID}}/'
+  job_url_template: 'https://gubernator-internal.googleplex.com/build/{{if eq .Spec.Refs.Repo "syllogi/cluster-management"}}syllogi-gob-prow{{else}}gob-prow{{end}}/{{if or (eq .Spec.Type "presubmit") (eq .Spec.Type "batch")}}pr-logs/pull{{with .Spec.Refs}}/{{if eq .Org "https://gke-internal-review.googlesource.com"}}gke-internal.googlesource.com{{else if eq .Org "https://team-review.googlesource.com"}}team.googlesource.com{{else}}{{.Org}}{{end}}_{{.Repo}}{{end}}{{else}}logs{{end}}{{if eq .Spec.Type "presubmit"}}/{{with index .Spec.Refs.Pulls 0}}{{.Number}}{{end}}{{else if eq .Spec.Type "batch"}}/batch{{end}}/{{.Spec.Job}}/{{.Status.BuildID}}/'
   report_template: '[Full PR test history](https://gubernator-internal.googleplex.com/pr/{{if eq .Spec.Refs.Org "kubernetes"}}{{if eq .Spec.Refs.Repo "kubernetes"}}{{else}}{{.Spec.Refs.Repo}}/{{end}}{{else}}{{.Spec.Refs.Org}}_{{.Spec.Refs.Repo}}/{{end}}{{with index .Spec.Refs.Pulls 0}}{{.Number}}{{end}}). [Your PR dashboard](https://gubernator-internal.googleplex.com/pr/{{with index .Spec.Refs.Pulls 0}}{{.Author}}{{end}}).'
   pod_pending_timeout: 60m
 prowjob_namespace: default
@@ -229,7 +229,7 @@ presubmits:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-master
         args:
         - --clean
-        - --repo=team.googlesource.com/alphabetcloud/galu/=$(PULL_REFS)
+        - --repo=team.googlesource.com/alphabetcloud/galu=$(PULL_REFS)
         - --service-account=/etc/service-account/service-account.json
         - --upload=gs://gob-prow/pr-logs
         - --scenario=execute

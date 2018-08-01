@@ -246,7 +246,7 @@ presubmits:
       preset-service-account: "true"
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/gcloud-in-go:v20171113-192bec25
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-1.11
         args:
         - --clean
         - --repo=gke-internal.googlesource.com/syllogi/cluster-management=$(PULL_REFS)
@@ -740,7 +740,7 @@ periodics:
      preset-service-account: "true"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/gcloud-in-go:v20171113-192bec25
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-1.11
        args:
        - --clean
        - --repo=gke-internal.googlesource.com/syllogi/cluster-management
@@ -758,7 +758,7 @@ periodics:
      preset-k8s-ssh: "true"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/cluster-api:v20180720-d52d72975
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-master
        args:
        - --clean
        - --repo=gke-internal.googlesource.com/syllogi/cluster-management

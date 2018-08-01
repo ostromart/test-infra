@@ -599,7 +599,70 @@ periodics:
        - --provider=gke
        - --test_args=--ginkgo.focus=\[Feature:ClusterSizeAutoscalingScaleUp\]|\[Feature:ClusterSizeAutoscalingScaleDown\]|\[Feature:ClusterSizeAutoscalingScaleWithNAP\] --ginkgo.skip=\[Flaky\] --minStartupPods=8
        - --timeout=10h
-
+ - interval: 30m
+   name: periodic_fast_autoscaling_test_prod_us-central1-a
+   agent: kubernetes
+   labels:
+     preset-service-account: "true"
+   spec:
+    containers:
+    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-master
+      args:
+      - --clean
+      - --repo=gke-internal.googlesource.com/gke-autoscaling
+      - --timeout=5
+      - --scenario=execute
+      - --upload=gs://gob-prow/logs
+      - -- # end bootstrap args, scenario args below
+      - /workspace/gke-internal.googlesource.com/gke-autoscaling/test/fast-scaling-tests/test_prod_us-central1-a.sh
+ - interval: 30m
+   name: periodic_fast_autoscaling_test_experimental_us-east2-a
+   agent: kubernetes
+   labels:
+     preset-service-account: "true"
+   spec:
+    containers:
+    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-master
+      args:
+      - --clean
+      - --repo=gke-internal.googlesource.com/gke-autoscaling
+      - --timeout=5
+      - --scenario=execute
+      - --upload=gs://gob-prow/logs
+      - -- # end bootstrap args, scenario args below
+      - /workspace/gke-internal.googlesource.com/gke-autoscaling/test/fast-scaling-tests/test_experimental_us-east2-a.sh
+ - interval: 30m
+   name: periodic_fast_autoscaling_test_experimental_ssd_us-east2-a
+   agent: kubernetes
+   labels:
+     preset-service-account: "true"
+   spec:
+    containers:
+    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-master
+      args:
+      - --clean
+      - --repo=gke-internal.googlesource.com/gke-autoscaling
+      - --timeout=5
+      - --scenario=execute
+      - --upload=gs://gob-prow/logs
+      - -- # end bootstrap args, scenario args below
+      - /workspace/gke-internal.googlesource.com/gke-autoscaling/test/fast-scaling-tests/test_experimental_ssd_us-east2-a.sh
+ - interval: 30m
+   name: periodic_fast_autoscaling_generate_metrics_file
+   agent: kubernetes
+   labels:
+     preset-service-account: "true"
+   spec:
+    containers:
+    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-master
+      args:
+      - --clean
+      - --repo=gke-internal.googlesource.com/gke-autoscaling
+      - --timeout=5
+      - --scenario=execute
+      - --upload=gs://gob-prow/logs
+      - -- # end bootstrap args, scenario args below
+      - /workspace/gke-internal.googlesource.com/gke-autoscaling/test/fast-scaling-tests/generate_metrics_file.sh
    # managed certs in gke jobs
  - interval: 30m
    name: ci-managed-certs-gke-image-build

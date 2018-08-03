@@ -1,33 +1,9 @@
 approve:
 - repos:
-  - knative
-  implicit_self_approve: true
-  review_acts_as_approve: true
-- repos:
   - GoogleCloudPlatform/k8s-tpu-operator
   implicit_self_approve: true
 
 plugins:
-  knative:
-  - approve
-  - assign
-  - blunderbuss
-  - buildifier
-  - cat
-  - dog
-  - golint
-  - heart
-  - help
-  - hold
-  - label
-  - lgtm
-  - lifecycle
-  - shrug
-  - size
-  - skip
-  - trigger
-  - wip
-  - yuks
   GoogleCloudPlatform/k8s-tpu-operator:
   - approve
   - assign

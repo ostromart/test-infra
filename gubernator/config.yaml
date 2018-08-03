@@ -9,42 +9,9 @@ external_services:
     gcs_bucket: gke-prow/
     gcs_pull_prefix: gke-prow/pr-logs/pull
     prow_url: prow-internal.gcpnode.com
-  knative:
-    gcs_bucket: knative-prow/
-    gcs_pull_prefix: knative-prow/pr-logs/pull
-    prow_url: prow-internal.gcpnode.com
 jobs:
   gob-prow/logs/:
   - ci-kubernetes-build
   - ci-kubernetes-bazel-test
   - ci-kubernetes-integration
-  knative-prow/pr-logs/directory/:
-  - pull-knative-serving-build-tests
-  - pull-knative-serving-integration-tests
-  - pull-knative-serving-unit-tests
-  - pull-knative-eventing-build-tests
-  - pull-knative-eventing-integration-tests
-  - pull-knative-eventing-unit-tests
-  - pull-knative-docs-build-tests
-  - pull-knative-docs-unit-tests
-  - pull-knative-docs-integration-tests
-  - pull-knative-build-templates-unit-tests
-  - pull-knative-build-templates-build-tests
-  - pull-knative-build-templates-integration-tests
-  - pull-knative-build-build-tests
-  - pull-knative-build-unit-tests
-  - pull-knative-build-integration-tests
-  - pull-knative-pkg-build-tests
-  - pull-knative-pkg-unit-tests
-  - pull-knative-pkg-integration-tests
-  - ci-knative-serving-continuous
-  - ci-knative-serving-release
-  - ci-knative-serving-playground
-  - ci-knative-build-continuous
-  - ci-knative-build-release
-  - ci-knative-eventing-continuous
-  - ci-knative-eventing-release
-  - ci-knative-build-templates-continuous
-  - ci-knative-docs-continuous
-  - ci-knative-pkg-continuous
 recursive_artifacts: false

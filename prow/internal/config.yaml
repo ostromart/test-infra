@@ -2802,7 +2802,7 @@ periodics:
       - --provider=gce
       - --gcp-zone=us-central1-f
       - --image-family=ubuntu-gke-1804-lts-1
-      - --image-project=ubuntu-os-gke-cloud-devel
+      - --image-project=ubuntu-os-gke-cloud-private
       - --timeout=180m
       - --test_args=--nodes=1 --focus="\[Serial\]" --skip="\[Flaky\]|\[Benchmark\]|\[NodeAlphaFeature:.+\]"
       - --node-test-args=--feature-gates=DynamicKubeletConfig=true
@@ -2861,7 +2861,7 @@ periodics:
       - --provider=gce
       - --gcp-zone=us-central1-f
       - --image-family=ubuntu-gke-1804-lts-1
-      - --image-project=ubuntu-os-gke-cloud-devel
+      - --image-project=ubuntu-os-gke-cloud-private
       - --timeout=60m
       - --test_args=--nodes=8 --skip="\[Flaky\]|\[Serial\]|\[NodeAlphaFeature:.+\]"
       - --node-args=--system-spec-name=gke
@@ -2982,7 +2982,7 @@ periodics:
       - --provider=gce
       - --gcp-zone=us-central1-f
       - --image-family=ubuntu-gke-1604-lts-2
-      - --image-project=ubuntu-os-gke-cloud-devel
+      - --image-project=ubuntu-os-gke-cloud-private
       - --timeout=180m
       - --test_args=--nodes=1 --focus="\[Serial\]" --skip="\[Flaky\]|\[Benchmark\]|\[NodeAlphaFeature:.+\]"
       - --node-test-args=--feature-gates=DynamicKubeletConfig=true
@@ -3381,7 +3381,7 @@ periodics:
       - --provider=gce
       - --gcp-zone=us-central1-f
       - --image-family=ubuntu-gke-1604-lts-2
-      - --image-project=ubuntu-os-gke-cloud-devel
+      - --image-project=ubuntu-os-gke-cloud-private
       - --timeout=180m
       - --test_args=--nodes=1 --focus="\[Serial\]" --skip="\[Flaky\]|\[Benchmark\]|\[NodeAlphaFeature:.+\]"
       - --node-test-args=--feature-gates=DynamicKubeletConfig=true
@@ -3475,7 +3475,7 @@ periodics:
       - --provider=gce
       - --gcp-zone=us-central1-f
       - --image-family=ubuntu-gke-1604-lts-2
-      - --image-project=ubuntu-os-gke-cloud-devel
+      - --image-project=ubuntu-os-gke-cloud-private
       - --timeout=60m
       - --test_args=--nodes=8 --skip="\[Flaky\]|\[Serial\]|\[NodeAlphaFeature:.+\]"
       - --node-args=--system-spec-name=gke
@@ -3628,7 +3628,7 @@ periodics:
       - --provider=gce
       - --gcp-zone=us-central1-f
       - --image-family=ubuntu-gke-1604-lts-2
-      - --image-project=ubuntu-os-gke-cloud-devel
+      - --image-project=ubuntu-os-gke-cloud-private
       - --timeout=60m
       - --test_args=--nodes=8 --skip="\[Flaky\]|\[Serial\]|\[NodeAlphaFeature:.+\]"
       - --node-args=--system-spec-name=gke

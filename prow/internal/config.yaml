@@ -2837,7 +2837,6 @@ periodics:
       - --test_args=--ginkgo.skip=\[Slow\]|\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\] --minStartupPods=8
       - --ginkgo-parallel=30
       - --check-leaked-resources=false
-      - --gcp-project=ubuntu-os-gke-cloud-dev-tests
       env:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 - tags:
@@ -2897,7 +2896,6 @@ periodics:
       - --test_args=--ginkgo.focus=\[Serial\]|\[Disruptive\] --ginkgo.skip=\[Flaky\]|\[Feature:.+\] --minStartupPods=8
       - --ginkgo-parallel=1
       - --check-leaked-resources=false
-      - --gcp-project=ubuntu-os-gke-cloud-dev-tests
       env:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 - tags:
@@ -3114,7 +3112,6 @@ periodics:
       - --test_args=--ginkgo.skip=\[Slow\]|\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\] --minStartupPods=8
       - --ginkgo-parallel=30
       - --check-leaked-resources=false
-      - --gcp-project=ubuntu-os-gke-cloud-dev-tests
       env:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 - tags:
@@ -3144,7 +3141,6 @@ periodics:
       - --test_args=--ginkgo.focus=\[Slow\] --ginkgo.skip=\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\] --minStartupPods=8
       - --ginkgo-parallel=30
       - --check-leaked-resources=false
-      - --gcp-project=ubuntu-os-gke-cloud-dev-tests
       env:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 - tags:
@@ -3237,7 +3233,6 @@ periodics:
       - --test_args=--ginkgo.focus=\[Serial\]|\[Disruptive\] --ginkgo.skip=\[Flaky\]|\[Feature:.+\] --minStartupPods=8
       - --ginkgo-parallel=1
       - --check-leaked-resources=false
-      - --gcp-project=ubuntu-os-gke-cloud-dev-tests
       env:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 - tags:
@@ -3330,7 +3325,6 @@ periodics:
       - --test_args=--ginkgo.focus=\[Slow\] --ginkgo.skip=\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\] --minStartupPods=8
       - --ginkgo-parallel=30
       - --check-leaked-resources=false
-      - --gcp-project=ubuntu-os-gke-cloud-dev-tests
       env:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 - tags:
@@ -3610,7 +3604,6 @@ periodics:
       - --test_args=--ginkgo.skip=\[Slow\]|\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\] --minStartupPods=8
       - --ginkgo-parallel=30
       - --check-leaked-resources=false
-      - --gcp-project=ubuntu-os-gke-cloud-dev-tests
       env:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 - tags:
@@ -3670,7 +3663,6 @@ periodics:
       - --test_args=--ginkgo.focus=\[Slow\] --ginkgo.skip=\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\] --minStartupPods=8
       - --ginkgo-parallel=30
       - --check-leaked-resources=false
-      - --gcp-project=ubuntu-os-gke-cloud-dev-tests
       env:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 - tags:
@@ -3763,7 +3755,6 @@ periodics:
       - --test_args=--ginkgo.focus=\[Serial\]|\[Disruptive\] --ginkgo.skip=\[Flaky\]|\[Feature:.+\] --minStartupPods=8
       - --ginkgo-parallel=1
       - --check-leaked-resources=false
-      - --gcp-project=ubuntu-os-gke-cloud-dev-tests
       env:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 - tags:

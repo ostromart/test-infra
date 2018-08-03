@@ -573,7 +573,7 @@ periodics:
        emptyDir: {}
 
  - interval: 6h
-   name: ci-autoscaling-e2e-tests
+   name: ci-autoscaling-nap-e2e
    agent: kubernetes
    labels:
      preset-k8s-ssh: "true"
@@ -582,8 +582,9 @@ periodics:
      containers:
      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-master
        args:
-       - --timeout=600
-       - --bare
+       - --timeout=300
+       - --repo=gke-internal.googlesource.com/gke-autoscaling=master
+       - --root=/go/src
        - --upload=gs://gob-prow/logs
        - --scenario=kubernetes_e2e
        - --
@@ -597,8 +598,10 @@ periodics:
        - --ginkgo-parallel=1
        - --gke-environment=test
        - --provider=gke
-       - --test_args=--ginkgo.focus=\[Feature:ClusterSizeAutoscalingScaleUp\]|\[Feature:ClusterSizeAutoscalingScaleDown\]|\[Feature:ClusterSizeAutoscalingScaleWithNAP\] --ginkgo.skip=\[Flaky\] --minStartupPods=8
-       - --timeout=10h
+       - --test=false
+       - --test-cmd=../test/cluster-autoscaler/e2e/hack/run-e2e.sh
+       - --test-cmd-args=--ginkgo.focus=\[Feature:NodeAutoProvisioning\]
+       - --timeout=5h
  - interval: 30m
    name: periodic_fast_autoscaling_test_prod_us-central1-a
    agent: kubernetes

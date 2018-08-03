@@ -2801,7 +2801,7 @@ periodics:
       - --node-tests=true
       - --provider=gce
       - --gcp-zone=us-central1-f
-      - --image-family=ubuntu-gke-1804-lts-1
+      - --image-family=ubuntu-gke-1604-lts-1
       - --image-project=ubuntu-os-gke-cloud-private
       - --timeout=180m
       - --test_args=--nodes=1 --focus="\[Serial\]" --skip="\[Flaky\]|\[Benchmark\]|\[NodeAlphaFeature:.+\]"
@@ -2860,7 +2860,7 @@ periodics:
       - --node-tests=true
       - --provider=gce
       - --gcp-zone=us-central1-f
-      - --image-family=ubuntu-gke-1804-lts-1
+      - --image-family=ubuntu-gke-1604-lts-1
       - --image-project=ubuntu-os-gke-cloud-private
       - --timeout=60m
       - --test_args=--nodes=8 --skip="\[Flaky\]|\[Serial\]|\[NodeAlphaFeature:.+\]"

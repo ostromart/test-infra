@@ -182,6 +182,28 @@ presubmits:
       volumes:
       - name: docker-graph
         emptyDir: {}
+  https://gke-internal-review.googlesource.com/kubernetes/gke-common-webhooks:
+  - name: pull-webhooks-unit
+    agent: kubernetes
+    context: pull-webhooks-unit
+    always_run: true
+    rerun_command: "/test pull-webhooks-unit"
+    trigger: "(?m)^/test (all|pull-webhooks-unit),?(\\s+|$)"
+    labels:
+      preset-service-account: "true"
+    spec:
+      containers:
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-master
+        args:
+        - --clean
+        - --repo=gke-internal.googlesource.com/kubernetes/gke-common-webhooks=$(PULL_REFS)
+        - --service-account=/etc/service-account/service-account.json
+        - --upload=gs://gob-prow/pr-logs
+        - --scenario=execute
+        - -- # end bootstrap args, scenario args below
+        - "make"
+        - "lint"
+        - "test"
   https://gke-internal-review.googlesource.com/net/mci:
   - name: pull-mci-unit
     agent: kubernetes

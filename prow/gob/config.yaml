@@ -67,7 +67,7 @@ presubmits:
       preset-service-account: "true"
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-master
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
         args:
         - --clean
         - --repo=gke-internal.googlesource.com/test-infra=$(PULL_REFS)
@@ -127,7 +127,7 @@ presubmits:
       preset-bazel-scratch-dir: "true"
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-master
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
         args:
         - --clean
         - --repo=gke-internal.googlesource.com/kubernetes=$(PULL_REFS)
@@ -193,7 +193,7 @@ presubmits:
       preset-service-account: "true"
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-master
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
         args:
         - --clean
         - --repo=gke-internal.googlesource.com/net/mci=$(PULL_REFS)
@@ -226,7 +226,7 @@ presubmits:
       preset-service-account: "true"
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-master
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
         args:
         - --clean
         - --repo=team.googlesource.com/alphabetcloud/galu=$(PULL_REFS)
@@ -297,7 +297,7 @@ presubmits:
       preset-service-account: "true"
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-master
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
         args:
         - --clean
         - --repo=gke-internal.googlesource.com/syllogi/cluster-management=$(PULL_REFS)
@@ -368,7 +368,7 @@ presubmits:
       preset-service-account: "true"
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-master
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
         args:
         - --clean
         - --repo=gke-internal.googlesource.com/syllogi/cluster-management=$(PULL_REFS)
@@ -389,7 +389,7 @@ presubmits:
       preset-service-account: "true"
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-master
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
         args:
         - --clean
         - --timeout=300
@@ -489,7 +489,7 @@ periodics:
      preset-bazel-scratch-dir: "true"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-master
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
        args:
        - --clean
        - --job=$(JOB_NAME)
@@ -604,7 +604,7 @@ periodics:
        - --provider=gke
        - --test_args=--ginkgo.skip=\[Slow\]|\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\] --minStartupPods=8
        - --timeout=50m
-       image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-master
+       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 
    # gke autoscaling jobs
  - interval: 30m
@@ -614,7 +614,7 @@ periodics:
      preset-service-account: "true"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-master
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
        args:
        - --clean
        - --repo=gke-internal.googlesource.com/gke-autoscaling
@@ -651,7 +651,7 @@ periodics:
      preset-service-account: "true"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-master
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
        args:
        - --timeout=300
        - --repo=gke-internal.googlesource.com/gke-autoscaling=master
@@ -681,7 +681,7 @@ periodics:
      preset-service-account: "true"
    spec:
     containers:
-    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-master
+    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
       args:
       - --clean
       - --repo=gke-internal.googlesource.com/gke-autoscaling
@@ -698,7 +698,7 @@ periodics:
      preset-service-account: "true"
    spec:
     containers:
-    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-master
+    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
       args:
       - --clean
       - --repo=gke-internal.googlesource.com/gke-autoscaling
@@ -715,7 +715,7 @@ periodics:
      preset-service-account: "true"
    spec:
     containers:
-    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-master
+    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
       args:
       - --clean
       - --repo=gke-internal.googlesource.com/gke-autoscaling
@@ -732,7 +732,7 @@ periodics:
      preset-service-account: "true"
    spec:
     containers:
-    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-master
+    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
       args:
       - --clean
       - --repo=gke-internal.googlesource.com/gke-autoscaling
@@ -749,7 +749,7 @@ periodics:
      preset-service-account: "true"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-master
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
        args:
        - --clean
        - --repo=gke-internal.googlesource.com/managed-certs-gke
@@ -783,7 +783,7 @@ periodics:
      preset-k8s-ssh: "true"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-master
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
        args:
        - --clean
        - --repo=gke-internal.googlesource.com/managed-certs-gke
@@ -832,7 +832,7 @@ periodics:
      preset-k8s-ssh: "true"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-master
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
        args:
        - --clean
        - --repo=gke-internal.googlesource.com/syllogi/cluster-management
@@ -867,7 +867,7 @@ periodics:
      preset-k8s-ssh: "true"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-master
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
        args:
        - --clean
        - --repo=gke-internal.googlesource.com/syllogi/cluster-management

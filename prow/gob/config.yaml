@@ -695,6 +695,40 @@ periodics:
        - --test-cmd=../test/cluster-autoscaler/e2e/hack/run-e2e.sh
        - --test-cmd-args=--ginkgo.focus=\[Feature:NodeAutoProvisioning\]
        - --timeout=5h
+
+ # Production continuous prober for go/nomos.
+ - interval: 15m
+   name: nomos-prober
+   agent: kubernetes
+   spec:
+     containers:
+     - image: gcr.io/stolos-dev/e2e-tests:prober
+       args:
+       - --gcp-prober-cred=/etc/prober-gcp-service-account
+       - --gcp-runner-cred=gs://stolos-dev/e2e/nomos-e2e.joonix.net/test_runner_client_key.json
+       - --gcp-watcher-cred=gs://stolos-dev/e2e/nomos-e2e.joonix.net/watcher_client_key.json
+       - --importer=gcp
+       - --skip-installation
+       - --tap
+       - --test
+       env:
+       - name: DOCKER_IN_DOCKER_ENABLED
+         value: "true"
+       securityContext:
+         privileged: true
+       volumeMounts:
+       - name: docker-graph
+         mountPath: /docker-graph
+       - name: prober-cred
+         mountPath: /etc/prober-gcp-service-account
+         readOnly: true
+     volumes:
+     - name: docker-graph
+       emptyDir: {}
+     - name: prober-cred
+       secret:
+         secretName: nomos-prober-gcp-service-account
+
  - interval: 30m
    name: periodic_fast_autoscaling_test_prod_us-central1-a
    agent: kubernetes

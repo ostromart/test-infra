@@ -665,7 +665,7 @@ periodics:
      - name: docker-graph
        emptyDir: {}
 
- - interval: 6h
+ - interval: 2h
    name: ci-autoscaling-nap-e2e
    agent: kubernetes
    labels:

@@ -723,7 +723,7 @@ periodics:
    agent: kubernetes
    spec:
      containers:
-     - image: gcr.io/stolos-dev/e2e-tests:prober
+     - image: gcr.io/stolos-dev/e2e-prober:test-e2e-latest
        args:
        - --gcp-prober-cred=/etc/prober-gcp-service-account
        - --gcp-runner-cred=gs://stolos-dev/e2e/nomos-e2e.joonix.net/test_runner_client_key.json
@@ -748,7 +748,7 @@ periodics:
        emptyDir: {}
      - name: prober-cred
        secret:
-         secretName: nomos-prober-gcp-service-account
+         secretName: nomos-prober-runner-gcp-client-key
 
  - interval: 30m
    name: periodic_fast_autoscaling_test_prod_us-central1-a

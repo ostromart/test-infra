@@ -737,6 +737,21 @@ periodics:
    spec:
      containers:
      - image: gcr.io/stolos-dev/e2e-prober:test-e2e-latest
+       command:
+       - /opt/testing/e2e/setup.sh
+       args:
+       # '--flag=value' syntax doesn't work here. Flag parameters are quoted.
+       - --gcp-prober-cred
+       - "/etc/prober-gcp-service-account/prober_runner_client_key.json"
+       - --gcp-runner-cred
+       - "gs://stolos-dev/e2e/nomos-e2e.joonix.net/test_runner_client_key.json"
+       - --gcp-watcher-cred
+       - "gs://stolos-dev/e2e/nomos-e2e.joonix.net/watcher_client_key.json"
+       - --importer
+       - "gcp"
+       - --skip-installation
+       - --tap
+       - --test
        env:
        - name: DOCKER_IN_DOCKER_ENABLED
          value: "true"

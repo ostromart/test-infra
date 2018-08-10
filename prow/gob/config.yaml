@@ -486,7 +486,7 @@ periodics:
        - --provider=gke
        - --test_args=--ginkgo.flakeAttempts=2 --ginkgo.skip=\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\]|\[DisabledForLargeClusters\] --allowed-not-ready-nodes=40 --node-schedulable-timeout=90m --minStartupPods=8
        - --timeout=630m
-       image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
+       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
        resources:
          requests:
            memory: "6Gi"
@@ -520,7 +520,7 @@ periodics:
        - --provider=gke
        - --test_args=--ginkgo.flakeAttempts=2 --ginkgo.skip=\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\]|\[DisabledForLargeClusters\]
        - --timeout=450m
-       image: gcr.io/k8s-testimages/kubekins-e2e:v20180402-7b54c4ba6-master
+       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
        resources:
          requests:
            memory: "6Gi"

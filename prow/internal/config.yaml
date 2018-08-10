@@ -268,7 +268,7 @@ periodics:
   spec:
     containers:
     - args:
-      - --timeout=70
+      - --timeout=320
       - --bare
       - --scenario=kubernetes_e2e
       - --upload=gs://gke-prow/logs
@@ -291,7 +291,7 @@ periodics:
   spec:
     containers:
     - args:
-      - --timeout=70
+      - --timeout=170
       - --bare
       - --scenario=kubernetes_e2e
       - --upload=gs://gke-prow/logs
@@ -315,7 +315,7 @@ periodics:
   spec:
     containers:
     - args:
-      - --timeout=70
+      - --timeout=170
       - --bare
       - --scenario=kubernetes_e2e
       - --upload=gs://gke-prow/logs
@@ -483,7 +483,7 @@ periodics:
   spec:
     containers:
     - args:
-      - --timeout=70
+      - --timeout=320
       - --bare
       - --scenario=kubernetes_e2e
       - --upload=gs://gke-prow/logs
@@ -506,7 +506,7 @@ periodics:
   spec:
     containers:
     - args:
-      - --timeout=70
+      - --timeout=320
       - --bare
       - --scenario=kubernetes_e2e
       - --upload=gs://gke-prow/logs
@@ -529,7 +529,7 @@ periodics:
   spec:
     containers:
     - args:
-      - --timeout=70
+      - --timeout=320
       - --bare
       - --scenario=kubernetes_e2e
       - --upload=gs://gke-prow/logs
@@ -552,7 +552,7 @@ periodics:
   spec:
     containers:
     - args:
-      - --timeout=70
+      - --timeout=320
       - --bare
       - --scenario=kubernetes_e2e
       - --upload=gs://gke-prow/logs
@@ -575,7 +575,7 @@ periodics:
   spec:
     containers:
     - args:
-      - --timeout=70
+      - --timeout=320
       - --bare
       - --scenario=kubernetes_e2e
       - --upload=gs://gke-prow/logs
@@ -598,7 +598,7 @@ periodics:
   spec:
     containers:
     - args:
-      - --timeout=70
+      - --timeout=320
       - --bare
       - --scenario=kubernetes_e2e
       - --upload=gs://gke-prow/logs
@@ -621,7 +621,7 @@ periodics:
   spec:
     containers:
     - args:
-      - --timeout=70
+      - --timeout=170
       - --bare
       - --scenario=kubernetes_e2e
       - --upload=gs://gke-prow/logs
@@ -645,7 +645,7 @@ periodics:
   spec:
     containers:
     - args:
-      - --timeout=70
+      - --timeout=170
       - --bare
       - --scenario=kubernetes_e2e
       - --upload=gs://gke-prow/logs
@@ -669,7 +669,7 @@ periodics:
   spec:
     containers:
     - args:
-      - --timeout=70
+      - --timeout=170
       - --bare
       - --scenario=kubernetes_e2e
       - --upload=gs://gke-prow/logs
@@ -693,7 +693,7 @@ periodics:
   spec:
     containers:
     - args:
-      - --timeout=70
+      - --timeout=170
       - --bare
       - --scenario=kubernetes_e2e
       - --upload=gs://gke-prow/logs
@@ -717,7 +717,7 @@ periodics:
   spec:
     containers:
     - args:
-      - --timeout=70
+      - --timeout=170
       - --bare
       - --scenario=kubernetes_e2e
       - --upload=gs://gke-prow/logs
@@ -741,7 +741,7 @@ periodics:
   spec:
     containers:
     - args:
-      - --timeout=70
+      - --timeout=170
       - --bare
       - --scenario=kubernetes_e2e
       - --upload=gs://gke-prow/logs
@@ -792,7 +792,7 @@ periodics:
   spec:
     containers:
     - args:
-      - --timeout=70
+      - --timeout=320
       - --bare
       - --scenario=kubernetes_e2e
       - --upload=gs://gke-prow/logs
@@ -817,7 +817,7 @@ periodics:
   spec:
     containers:
     - args:
-      - --timeout=70
+      - --timeout=170
       - --bare
       - --scenario=kubernetes_e2e
       - --upload=gs://gke-prow/logs
@@ -843,7 +843,7 @@ periodics:
   spec:
     containers:
     - args:
-      - --timeout=70
+      - --timeout=620
       - --bare
       - --scenario=kubernetes_e2e
       - --upload=gs://gke-prow/logs

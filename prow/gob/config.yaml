@@ -2,6 +2,18 @@ plank:
   job_url_template: 'https://gubernator-internal.googleplex.com/build/{{with .Spec.Refs}}{{if eq .Repo "syllogi/cluster-management"}}syllogi-gob-prow{{else if eq .Repo "alphabetcloud/galu"}}galu-gob-prow{{else}}gob-prow{{end}}{{else}}gob-prow{{end}}/{{if or (eq .Spec.Type "presubmit") (eq .Spec.Type "batch")}}pr-logs/pull{{with .Spec.Refs}}/{{if eq .Org "https://gke-internal-review.googlesource.com"}}gke-internal.googlesource.com{{else if eq .Org "https://team-review.googlesource.com"}}team.googlesource.com{{else}}{{.Org}}{{end}}_{{.Repo}}{{end}}{{else}}logs{{end}}{{if eq .Spec.Type "presubmit"}}/{{with index .Spec.Refs.Pulls 0}}{{.Number}}{{end}}{{else if eq .Spec.Type "batch"}}/batch{{end}}/{{.Spec.Job}}/{{.Status.BuildID}}/'
   report_template: '[Full PR test history](https://gubernator-internal.googleplex.com/pr/{{if eq .Spec.Refs.Org "kubernetes"}}{{if eq .Spec.Refs.Repo "kubernetes"}}{{else}}{{.Spec.Refs.Repo}}/{{end}}{{else}}{{.Spec.Refs.Org}}_{{.Spec.Refs.Repo}}/{{end}}{{with index .Spec.Refs.Pulls 0}}{{.Number}}{{end}}). [Your PR dashboard](https://gubernator-internal.googleplex.com/pr/{{with index .Spec.Refs.Pulls 0}}{{.Author}}{{end}}).'
   pod_pending_timeout: 60m
+  default_decoration_config:
+    timeout: 7200000000000 # 2h
+    grace_period: 15000000000 # 15s
+    utility_images:
+      clonerefs: "gcr.io/k8s-prow/clonerefs@sha256:d80c97b81da29f02bf70d7762cc179dbfb6f467190be08bdca09cebc28455dfb"
+      initupload: "gcr.io/k8s-prow/initupload@sha256:b60dce2ff0de7ca3a40f16d15d308de1376bfc9d44d2a602f7aa5dbf28f849e3"
+      entrypoint: "gcr.io/k8s-prow/entrypoint@sha256:e5345b572c44425bb3b03ae2aebe3084ebec9786fcb998771f8cf9dc9bcc76a6"
+      sidecar: "gcr.io/k8s-prow/sidecar@sha256:98216d2e6186287167eefb966c48f81fcf8c2d3ec463664e1c31264ae2c929c7"
+    gcs_configuration:
+      bucket: "gob-prow"
+      path_strategy: "explicit"
+    gcs_credentials_secret: "service-account"
 prowjob_namespace: default
 pod_namespace: test-pods
 log_level: info
@@ -721,6 +733,7 @@ periodics:
  - interval: 15m
    name: nomos-prober
    agent: kubernetes
+   decorate: true
    spec:
      containers:
      - image: gcr.io/stolos-dev/e2e-prober:test-e2e-latest

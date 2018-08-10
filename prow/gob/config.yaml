@@ -725,10 +725,14 @@ periodics:
      containers:
      - image: gcr.io/stolos-dev/e2e-prober:test-e2e-latest
        args:
-       - --gcp-prober-cred=/etc/prober-gcp-service-account
-       - --gcp-runner-cred=gs://stolos-dev/e2e/nomos-e2e.joonix.net/test_runner_client_key.json
-       - --gcp-watcher-cred=gs://stolos-dev/e2e/nomos-e2e.joonix.net/watcher_client_key.json
-       - --importer=gcp
+       - --gcp-prober-cred
+       - /etc/prober-gcp-service-account
+       - --gcp-runner-cred
+       - gs://stolos-dev/e2e/nomos-e2e.joonix.net/test_runner_client_key.json
+       - --gcp-watcher-cred
+       - gs://stolos-dev/e2e/nomos-e2e.joonix.net/watcher_client_key.json
+       - --importer
+       - gcp
        - --skip-installation
        - --tap
        - --test

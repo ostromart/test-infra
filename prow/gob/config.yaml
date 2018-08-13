@@ -737,6 +737,7 @@ periodics:
    spec:
      containers:
      - image: gcr.io/stolos-dev/e2e-prober:test-e2e-latest
+       imagePullPolicy: Always
        command:
        - /opt/testing/e2e/setup.sh
        args:

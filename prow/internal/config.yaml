@@ -834,7 +834,7 @@ periodics:
       - --timeout=150m
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 
-- interval: 12h
+- interval: 24h
   agent: kubernetes
   name: ci-kubernetes-soak-cos-docker-validation
   labels:
@@ -843,7 +843,7 @@ periodics:
   spec:
     containers:
     - args:
-      - --timeout=620
+      - --timeout=1220
       - --bare
       - --scenario=kubernetes_e2e
       - --upload=gs://gke-prow/logs
@@ -859,7 +859,7 @@ periodics:
       - --save=gs://gke-prow/soak/ci-kubernetes-soak-cos-docker-validation
       - --soak
       - --test_args=--ginkgo.skip=\[Disruptive\]|\[Flaky\]|\[Feature:.+\] --clean-start=true --minStartupPods=8
-      - --timeout=600m
+      - --timeout=1200m
       - --up=false
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 

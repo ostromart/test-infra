@@ -680,11 +680,7 @@ periodics:
        - -- # stop bootstrap flags
        - --env=TAG=ci_latest
        - --env=REGISTRY=gcr.io/gke-autoscaling-gcr
-       - make
-       - --
-       - -C
-       - cluster-autoscaler
-       - release-ci
+       - ./hack/release-ci.sh
        env:
        - name: DOCKER_IN_DOCKER_ENABLED
          value: "true"

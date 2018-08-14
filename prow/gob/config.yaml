@@ -757,6 +757,38 @@ periodics:
        - --test-cmd-args=--ginkgo.focus=\[Feature:NodeAutoProvisioningWithGPU\]
        - --timeout=2h
 
+ - interval: 2h
+   name: ci-autoscaling-vpa-full-e2e
+   agent: kubernetes
+   labels:
+     preset-k8s-ssh: "true"
+     preset-service-account: "true"
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
+       args:
+       - --timeout=80
+       - --repo=k8s.io/autoscaler=master
+       - --root=/go/src
+       - --upload=gs://gob-prow/logs
+       - --scenario=kubernetes_e2e
+       - --
+       - --check-leaked-resources
+       - --deployment=gke
+       - --extract=gs://kubernetes-release-gke-internal/ci/latest-autoscaling.txt
+       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+       - --gcp-node-image=gci
+       - --gcp-zone=us-central1-f
+       - --ginkgo-parallel=1
+       - --gke-command-group=beta
+       - --gke-create-command=container clusters create --enable-vertical-pod-autoscaling
+       - --gke-environment=test
+       - --provider=gke
+       - --test=false
+       - --test-cmd=../vertical-pod-autoscaler/hack/run-e2e-tests.sh
+       - --test-cmd-args=full-vpa
+       - --timeout=60m
+
  # Production continuous prober for go/nomos.
  - interval: 15m
    name: nomos-prober

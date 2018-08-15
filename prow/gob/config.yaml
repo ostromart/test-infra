@@ -448,7 +448,7 @@ presubmits:
         args:
         - --clean
         - --timeout=300
-        - --repo=team-review.googlesource.com/gke-kubernetes-enterprise-control/prototype=$(PULL_REFS)
+        - --repo=team.googlesource.com/gke-kubernetes-enterprise-control/prototype=$(PULL_REFS)
         - --scenario=execute
         - --upload=gs://gob-prow/pr-logs
         - --

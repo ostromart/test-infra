@@ -75,7 +75,7 @@ spec:
     spec:
       containers:
       - name: plank
-        image: gcr.io/k8s-prow/plank:v20180703-d0f7a6568
+        image: gcr.io/k8s-prow/plank:v20180814-0a3efc115
         args:
         - --dry-run=false
         - --github-token-file=
@@ -103,7 +103,7 @@ spec:
     spec:
       containers:
       - name: sinker
-        image: gcr.io/k8s-prow/sinker:v20180627-ea5075d37
+        image: gcr.io/k8s-prow/sinker:v20180814-0a3efc115
         volumeMounts:
         - name: config
           mountPath: /etc/config
@@ -134,7 +134,7 @@ spec:
       terminationGracePeriodSeconds: 30
       containers:
       - name: deck
-        image: gcr.io/k8s-prow/deck:v20180627-ea5075d37
+        image: gcr.io/k8s-prow/deck:v20180814-0a3efc115
         ports:
           - name: http
             containerPort: 8080
@@ -175,7 +175,7 @@ spec:
       terminationGracePeriodSeconds: 30
       containers:
       - name: horologium
-        image: gcr.io/k8s-prow/horologium:v20180627-ea5075d37
+        image: gcr.io/k8s-prow/horologium:v20180814-0a3efc115
         volumeMounts:
         - name: config
           mountPath: /etc/config

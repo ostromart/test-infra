@@ -1004,6 +1004,7 @@ periodics:
    name: ci-redis-operator-e2e
    agent: kubernetes
    labels:
+     preset-k8s-ssh: "true"
      preset-service-account: "true"
    spec:
      containers:

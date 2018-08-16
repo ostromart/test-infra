@@ -973,3 +973,62 @@ periodics:
        - --scenario=execute
        - --
        - /go/src/gke-internal.googlesource.com/syllogi/cluster-management/syllogi-cli/scripts/ci-test.sh
+
+ - interval: 1h
+   name: ci-redis-operator-image-build
+   agent: kubernetes
+   labels:
+     preset-service-account: "true"
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
+       args:
+       - --clean
+       - --repo=gke-internal.googlesource.com/GoogleCloudPlatform/redis-operator=master
+       - --root=/go/src
+       - --timeout=30
+       - --scenario=execute
+       - --upload=gs://gob-prow/logs
+       - --
+       - ./hack/build-ci.sh
+       env:
+       - name: DOCKER_IN_DOCKER_ENABLED
+         value: "true"
+       securityContext:
+         privileged: true
+       volumeMounts:
+       - name: docker-graph
+         mountPath: /docker-graph
+     volumes:
+     - name: docker-graph
+       emptyDir: {}
+
+ - interval: 2h
+   name: ci-redis-operator-e2e
+   agent: kubernetes
+   labels:
+     preset-service-account: "true"
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
+       args:
+       - --timeout=300
+       - --repo=gke-internal.googlesource.com/GoogleCloudPlatform/redis-operator=master
+       - --root=/go/src
+       - --upload=gs://gob-prow/logs
+       - --scenario=kubernetes_e2e
+       - --
+       - --check-leaked-resources
+       - --cluster=gke-redis-operator-cluster
+       - --deployment=gke
+       - --extract=gke-latest
+       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+       - --gcp-node-image=gci
+       - --gcp-zone=us-central1-f
+       - --gke-environment=test
+       - --gke-shape={"default":{"Nodes":2,"MachineType":"n1-standard-4"}}
+       - --gke-additional-zones=us-central1-a,us-central1-b
+       - --provider=gke
+       - --test=false
+       - --test-cmd=../hack/e2e.sh
+       - --timeout=1h

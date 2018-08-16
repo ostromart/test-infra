@@ -725,6 +725,38 @@ periodics:
        - --test-cmd-args=--ginkgo.focus=\[Feature:NodeAutoProvisioning\]
        - --timeout=5h
 
+ - interval: 2h
+   name: ci-autoscaling-nap-gpu-e2e
+   agent: kubernetes
+   labels:
+     preset-k8s-ssh: "true"
+     preset-service-account: "true"
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
+       args:
+       - --timeout=300
+       - --repo=gke-internal.googlesource.com/gke-autoscaling=master
+       - --root=/go/src
+       - --upload=gs://gob-prow/logs
+       - --scenario=kubernetes_e2e
+       - --
+       - --check-leaked-resources
+       - --cluster=gke-autoscaling-cluster
+       - --deployment=gke
+       - --extract=gs://kubernetes-release-gke-internal/ci/latest-autoscaling.txt
+       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+       - --gcp-node-image=gci
+       - --gcp-zone=us-west1-b
+       - --gcp-project-type=gpu-project
+       - --ginkgo-parallel=1
+       - --gke-environment=test
+       - --provider=gke
+       - --test=false
+       - --test-cmd=../test/cluster-autoscaler/e2e/hack/run-e2e.sh
+       - --test-cmd-args=--ginkgo.focus=\[Feature:NodeAutoProvisioningWithGPU\]
+       - --timeout=2h
+
  # Production continuous prober for go/nomos.
  - interval: 15m
    name: nomos-prober

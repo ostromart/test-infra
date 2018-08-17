@@ -7,3 +7,8 @@ resources:
   - prow-gob-boskos-05
   state: dirty
   type: gke-project
+- names:
+  - prow-gob-gpu-boskos-01
+  - prow-gob-gpu-boskos-02
+  state: dirty
+  type: gpu-project

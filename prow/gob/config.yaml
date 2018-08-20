@@ -795,6 +795,8 @@ periodics:
    agent: kubernetes
    decorate: true
    spec:
+     # If the pod runs for more than 20 minutes, stop it.
+     activeDeadlineSeconds: 1200
      containers:
      - image: gcr.io/stolos-dev/e2e-prober:test-e2e-latest
        imagePullPolicy: Always

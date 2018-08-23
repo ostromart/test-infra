@@ -530,12 +530,44 @@ periodics:
        - --gke-environment=staging
        - --gke-shape={"default":{"Nodes":2000,"MachineType":"g1-small"},"heapster-pool":{"Nodes":1,"MachineType":"n1-standard-8"}}
        - --provider=gke
-       - --test_args=--ginkgo.flakeAttempts=2 --ginkgo.skip=\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\]|\[DisabledForLargeClusters\]
+       - --test_args=--ginkgo.flakeAttempts=2 --ginkgo.skip=\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\]|\[DisabledForLargeClusters\] --minStartupPods=8
        - --timeout=450m
        image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
        resources:
          requests:
            memory: "6Gi"
+
+ - cron: '1 22 * * 6' # Run at 15:01PST (22:01 UTC) on saturday
+   agent: kubernetes
+   name: ci-kubernetes-e2e-gke-small-correctness-canary
+   labels:
+     preset-service-account: "true"
+     preset-k8s-ssh: "true"
+   spec:
+     containers:
+     - args:
+       - --timeout=220
+       - --bare
+       - --scenario=kubernetes_e2e
+       - --upload=gs://gob-prow/logs
+       - --
+       - --check-leaked-resources
+       - --cluster=gke-scale-cluster-canary
+       - --deployment=gke
+       - --extract=gke-latest
+       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+       - --gcp-project=k8s-scale-testing
+       - --gcp-zone=us-east1-a
+       - --ginkgo-parallel=30
+       - --gke-command-group=beta
+       - --gke-create-command=container clusters create --quiet --enable-ip-alias --create-subnetwork name=ip-alias-subnet --cluster-ipv4-cidr=/16 --services-ipv4-cidr=/19
+       - --gke-environment=prod
+       - --gke-shape={"default":{"Nodes":200,"MachineType":"g1-small"},"heapster-pool":{"Nodes":1,"MachineType":"n1-standard-8"}}
+       - --provider=gke
+       - --test_args=--ginkgo.flakeAttempts=2 --ginkgo.skip=\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\]|\[DisabledForLargeClusters\] --minStartupPods=8
+       - --timeout=200m
+       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
+
  - interval: 1h
    name: ci-kubernetes-bazel-test
    agent: kubernetes

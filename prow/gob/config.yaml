@@ -655,7 +655,7 @@ periodics:
        - --gcp-node-image=gci
        - --gcp-zone=us-central1-f
        - --ginkgo-parallel
-       - --gke-environment=test
+       - --gke-environment=staging
        - --provider=gke
        - --test_args=--ginkgo.skip=\[Slow\]|\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\] --minStartupPods=8
        - --timeout=50m

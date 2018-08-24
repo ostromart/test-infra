@@ -887,7 +887,6 @@ periodics:
    agent: kubernetes
    labels:
      preset-service-account: "true"
-   decorate: true
    spec:
      containers:
      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
@@ -899,7 +898,7 @@ periodics:
        - --upload=gs://gob-prow/pr-logs
        - --
        - make
-       - test-e2e-all
+       - test-e2e-ci
        env:
        - name: DOCKER_IN_DOCKER_ENABLED
          value: "true"

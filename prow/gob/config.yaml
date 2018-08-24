@@ -790,7 +790,8 @@ periodics:
        - --timeout=60m
 
  # Production continuous prober for go/nomos.  See go/nomos-production.
- - interval: 15m
+ # Using prime numbers as intervals so that runs would spread out.
+ - interval: 13m
    name: nomos-prober
    agent: kubernetes
    decorate: true
@@ -834,7 +835,7 @@ periodics:
          secretName: nomos-prober-runner-gcp-client-key
 
  # Nomos soak test. See go/nomos-production.
- - interval: 15m
+ - interval: 19m
    name: nomos-soaker
    agent: kubernetes
    decorate: true
@@ -878,6 +879,39 @@ periodics:
      - name: prober-cred
        secret:
          secretName: nomos-prober-runner-gcp-client-key
+
+ # Continuous integration runs all nomos tests based off of contents of the
+ # "master" branch, reinstalling the contents of the cluster in the process.
+ - interval: 17m
+   name: nomos-ci
+   agent: kubernetes
+   labels:
+     preset-service-account: "true"
+   decorate: true
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
+       args:
+       - --clean
+       - --timeout=300
+       - --repo=team.googlesource.com/gke-kubernetes-enterprise-control/prototype=master
+       - --scenario=execute
+       - --upload=gs://gob-prow/pr-logs
+       - --
+       - make
+       - test-e2e-all
+       env:
+       - name: DOCKER_IN_DOCKER_ENABLED
+         value: "true"
+       # docker-in-docker needs privileged mode
+       securityContext:
+         privileged: true
+       volumeMounts:
+       - name: docker-graph
+         mountPath: /docker-graph
+     volumes:
+     - name: docker-graph
+       emptyDir: {}
 
  - interval: 30m
    name: periodic_fast_autoscaling_test_prod_us-central1-a

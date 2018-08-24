@@ -898,7 +898,7 @@ periodics:
        - --upload=gs://gob-prow/pr-logs
        - --
        - make
-       - test-e2e-ci
+       - ci-test-e2e
        env:
        - name: DOCKER_IN_DOCKER_ENABLED
          value: "true"

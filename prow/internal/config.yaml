@@ -922,7 +922,7 @@ periodics:
                   gke-e2e-pull-config,
                   gke-e2e-regional-createdelete,
                   gke-gcestaging-e2e
-      - --age=240 # 10 days for guitar projects
+      - --age=24 # 1 day for guitar projects
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 
 - name: ci-runsc-build

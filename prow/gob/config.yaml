@@ -789,7 +789,7 @@ periodics:
        - --test-cmd-args=full-vpa
        - --timeout=60m
 
- # Production continuous prober for go/nomos.
+ # Production continuous prober for go/nomos.  See go/nomos-production.
  - interval: 15m
    name: nomos-prober
    agent: kubernetes
@@ -818,6 +818,52 @@ periodics:
        env:
        - name: DOCKER_IN_DOCKER_ENABLED
          value: "true"
+       securityContext:
+         privileged: true
+       volumeMounts:
+       - name: docker-graph
+         mountPath: /docker-graph
+       - name: prober-cred
+         mountPath: /etc/prober-gcp-service-account
+         readOnly: true
+     volumes:
+     - name: docker-graph
+       emptyDir: {}
+     - name: prober-cred
+       secret:
+         secretName: nomos-prober-runner-gcp-client-key
+
+ # Nomos soak test. See go/nomos-production.
+ - interval: 15m
+   name: nomos-soaker
+   agent: kubernetes
+   decorate: true
+   spec:
+     # If the pod runs for more than 20 minutes, stop it.
+     activeDeadlineSeconds: 1200
+     containers:
+     - image: gcr.io/stolos-dev/e2e-prober:test-e2e-latest
+       imagePullPolicy: Always
+       command:
+       - /opt/testing/e2e/setup.sh
+       args:
+       # '--flag=value' syntax doesn't work here. Flag parameters are quoted.
+       - --gcp-prober-cred
+       - "/etc/prober-gcp-service-account/prober_runner_client_key.json"
+       - --gcp-runner-cred
+       - "gs://stolos-dev/e2e/nomos-e2e.joonix.net/test_runner_client_key.json"
+       - --gcp-watcher-cred
+       - "gs://stolos-dev/e2e/nomos-e2e.joonix.net/watcher_client_key.json"
+       - --importer
+       - "gcp"
+       - --skip-installation
+       - --tap
+       - --test
+       env:
+       - name: DOCKER_IN_DOCKER_ENABLED
+         value: "true"
+       - name: USER
+         value: "soak-test"
        securityContext:
          privileged: true
        volumeMounts:

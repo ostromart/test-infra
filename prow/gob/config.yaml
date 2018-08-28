@@ -14,6 +14,12 @@ plank:
       bucket: "gob-prow"
       path_strategy: "explicit"
     gcs_credentials_secret: "service-account"
+
+sinker:
+  resync_period: 1m
+  max_prowjob_age: 48h
+  max_pod_age: 30m
+
 prowjob_namespace: default
 pod_namespace: test-pods
 log_level: info
@@ -66,6 +72,24 @@ presets:
   env:
   - name: BAZEL_REMOTE_CACHE_ENABLED
     value: "true"
+# docker-in-docker (with images/bootstrap) preset
+# NOTE: using this also requires using that image,
+# ensuring you run your test under either the ENTRYPOINT or:
+# /usr/local/bin/runner my-test-command --foo --bar
+# AND setting the following on your PodSpec:
+# securityContext:
+#   privileged: true
+- labels:
+    preset-dind-enabled: "true"
+  env:
+  - name: DOCKER_IN_DOCKER_ENABLED
+    value: "true"
+  volumes:
+  - name: docker-graph
+    emptyDir: {}
+  volumeMounts:
+  - name: docker-graph
+    mountPath: /docker-graph
 
 presubmits:
   https://gke-internal-review.googlesource.com/test-infra:
@@ -166,6 +190,7 @@ presubmits:
     trigger: "(?m)^/test (all|pull-gob-kubernetes-integration),?(\\s+|$)"
     labels:
       preset-service-account: "true"
+      preset-dind-enabled: "true"
     spec:
       containers:
       - image: gcr.io/k8s-testimages/bootstrap:v20180215-b2a89850e
@@ -179,21 +204,12 @@ presubmits:
         - --branch=master
         - --force
         - --prow
-        env:
-        - name: DOCKER_IN_DOCKER_ENABLED
-          value: "true"
         # docker-in-docker needs privileged mode
         securityContext:
           privileged: true
         resources:
           requests:
             cpu: 3
-        volumeMounts:
-        - name: docker-graph
-          mountPath: /docker-graph
-      volumes:
-      - name: docker-graph
-        emptyDir: {}
   https://gke-internal-review.googlesource.com/kubernetes/gke-common-webhooks:
   - name: pull-webhooks-unit
     agent: kubernetes
@@ -225,6 +241,7 @@ presubmits:
     trigger: "(?m)^/test (all|pull-mci-unit),?(\\s+|$)"
     labels:
       preset-service-account: "true"
+      preset-dind-enabled: "true"
     spec:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
@@ -237,18 +254,9 @@ presubmits:
         - -- # end bootstrap args, scenario args below
         - "make"
         - "test"
-        env:
-        - name: DOCKER_IN_DOCKER_ENABLED
-          value: "true"
-        volumeMounts:
-        - name: docker-graph
-          mountPath: /docker-graph
         # docker-in-docker needs privileged mode
         securityContext:
           privileged: true
-      volumes:
-      - name: docker-graph
-        emptyDir: {}
   https://team-review.googlesource.com/alphabetcloud/galu:
   - name: pull-galu-presubmit
     agent: kubernetes
@@ -298,6 +306,7 @@ presubmits:
     trigger: "(?m)^/test (all|pull-syllogi-cluster-api-make),?(\\s+|$)"
     labels:
       preset-service-account: "true"
+      preset-dind-enabled: "true"
     spec:
       containers:
       - image: gcr.io/k8s-testimages/gcloud-in-go:v20171113-192bec25
@@ -311,9 +320,6 @@ presubmits:
         - --scenario=execute
         - -- # end bootstrap args, scenario args below
         - /go/src/gke-internal.googlesource.com/syllogi/cluster-management/cluster-api/scripts/ci-make.sh
-        env:
-        - name: DOCKER_IN_DOCKER_ENABLED
-          value: "true"
         # docker-in-docker needs privileged mode
         securityContext:
           privileged: true
@@ -369,6 +375,7 @@ presubmits:
     trigger: "(?m)^/test (all|pull-syllogi-cli-make),?(\\s+|$)"
     labels:
       preset-service-account: "true"
+      preset-dind-enabled: "true"
     spec:
       containers:
       - image: gcr.io/k8s-testimages/gcloud-in-go:v20171113-192bec25
@@ -382,9 +389,6 @@ presubmits:
         - --scenario=execute
         - -- # end bootstrap args, scenario args below
         - /go/src/gke-internal.googlesource.com/syllogi/cluster-management/syllogi-cli/scripts/ci-make.sh
-        env:
-        - name: DOCKER_IN_DOCKER_ENABLED
-          value: "true"
         # docker-in-docker needs privileged mode
         securityContext:
           privileged: true
@@ -392,12 +396,6 @@ presubmits:
         resources:
           requests:
             memory: "6Gi"
-        volumeMounts:
-        - name: docker-graph
-          mountPath: /docker-graph
-      volumes:
-      - name: docker-graph
-        emptyDir: {}
   - name: pull-syllogi-cli-unittest
     agent: kubernetes
     context: pull-syllogi-cli-unittest
@@ -448,6 +446,7 @@ presubmits:
     agent: kubernetes
     labels:
       preset-service-account: "true"
+      preset-dind-enabled: "true"
     spec:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
@@ -460,18 +459,9 @@ presubmits:
         - --
         - make
         - test
-        env:
-        - name: DOCKER_IN_DOCKER_ENABLED
-          value: "true"
         # docker-in-docker needs privileged mode
         securityContext:
           privileged: true
-        volumeMounts:
-        - name: docker-graph
-          mountPath: /docker-graph
-      volumes:
-      - name: docker-graph
-        emptyDir: {}
 
 periodics:
  - cron: '1 17 * * 0' # Run at 10:01PST (17:01 UTC) on sunday
@@ -575,6 +565,7 @@ periodics:
    agent: kubernetes
    labels:
      preset-service-account: "true"
+     preset-dind-enabled: "true"
    spec:
      containers:
      - image: gcr.io/k8s-testimages/bootstrap:v20180215-b2a89850e
@@ -590,9 +581,6 @@ periodics:
        - --fast
        - --release=gob-prow
        - --push-build-script=../../k8s.io/release/push-build.sh
-       env:
-       - name: DOCKER_IN_DOCKER_ENABLED
-         value: "true"
        # docker-in-docker needs privileged mode
        securityContext:
          privileged: true
@@ -600,17 +588,12 @@ periodics:
          requests:
            cpu: 3
            memory: "8Gi"
-       volumeMounts:
-       - name: docker-graph
-         mountPath: /docker-graph
-     volumes:
-     - name: docker-graph
-       emptyDir: {}
  - interval: 1h
    name: ci-kubernetes-integration
    agent: kubernetes
    labels:
      preset-service-account: "true"
+     preset-dind-enabled: "true"
    spec:
      containers:
      - image: gcr.io/k8s-testimages/bootstrap:v20180215-b2a89850e
@@ -624,21 +607,12 @@ periodics:
        - --branch=master
        - --force
        - --prow
-       env:
-       - name: DOCKER_IN_DOCKER_ENABLED
-         value: "true"
        # docker-in-docker needs privileged mode
        securityContext:
          privileged: true
        resources:
          requests:
            cpu: 3
-       volumeMounts:
-       - name: docker-graph
-         mountPath: /docker-graph
-     volumes:
-     - name: docker-graph
-       emptyDir: {}
  - interval: 1h
    agent: kubernetes
    name: ci-kubernetes-e2e-gob-gke
@@ -673,6 +647,7 @@ periodics:
    agent: kubernetes
    labels:
      preset-service-account: "true"
+     preset-dind-enabled: "true"
    spec:
      containers:
      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
@@ -687,18 +662,9 @@ periodics:
        - --env=TAG=ci_latest
        - --env=REGISTRY=gcr.io/gke-autoscaling-gcr
        - ./hack/release-ci.sh
-       env:
-       - name: DOCKER_IN_DOCKER_ENABLED
-         value: "true"
        # docker-in-docker needs privileged mode
        securityContext:
          privileged: true
-       volumeMounts:
-       - name: docker-graph
-         mountPath: /docker-graph
-     volumes:
-     - name: docker-graph
-       emptyDir: {}
 
  - interval: 2h
    name: ci-autoscaling-nap-e2e
@@ -801,6 +767,8 @@ periodics:
    name: nomos-prober
    agent: kubernetes
    decorate: true
+   labels:
+     preset-dind-enabled: "true"
    spec:
      # If the pod runs for more than 20 minutes, stop it.
      activeDeadlineSeconds: 1200
@@ -822,20 +790,13 @@ periodics:
        - --skip-installation
        - --tap
        - --test
-       env:
-       - name: DOCKER_IN_DOCKER_ENABLED
-         value: "true"
        securityContext:
          privileged: true
        volumeMounts:
-       - name: docker-graph
-         mountPath: /docker-graph
        - name: prober-cred
          mountPath: /etc/prober-gcp-service-account
          readOnly: true
      volumes:
-     - name: docker-graph
-       emptyDir: {}
      - name: prober-cred
        secret:
          secretName: nomos-prober-runner-gcp-client-key
@@ -845,6 +806,8 @@ periodics:
    name: nomos-soaker
    agent: kubernetes
    decorate: true
+   labels:
+     preset-dind-enabled: "true"
    spec:
      # If the pod runs for more than 20 minutes, stop it.
      activeDeadlineSeconds: 1200
@@ -867,21 +830,15 @@ periodics:
        - --tap
        - --test
        env:
-       - name: DOCKER_IN_DOCKER_ENABLED
-         value: "true"
        - name: USER
          value: "soak-test"
        securityContext:
          privileged: true
        volumeMounts:
-       - name: docker-graph
-         mountPath: /docker-graph
        - name: prober-cred
          mountPath: /etc/prober-gcp-service-account
          readOnly: true
      volumes:
-     - name: docker-graph
-       emptyDir: {}
      - name: prober-cred
        secret:
          secretName: nomos-prober-runner-gcp-client-key
@@ -893,6 +850,7 @@ periodics:
    agent: kubernetes
    labels:
      preset-service-account: "true"
+     preset-dind-enabled: "true"
    spec:
      containers:
      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
@@ -905,18 +863,9 @@ periodics:
        - --
        - make
        - ci-test-e2e
-       env:
-       - name: DOCKER_IN_DOCKER_ENABLED
-         value: "true"
        # docker-in-docker needs privileged mode
        securityContext:
          privileged: true
-       volumeMounts:
-       - name: docker-graph
-         mountPath: /docker-graph
-     volumes:
-     - name: docker-graph
-       emptyDir: {}
 
  - interval: 30m
    name: periodic_fast_autoscaling_test_prod_us-central1-a
@@ -992,6 +941,7 @@ periodics:
    agent: kubernetes
    labels:
      preset-service-account: "true"
+     preset-dind-enabled: "true"
    spec:
      containers:
      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
@@ -1007,18 +957,9 @@ periodics:
        - make
        - --
        - release-ci
-       env:
-       - name: DOCKER_IN_DOCKER_ENABLED
-         value: "true"
        # docker-in-docker needs privileged mode
        securityContext:
          privileged: true
-       volumeMounts:
-       - name: docker-graph
-         mountPath: /docker-graph
-     volumes:
-     - name: docker-graph
-       emptyDir: {}
 
  - interval: 30m
    name: ci-managed-certs-gke-e2e
@@ -1127,6 +1068,7 @@ periodics:
    agent: kubernetes
    labels:
      preset-service-account: "true"
+     preset-dind-enabled: "true"
    spec:
      containers:
      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
@@ -1139,17 +1081,8 @@ periodics:
        - --upload=gs://gob-prow/logs
        - --
        - ./hack/build-ci.sh
-       env:
-       - name: DOCKER_IN_DOCKER_ENABLED
-         value: "true"
        securityContext:
          privileged: true
-       volumeMounts:
-       - name: docker-graph
-         mountPath: /docker-graph
-     volumes:
-     - name: docker-graph
-       emptyDir: {}
 
  - interval: 2h
    name: ci-redis-operator-e2e

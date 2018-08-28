@@ -392,6 +392,12 @@ presubmits:
         resources:
           requests:
             memory: "6Gi"
+        volumeMounts:
+        - name: docker-graph
+          mountPath: /docker-graph
+      volumes:
+      - name: docker-graph
+        emptyDir: {}
   - name: pull-syllogi-cli-unittest
     agent: kubernetes
     context: pull-syllogi-cli-unittest

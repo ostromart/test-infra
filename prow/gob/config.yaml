@@ -865,8 +865,15 @@ periodics:
        - make
        - ci-test-e2e
        env:
+       # The ambient UNIX user name as would be defined inside a shell.
        - name: USER
          value: "nomos-ci"
+       # The ambient UNIX numeric user id as would be defined inside a shell.
+       - name: UID
+         value: 10333
+       # The ambient UNIX numeric group id as would be defined inside a shell.
+       - name: GID
+         value: 10333
        # docker-in-docker needs privileged mode
        securityContext:
          privileged: true

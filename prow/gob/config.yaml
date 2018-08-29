@@ -845,7 +845,8 @@ periodics:
 
  # Continuous integration runs all nomos tests based off of contents of the
  # "master" branch, reinstalling the contents of the cluster in the process.
- - interval: 17m
+ - interval: 1m
+   # Rerunning each 1 minute during development.
    name: nomos-ci
    agent: kubernetes
    labels:

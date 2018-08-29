@@ -864,6 +864,9 @@ periodics:
        - --
        - make
        - ci-test-e2e
+       env:
+       - name: USER
+         value: "nomos-ci"
        # docker-in-docker needs privileged mode
        securityContext:
          privileged: true

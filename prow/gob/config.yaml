@@ -877,6 +877,14 @@ periodics:
        # docker-in-docker needs privileged mode
        securityContext:
          privileged: true
+       volumeMounts:
+       - name: prober-cred
+         mountPath: /etc/prober-gcp-service-account
+         readOnly: true
+     volumes:
+     - name: prober-cred
+       secret:
+         secretName: nomos-prober-runner-gcp-client-key
 
  - interval: 30m
    name: periodic_fast_autoscaling_test_prod_us-central1-a

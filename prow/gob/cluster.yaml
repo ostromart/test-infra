@@ -338,3 +338,21 @@ spec:
       - name: gerrit-team-volume
         persistentVolumeClaim:
           claimName: gerrit-team-storage
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: crier
+  labels:
+    app: crier
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: crier
+    spec:
+      terminationGracePeriodSeconds: 30
+      containers:
+      - name: crier
+        image: gcr.io/k8s-prow/crier:v20180830-8252d8fda

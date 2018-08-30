@@ -860,7 +860,7 @@ periodics:
        - --timeout=300
        - --repo=team.googlesource.com/gke-kubernetes-enterprise-control/prototype=master
        - --scenario=execute
-       - --upload=gs://gob-prow/pr-logs
+       - --upload=gs://gob-prow/logs
        - --
        - make
        - ci-test-e2e

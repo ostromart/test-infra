@@ -169,7 +169,7 @@ presubmits:
     agent: kubernetes
     context: mlpipeline-build-image
     always_run: true
-    skip_report: true
+    skip_report: false
     rerun_command: /test mlpipeline-build-image
     trigger: (?m)^/test (all|mlpipeline-build-image),?(\s+|$)
     labels:
@@ -198,13 +198,13 @@ presubmits:
           defaultMode: 0400
           secretName: ssh-knative
     run_after_success:
-    - name: mlpipeline-presubmit-e2e-test-v2
+    - name: mlpipeline-presubmit-e2e-test
       agent: kubernetes
-      context: mlpipeline-presubmit-e2e-test-v2
+      context: mlpipeline-presubmit-e2e-test
       always_run: true
-      skip_report: true
-      rerun_command: /test mlpipeline-presubmit-e2e-test-v2
-      trigger: (?m)^/test (all|mlpipeline-presubmit-e2e-test-v2),?(\s+|$)
+      skip_report: false
+      rerun_command: /test mlpipeline-presubmit-e2e-test
+      trigger: (?m)^/test (all|mlpipeline-presubmit-e2e-test),?(\s+|$)
       labels:
         preset-service-account: "true"
       spec:
@@ -232,40 +232,6 @@ presubmits:
           secret:
             defaultMode: 0400
             secretName: ssh-knative
-  - name: mlpipeline-presubmit-e2e-test
-    agent: kubernetes
-    context: mlpipeline-presubmit-e2e-test
-    always_run: true
-    skip_report: false
-    rerun_command: /test mlpipeline-presubmit-e2e-test
-    trigger: (?m)^/test (all|mlpipeline-presubmit-e2e-test),?(\s+|$)
-    labels:
-      preset-service-account: "true"
-    spec:
-      containers:
-      - image: gcr.io/ml-pipeline/test-worker:v20180711-cb64c3d-e3b0c4
-        args:
-        - --clean
-        - --repo=github.com/googleprivate/$(REPO_NAME)=$(PULL_REFS)
-        - --service-account=/etc/service-account/service-account.json
-        - --upload=gs://gke-prow/pr-logs
-        - --ssh=/etc/ssh-knative/ssh-knative
-        - --scenario=execute
-        - -- # end bootstrap args, scenario args below
-        - -- # end kubernetes_execute_bazel flags (consider following flags as text)
-        - ./test/presubmit-tests.sh
-        - "--workflow_file"
-        - "integration_test_gke.yaml"
-        - "--test_result_folder"
-        - "api_integration_test"
-        volumeMounts:
-        - mountPath: /etc/ssh-knative
-          name: ssh-knative
-      volumes:
-      - name: ssh-knative
-        secret:
-          defaultMode: 0400
-          secretName: ssh-knative
   - name: mlpipeline-presubmit-unit-test
     agent: kubernetes
     context: mlpipeline-presubmit-unit-test

@@ -475,6 +475,26 @@ presubmits:
         # docker-in-docker needs privileged mode
         securityContext:
           privileged: true
+  https://team-review.googlesource.com/big-compute-eng/batch:
+  - name: pull-batch-presubmit
+    agent: kubernetes
+    context: pull-batch-presubmit
+    always_run: true
+    rerun_command: "/test pull-batch-presubmit"
+    trigger: "(?m)^/test (all|pull-batch-presubmit),?(\\s+|$)"
+    labels:
+      preset-service-account: "true"
+    spec:
+      containers:
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
+        args:
+        - --clean
+        - --repo=team.googlesource.com/big-compute-eng/batch=$(PULL_REFS)
+        - --service-account=/etc/service-account/service-account.json
+        - --upload=gs://gob-prow/pr-logs
+        - --scenario=execute
+        - -- # end bootstrap args, scenario args below
+        - /workspace/team.googlesource.com/big-compute-eng/batch/prow/RunPresubmitTests.sh
 
 periodics:
  - cron: '1 17 * * 0' # Run at 10:01PST (17:01 UTC) on sunday
@@ -1178,4 +1198,28 @@ periodics:
        - --provider=gke
        - --test=false
        - --test-cmd=../hack/e2e.sh
+       - --timeout=1h
+
+ - interval: 6h
+   name: ci-bigcomputeeng-batch-e2e
+   agent: kubernetes
+   labels:
+     preset-k8s-ssh: "true"
+     preset-service-account: "true"
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
+       args:
+       - --timeout=300
+       - --repo=team.googlesource.com/big-compute-eng/batch
+       - --upload=gs://gob-prow/logs
+       - --scenario=kubernetes_e2e
+       - --
+       - --check-leaked-resources
+       - --gcp-project=kubebatchtest
+       - --deployment=gke
+       - --gcp-zone=us-central1-f
+       - --provider=gke
+       - --test=true
+       - --test-cmd=/go/src/team.googlesource.com/big-compute-eng/batch/prow/RunPeriodicTests.sh
        - --timeout=1h

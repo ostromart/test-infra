@@ -55,6 +55,19 @@ presets:
   - name: ssh
     mountPath: /etc/ssh-key-secret
     readOnly: true
+- labels:
+    preset-vpa-alpha: "true"
+  env:
+  - name: GOOGLE_APPLICATION_CREDENTIALS
+    value: /etc/service-account/vpa-eap-service-account.json
+  volumes:
+  - name: service
+    secret:
+      secretName: vpa-eap-service-account
+  volumeMounts:
+  - name: service
+    mountPath: /etc/service-account
+    readOnly: true
 # storage / caching presets
 - labels:
     preset-bazel-scratch-dir: "true"
@@ -766,7 +779,7 @@ periodics:
    agent: kubernetes
    labels:
      preset-k8s-ssh: "true"
-     preset-service-account: "true"
+     preset-vpa-alpha: "true"
    spec:
      containers:
      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
@@ -782,6 +795,7 @@ periodics:
        - --extract=gs://kubernetes-release-gke-internal/ci/latest-autoscaling.txt
        - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
        - --gcp-node-image=gci
+       - --gcp-project=prow-gob-vpa
        - --gcp-zone=us-central1-f
        - --ginkgo-parallel=1
        - --gke-command-group=beta

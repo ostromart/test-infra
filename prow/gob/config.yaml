@@ -585,6 +585,7 @@ periodics:
        - --deployment=gke
        - --extract=gke-latest
        - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+       - --gcp-node-image=gci
        - --gcp-project=k8s-scale-testing
        - --gcp-zone=us-east1-a
        - --ginkgo-parallel=30

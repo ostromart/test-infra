@@ -910,6 +910,49 @@ periodics:
        secret:
          secretName: nomos-prober-runner-gcp-client-key
 
+# Tests go/nomos against GKE 1.10.x.
+# See "nomos-ci" job above for all relevant comments.  The jobs should be by
+# and large the same.
+ - interval: 23m
+   name: nomos-ci-gke-110
+   agent: kubernetes
+   labels:
+     preset-service-account: "true"
+     preset-dind-enabled: "true"
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
+       args:
+       - --clean
+       - --timeout=300
+       - --repo=team.googlesource.com/gke-kubernetes-enterprise-control/prototype=master
+       - --scenario=execute
+       - --upload=gs://gob-prow/logs
+       - --
+       - make
+       - ci-test-e2e
+       env:
+       # The ambient UNIX user name as would be defined inside a shell.
+       - name: USER
+         value: "nomos-ci-gke-110"
+       # The ambient UNIX numeric user id as would be defined inside a shell.
+       - name: UID
+         value: "10333"
+       # The ambient UNIX numeric group id as would be defined inside a shell.
+       - name: GID
+         value: "10333"
+       # docker-in-docker needs privileged mode
+       securityContext:
+         privileged: true
+       volumeMounts:
+       - name: prober-cred
+         mountPath: /etc/prober-gcp-service-account
+         readOnly: true
+     volumes:
+     - name: prober-cred
+       secret:
+         secretName: nomos-prober-runner-gcp-client-key
+
  - interval: 30m
    name: periodic_fast_autoscaling_test_prod_us-central1-a
    agent: kubernetes

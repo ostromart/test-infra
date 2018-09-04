@@ -742,7 +742,7 @@ periodics:
      containers:
      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
        args:
-       - --timeout=300
+       - --timeout=320
        - --repo=gke-internal.googlesource.com/gke-autoscaling=master
        - --root=/go/src
        - --upload=gs://gob-prow/logs
@@ -1017,7 +1017,7 @@ periodics:
        - --clean
        - --repo=gke-internal.googlesource.com/managed-certs-gke
        - --root=/go/src
-       - --timeout=60
+       - --timeout=65
        - --scenario=kubernetes_e2e
        - --upload=gs://gob-prow/logs
        - -- # stop bootstrap flags
@@ -1174,8 +1174,10 @@ periodics:
        - --scenario=kubernetes_e2e
        - --
        - --check-leaked-resources
+       - --extract=ci/latest
        - --gcp-project=kubebatchtest
        - --deployment=gke
+       - --gcp-node-image=gci
        - --gcp-zone=us-central1-f
        - --provider=gke
        - --test=true

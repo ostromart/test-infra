@@ -2377,6 +2377,73 @@ periodics:
       - --test_args=--ginkgo.focus=\[Feature:Reboot\] --minStartupPods=8
       env:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
+# shielded vm testing suites
+- interval: 2h
+  agent: kubernetes
+  name: ci-kubernetes-e2e-gce-gci-shieldedvm
+  labels:
+    preset-service-account: "true"
+    preset-k8s-ssh: "true"
+  spec:
+    containers:
+    - args:
+      - --timeout=70
+      - --bare
+      - --scenario=kubernetes_e2e
+      - --upload=gs://gke-prow/logs
+      - --
+      - --check-leaked-resources
+      - --extract=gci/gci-shielded
+      - --gcp-zone=us-central1-f
+      - --ginkgo-parallel=25
+      - --provider=gce
+      - --test_args=--ginkgo.skip=\[Slow\]|\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\] --minStartupPods=8
+      - --timeout=50m
+      image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
+- interval: 2h
+  agent: kubernetes
+  name: ci-kubernetes-e2e-gce-gci-serial-shieldedvm
+  labels:
+    preset-service-account: "true"
+    preset-k8s-ssh: "true"
+  spec:
+    containers:
+    - args:
+      - --timeout=320
+      - --bare
+      - --scenario=kubernetes_e2e
+      - --upload=gs://gke-prow/logs
+      - --
+      - --check-leaked-resources
+      - --extract=gci/gci-shielded
+      - --gcp-zone=us-central1-f
+      - --provider=gce
+      - --test_args=--ginkgo.focus=\[Serial\]|\[Disruptive\] --ginkgo.skip=\[Flaky\]|\[Feature:.+\] --minStartupPods=8
+      - --timeout=300m
+      image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
+- interval: 2h
+  agent: kubernetes
+  name: ci-kubernetes-e2e-gce-gci-slow-sheildedvm
+  labels:
+    preset-service-account: "true"
+    preset-k8s-ssh: "true"
+  spec:
+    containers:
+    - args:
+      - --timeout=170
+      - --bare
+      - --scenario=kubernetes_e2e
+      - --upload=gs://gke-prow/logs
+      - --
+      - --check-leaked-resources
+      - --extract=gci/gci-shielded
+      - --gcp-zone=us-central1-f
+      - --ginkgo-parallel=25
+      - --provider=gce
+      - --test_args=--ginkgo.focus=\[Slow\] --ginkgo.skip=\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\] --minStartupPods=8
+      - --timeout=150m
+      image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
+
 
 postsubmits:
   GoogleCloudPlatform/k8s-tpu-operator:

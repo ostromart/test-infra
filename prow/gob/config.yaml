@@ -1238,6 +1238,7 @@ periodics:
        - --extract=ci/latest
        - --gcp-project=kubebatchtest
        - --deployment=gke
+       - --gke-environment=prod
        - --gcp-node-image=gci
        - --gcp-zone=us-central1-f
        - --provider=gke

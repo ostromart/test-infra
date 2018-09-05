@@ -356,3 +356,56 @@ spec:
       containers:
       - name: crier
         image: gcr.io/k8s-prow/crier:v20180830-8252d8fda
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  labels:
+    app: gerrit-velostrata-internal
+  name: gerrit-velostrata-internal-storage
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  # volumeName: added automatically after volume creation
+  # See https://cloud.google.com/kubernetes-engine/docs/concepts/persistent-volumes
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: gerrit-velostrata-internal
+  labels:
+    app: gerrit-velostrata-internal
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: gerrit-velostrata-internal
+    spec:
+      terminationGracePeriodSeconds: 30
+      containers:
+      - name: gerrit-velostrata-internal
+        image: gcr.io/gob-prow/gerrit:latest # TODO(senlu): create a stable tag
+        imagePullPolicy: Always
+        args:
+        - ./gerrit
+        - --storage=/store/gerrit-velostrata-internal
+        - --gerrit-instance=https://velostrata-internal-review.googlesource.com
+        - --gerrit-projects=fejta-demo
+        volumeMounts:
+        - name: config
+          mountPath: /etc/config
+          readOnly: true
+        - mountPath: /store
+          name: gerrit-store
+      volumes:
+      - name: config
+        configMap:
+          name: config
+      - name: gerrit-store
+        persistentVolumeClaim:
+          claimName: gerrit-velostrata-internal-storage
+

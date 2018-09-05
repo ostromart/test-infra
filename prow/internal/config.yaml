@@ -236,7 +236,7 @@ presubmits:
       agent: kubernetes
       context: mlpipeline-presubmit-e2e-test-gce-minikube
       always_run: true
-      skip_report: false
+      skip_report: true
       rerun_command: /test mlpipeline-presubmit-e2e-test-gce-minikube
       trigger: (?m)^/test (all|mlpipeline-presubmit-e2e-test-gce-minikube),?(\s+|$)
       labels:

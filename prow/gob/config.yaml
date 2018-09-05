@@ -1219,7 +1219,7 @@ periodics:
        - --test-cmd=../hack/e2e.sh
        - --timeout=1h
 
- - interval: 6h
+ - interval: 1h
    name: ci-bigcomputeeng-batch-e2e
    agent: kubernetes
    labels:

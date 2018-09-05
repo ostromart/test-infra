@@ -105,6 +105,24 @@ presets:
     mountPath: /docker-graph
 
 presubmits:
+  https://velostrata-internal-review.googlesource.com/fejta-demo:
+  - name: presubmit-velostrata-internal-fejta-demo-pass
+    decorate: true
+    always_run: true
+    spec:
+      containers:
+      - image: busybox
+        command:
+        - ./pass.sh
+  - name: presubmit-velostrata-internal-fejta-demo-fail
+    decorate: true
+    always_run: true
+    spec:
+      containers:
+      - image: busybox
+        command:
+        - ./fail.sh
+
   https://gke-internal-review.googlesource.com/test-infra:
   - name: pull-test-infra-presubmit
     agent: kubernetes
@@ -1226,3 +1244,4 @@ periodics:
        - --test=true
        - --test-cmd=/go/src/team.googlesource.com/big-compute-eng/batch/prow/RunPeriodicTests.sh
        - --timeout=1h
+

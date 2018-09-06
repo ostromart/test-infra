@@ -584,7 +584,7 @@ periodics:
          requests:
            memory: "6Gi"
 
- - cron: '1 22 * * 6' # Run at 15:01PST (22:01 UTC) on saturday
+ - cron: '1 3 * * 0' # Run at 20:01PST on saturday (03:01 UTC) on sunday
    agent: kubernetes
    name: ci-kubernetes-e2e-gke-small-correctness-canary
    labels:

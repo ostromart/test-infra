@@ -1004,6 +1004,7 @@ periodics:
        - --upload=gs://gob-prow/logs
        - --
        - make
+       - --
        - --makefile=Makefile.release
        - autorelease
        env:

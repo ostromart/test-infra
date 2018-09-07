@@ -725,6 +725,63 @@ periodics:
        - --timeout=50m
        image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 
+   # gke fast autoscaling agent jobs
+ - interval: 30m
+   name: ci-fast-autoscaling-agent-image-build
+   agent: kubernetes
+   labels:
+     preset-service-account: "true"
+     preset-dind-enabled: "true"
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
+       args:
+       - --clean
+       - --repo=gke-internal.googlesource.com/GoogleCloudPlatform/k8s-stackdriver
+       - --root=/go/src
+       - --timeout=30
+       - --scenario=execute
+       - --upload=gs://gob-prow/logs
+       - -- # stop bootstrap flags
+       - --env=TAG=ci_latest
+       - --env=REGISTRY=gcr.io/gke-autoscaling-gcr
+       - ./hack/release-ci.sh
+       # docker-in-docker needs privileged mode
+       securityContext:
+         privileged: true
+
+ - interval: 2h
+   name: ci-fast-autoscaling-agent-e2e
+   agent: kubernetes
+   labels:
+     preset-k8s-ssh: "true"
+     preset-service-account: "true"
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
+       args:
+       - --timeout=320
+       - --repo=gke-internal.googlesource.com/GoogleCloudPlatform/k8s-stackdriver=fast-autoscaling
+       - --root=/go/src
+       - --upload=gs://gob-prow/logs
+       - --scenario=kubernetes_e2e
+       - --
+       - --check-leaked-resources
+       - --cluster=gke-autoscaling-cluster
+       - --deployment=gke
+       - --extract=gs://kubernetes-release-gke-internal/ci/latest-autoscaling.txt
+       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+       - --gcp-node-image=gci
+       - --gcp-zone=us-central1-f
+       - --ginkgo-parallel=0
+       - --gke-environment=test
+       - --provider=gke
+       - --test=false
+       - --test-cmd=../test/fast-autoscaling-agent/run-e2e.sh
+       - --test-cmd-args=--ginkgo.focus=\[Feature:FastAutoscalingAgent\]
+       - --timeout=5h
+
+
    # gke autoscaling jobs
  - interval: 30m
    name: ci-autoscaling-image-build

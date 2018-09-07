@@ -1262,7 +1262,7 @@ periodics:
        - --scenario=kubernetes_e2e
        - --
        - --check-leaked-resources
-       - --deployment=node
+       - --extract=ci/latest
        - --gcp-project=kubebatchtest
        - --gcp-node-image=gci
        - --gcp-zone=us-central1-f

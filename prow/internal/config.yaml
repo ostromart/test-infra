@@ -2393,7 +2393,10 @@ periodics:
       - --upload=gs://gke-prow/logs
       - --
       - --check-leaked-resources
-      - --extract=gci/gci-shielded
+      - --extract=ci/latest
+      - --image-family=cos-beta
+      - --image-project=cos-cloud-shielded
+      - --gcp-node-image=custom
       - --gcp-zone=us-central1-f
       - --ginkgo-parallel=25
       - --provider=gce
@@ -2415,7 +2418,10 @@ periodics:
       - --upload=gs://gke-prow/logs
       - --
       - --check-leaked-resources
-      - --extract=gci/gci-shielded
+      - --extract=ci/latest
+      - --image-family=cos-beta
+      - --image-project=cos-cloud-shielded
+      - --gcp-node-image=custom
       - --gcp-zone=us-central1-f
       - --provider=gce
       - --test_args=--ginkgo.focus=\[Serial\]|\[Disruptive\] --ginkgo.skip=\[Flaky\]|\[Feature:.+\] --minStartupPods=8
@@ -2436,7 +2442,10 @@ periodics:
       - --upload=gs://gke-prow/logs
       - --
       - --check-leaked-resources
-      - --extract=gci/gci-shielded
+      - --extract=ci/latest
+      - --image-family=cos-beta
+      - --image-project=cos-cloud-shielded
+      - --gcp-node-image=custom
       - --gcp-zone=us-central1-f
       - --ginkgo-parallel=25
       - --provider=gce

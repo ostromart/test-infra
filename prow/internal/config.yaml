@@ -300,6 +300,37 @@ presubmits:
         secret:
           defaultMode: 0400
           secretName: ssh-knative
+  - name: dummy
+    agent: kubernetes
+    context: dummy
+    run_if_changed: test/dummy.sh
+    skip_report: true
+    rerun_command: /test dummy
+    trigger: (?m)^/test (all|dummy),?(\s+|$)
+    labels:
+      preset-service-account: "true"
+    spec:
+      containers:
+      - image: gcr.io/k8s-testimages/kubekins-e2e:latest-master
+        imagePullPolicy: Always
+        args:
+        - --clean
+        - --repo=github.com/googleprivate/$(REPO_NAME)=$(PULL_REFS)
+        - --service-account=/etc/service-account/service-account.json
+        - --upload=gs://gke-prow/pr-logs
+        - --ssh=/etc/ssh-knative/ssh-knative
+        - --scenario=execute
+        - -- # end bootstrap args, scenario args below
+        - -- # end kubernetes_execute_bazel flags (consider following flags as text)
+        - ./test/dummy.sh
+        volumeMounts:
+        - mountPath: /etc/ssh-knative
+          name: ssh-knative
+      volumes:
+      - name: ssh-knative
+        secret:
+          defaultMode: 0400
+          secretName: ssh-knative
 
 periodics:
 - interval: 1h

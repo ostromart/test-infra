@@ -773,7 +773,7 @@ periodics:
        - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
        - --gcp-node-image=gci
        - --gcp-zone=us-central1-f
-       - --ginkgo-parallel=0
+       - --ginkgo-parallel=1
        - --gke-environment=test
        - --provider=gke
        - --test=false

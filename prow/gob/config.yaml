@@ -1186,7 +1186,7 @@ periodics:
        - --check-leaked-resources
        - --cluster=
        - --deployment=gke
-       - --extract=gke-latest-1.10
+       - --extract=gs://kubernetes-release-gke-internal/ci/latest-managed-certs-gke.txt
        - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
        - --gcp-node-image=gci
        - --gcp-zone=us-central1-f

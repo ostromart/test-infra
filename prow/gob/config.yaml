@@ -504,7 +504,8 @@ presubmits:
       preset-service-account: "true"
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
+      - image: gcr.io/kubebatchtest/prowcontainers/prowcontainer:final
+        imagePullPolicy: Always
         args:
         - --clean
         - --repo=team.googlesource.com/big-compute-eng/batch=$(PULL_REFS)
@@ -512,7 +513,7 @@ presubmits:
         - --upload=gs://gob-prow/pr-logs
         - --scenario=execute
         - -- # end bootstrap args, scenario args below
-        - /workspace/team.googlesource.com/big-compute-eng/batch/prow/RunPresubmitTests.sh
+        - /workspace/team.googlesource.com/big-compute-eng/batch/prow/RunAcceptanceTests.sh
 
 periodics:
  - cron: '1 17 * * 0' # Run at 10:01PST (17:01 UTC) on sunday
@@ -1321,70 +1322,19 @@ periodics:
        - --timeout=1h
 
  - interval: 1h
-   name: ci-bigcomputeeng-batch-e2e
-   agent: kubernetes
-   labels:
-     preset-k8s-ssh: "true"
-     preset-service-account: "true"
-   spec:
-     containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
-       args:
-       - --timeout=300
-       - --repo=team.googlesource.com/big-compute-eng/batch
-       - --upload=gs://gob-prow/logs
-       - --scenario=kubernetes_e2e
-       - --
-       - --check-leaked-resources
-       - --extract=gke
-       - --gcp-project=kubebatchtest
-       - --deployment=gke
-       - --gke-environment=prod
-       - --gcp-node-image=gci
-       - --gcp-zone=us-central1-f
-       - --provider=gke
-       - --test=false
-       - --test-cmd=../prow/RunPeriodicTests.sh
-       - --timeout=1h
-
- - interval: 1h
-   agent: kubernetes
-   name: ci-bigcomputeeng-batch-e2e-gce
-   labels:
-     preset-k8s-ssh: "true"
-     preset-service-account: "true"
-   spec:
-     containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
-       args:
-       - --timeout=300
-       - --repo=team.googlesource.com/big-compute-eng/batch
-       - --upload=gs://gob-prow/logs
-       - --scenario=kubernetes_e2e
-       - --
-       - --check-leaked-resources
-       - --extract=ci/latest
-       - --gcp-project=kubebatchtest
-       - --gcp-node-image=gci
-       - --gcp-zone=us-central1-f
-       - --provider=gce
-       - --test=false
-       - --test-cmd=../prow/RunPeriodicTestsOnGce.sh
-       - --timeout=1h
-
- - interval: 1h
-   name: periodic-kubebatch-unittests
+   name: ci-bigcomputeeng-batch-acceptance-tests
    agent: kubernetes
    labels:
      preset-service-account: "true"
      preset-k8s-ssh: "true"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
+     - image: gcr.io/kubebatchtest/prowcontainers/prowcontainer:final
+       imagePullPolicy: Always
        args:
        - --clean
        - --repo=team.googlesource.com/big-compute-eng/batch
        - --upload=gs://gob-prow/logs
        - --scenario=execute
        - --
-       - /workspace/team.googlesource.com/big-compute-eng/batch/prow/RunPresubmitTests.sh
+       - /workspace/team.googlesource.com/big-compute-eng/batch/prow/RunAcceptanceTests.sh

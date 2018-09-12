@@ -988,7 +988,7 @@ periodics:
 
 # Runs a release process that builds go/nomos releases based off of latest HEAD
 # that passes the build.
- - interval: 1m
+ - interval: 24h
    name: nomos-release
    agent: kubernetes
    labels:

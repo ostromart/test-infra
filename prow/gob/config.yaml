@@ -953,6 +953,7 @@ periodics:
      preset-service-account: "true"
      preset-dind-enabled: "true"
    spec:
+     activeDeadlineSeconds: 1200
      containers:
      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
        args:
@@ -995,6 +996,7 @@ periodics:
      preset-service-account: "true"
      preset-dind-enabled: "true"
    spec:
+     activeDeadlineSeconds: 1200
      containers:
      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
        args:

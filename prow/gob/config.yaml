@@ -153,7 +153,7 @@ presubmits:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180913-094478d32-krzyzacy
         args:
         - --clean
-        - --repo=gke-internal.googlesource.com/test-infra=master
+        - --repo=gke-internal.googlesource.com/test-infra=$(PULL_REFS)
         - --repo=github.com/krzyzacy/hello-github=master
         - --repo=ec2-18-191-106-213.us-east-2.compute.amazonaws.com:/home/git/hello-aws.git
         - --ssh=/aws-ssh-key/.ssh/ssh-private

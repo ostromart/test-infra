@@ -176,7 +176,7 @@ presubmits:
       preset-service-account: "true"
     spec:
       containers:
-      - image: gcr.io/ml-pipeline/test-worker:v20180711-cb64c3d-e3b0c4
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
         args:
         - --clean
         - --repo=github.com/googleprivate/$(REPO_NAME)=$(PULL_REFS)
@@ -209,7 +209,7 @@ presubmits:
         preset-service-account: "true"
       spec:
         containers:
-        - image: gcr.io/ml-pipeline/test-worker:v20180711-cb64c3d-e3b0c4
+        - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
           args:
           - --clean
           - --repo=github.com/googleprivate/$(REPO_NAME)=$(PULL_REFS)
@@ -243,7 +243,7 @@ presubmits:
         preset-service-account: "true"
       spec:
         containers:
-        - image: gcr.io/ml-pipeline/test-worker:v20180711-cb64c3d-e3b0c4
+        - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
           args:
           - --clean
           - --repo=github.com/googleprivate/$(REPO_NAME)=$(PULL_REFS)
@@ -277,7 +277,7 @@ presubmits:
         preset-service-account: "true"
       spec:
         containers:
-        - image: gcr.io/ml-pipeline/test-worker:v20180711-cb64c3d-e3b0c4
+        - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
           args:
           - --clean
           - --repo=github.com/googleprivate/$(REPO_NAME)=$(PULL_REFS)
@@ -312,7 +312,7 @@ presubmits:
       preset-service-account: "true"
     spec:
       containers:
-      - image: gcr.io/ml-pipeline/test-worker:v20180711-cb64c3d-e3b0c4
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
         args:
         - --clean
         - --repo=github.com/googleprivate/$(REPO_NAME)=$(PULL_REFS)

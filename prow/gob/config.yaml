@@ -14,6 +14,7 @@ plank:
       bucket: "gob-prow"
       path_strategy: "explicit"
     gcs_credentials_secret: "service-account"
+    cookiefile_secret: http-cookiefile/cookies
 
 sinker:
   resync_period: 1m

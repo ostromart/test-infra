@@ -75,7 +75,7 @@ spec:
     spec:
       containers:
       - name: plank
-        image: gcr.io/k8s-prow/plank:v20180814-0a3efc115
+        image: gcr.io/k8s-prow/plank:v20180915-d96fd1bde
         args:
         - --dry-run=false
         - --github-token-file=
@@ -103,7 +103,7 @@ spec:
     spec:
       containers:
       - name: sinker
-        image: gcr.io/k8s-prow/sinker:v20180814-0a3efc115
+        image: gcr.io/k8s-prow/sinker:v20180915-d96fd1bde
         volumeMounts:
         - name: config
           mountPath: /etc/config
@@ -134,7 +134,7 @@ spec:
       terminationGracePeriodSeconds: 30
       containers:
       - name: deck
-        image: gcr.io/k8s-prow/deck:v20180814-0a3efc115
+        image: gcr.io/k8s-prow/deck:v20180915-d96fd1bde
         ports:
           - name: http
             containerPort: 8080
@@ -175,7 +175,7 @@ spec:
       terminationGracePeriodSeconds: 30
       containers:
       - name: horologium
-        image: gcr.io/k8s-prow/horologium:v20180814-0a3efc115
+        image: gcr.io/k8s-prow/horologium:v20180915-d96fd1bde
         volumeMounts:
         - name: config
           mountPath: /etc/config
@@ -207,22 +207,6 @@ spec:
           servicePort: 80
 ---
 # start gerrit
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  labels:
-    app: gerrit
-  name: gerrit-storage
-spec:
-  capacity:
-    storage: 1Gi
-  accessModes:
-    - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Retain
-  gcePersistentDisk:
-    pdName: gerrit-storage
-    fsType: ext4
----
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
@@ -235,8 +219,10 @@ spec:
   resources:
     requests:
       storage: 1Gi
+  # volumeName: added automatically after volume creation
+  # See https://cloud.google.com/kubernetes-engine/docs/concepts/persistent-volumes
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: gerrit
@@ -244,6 +230,9 @@ metadata:
     app: gerrit
 spec:
   replicas: 1
+  selector:
+    matchLabels:
+      app: gerrit
   template:
     metadata:
       labels:
@@ -252,13 +241,13 @@ spec:
       terminationGracePeriodSeconds: 30
       containers:
       - name: gerrit
-        image: gcr.io/gob-prow/gerrit:latest # TODO(senlu): create a stable tag
-        imagePullPolicy: Always
+        image: gcr.io/k8s-prow/gerrit:v20180915-d96fd1bde
         args:
-        - ./gerrit
-        - --storage=/store/gerrit
-        - --gerrit-instance=https://gke-internal-review.googlesource.com
-        - --gerrit-projects=test-infra,kubernetes,net/mci,syllogi/cluster-management,kubernetes/gke-common-webhooks,syllogi/logmon,GoogleCloudPlatform/redis-operator,GoogleCloudPlatform/k8s-stackdriver
+        - --config-path=/etc/config/config.yaml
+        - --gerrit-projects=https://gke-internal-review.googlesource.com=test-infra,kubernetes,net/mci,syllogi/cluster-management,kubernetes/gke-common-webhooks,syllogi/logmon,GoogleCloudPlatform/redis-operator,GoogleCloudPlatform/k8s-stackdriver
+        - --gerrit-projects=https://team-review.googlesource.com=alphabetcloud/galu,gke-kubernetes-enterprise-control/prototype,big-compute-eng/batch
+        - --gerrit-projects=https://velostrata-internal-review.googlesource.com=fejta-demo
+        - --last-sync-fallback=/store/gerrit
         volumeMounts:
         - name: config
           mountPath: /etc/config
@@ -272,72 +261,6 @@ spec:
       - name: gerrit-volume
         persistentVolumeClaim:
           claimName: gerrit-storage
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  labels:
-    app: gerrit-team
-  name: gerrit-team-storage
-spec:
-  capacity:
-    storage: 1Gi
-  accessModes:
-    - ReadWriteOnce
-  persistentVolumeReclaimPolicy: Retain
-  gcePersistentDisk:
-    pdName: gerrit-storage
-    fsType: ext4
----
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  labels:
-    app: gerrit-team
-  name: gerrit-team-storage
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
----
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  name: gerrit-team
-  labels:
-    app: gerrit-team
-spec:
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        app: gerrit-team
-    spec:
-      terminationGracePeriodSeconds: 30
-      containers:
-      - name: gerrit-team
-        image: gcr.io/gob-prow/gerrit:latest # TODO(senlu): create a stable tag
-        imagePullPolicy: Always
-        args:
-        - ./gerrit
-        - --storage=/store/gerrit-team
-        - --gerrit-instance=https://team-review.googlesource.com
-        - --gerrit-projects=alphabetcloud/galu,gke-kubernetes-enterprise-control/prototype,big-compute-eng/batch
-        volumeMounts:
-        - name: config
-          mountPath: /etc/config
-          readOnly: true
-        - mountPath: /store
-          name: gerrit-team-volume
-      volumes:
-      - name: config
-        configMap:
-          name: config
-      - name: gerrit-team-volume
-        persistentVolumeClaim:
-          claimName: gerrit-team-storage
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
@@ -355,57 +278,4 @@ spec:
       terminationGracePeriodSeconds: 30
       containers:
       - name: crier
-        image: gcr.io/k8s-prow/crier:v20180830-8252d8fda
----
-kind: PersistentVolumeClaim
-apiVersion: v1
-metadata:
-  labels:
-    app: gerrit-velostrata-internal
-  name: gerrit-velostrata-internal-storage
-spec:
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 1Gi
-  # volumeName: added automatically after volume creation
-  # See https://cloud.google.com/kubernetes-engine/docs/concepts/persistent-volumes
----
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  name: gerrit-velostrata-internal
-  labels:
-    app: gerrit-velostrata-internal
-spec:
-  replicas: 1
-  template:
-    metadata:
-      labels:
-        app: gerrit-velostrata-internal
-    spec:
-      terminationGracePeriodSeconds: 30
-      containers:
-      - name: gerrit-velostrata-internal
-        image: gcr.io/gob-prow/gerrit:latest # TODO(senlu): create a stable tag
-        imagePullPolicy: Always
-        args:
-        - ./gerrit
-        - --storage=/store/gerrit-velostrata-internal
-        - --gerrit-instance=https://velostrata-internal-review.googlesource.com
-        - --gerrit-projects=fejta-demo
-        volumeMounts:
-        - name: config
-          mountPath: /etc/config
-          readOnly: true
-        - mountPath: /store
-          name: gerrit-store
-      volumes:
-      - name: config
-        configMap:
-          name: config
-      - name: gerrit-store
-        persistentVolumeClaim:
-          claimName: gerrit-velostrata-internal-storage
-
+        image: gcr.io/k8s-prow/gerrit-crier:v20180915-d96fd1bde

@@ -12,6 +12,7 @@ update-config: get-cluster-credentials
 .PHONY: update-cluster
 update-cluster: get-cluster-credentials
 	kubectl apply -f cluster.yaml
+	kubectl apply -f grandmatriarch.yaml
 
 .PHONY: get-cluster-credentials
 get-cluster-credentials:

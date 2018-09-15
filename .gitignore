@@ -1,0 +1,5 @@
+*.pyc
+*.swp
+*~
+/bazel-*
+.DS_Store

@@ -6,10 +6,10 @@ plank:
     timeout: 7200000000000 # 2h
     grace_period: 15000000000 # 15s
     utility_images:
-      clonerefs: "gcr.io/k8s-prow/clonerefs@sha256:d80c97b81da29f02bf70d7762cc179dbfb6f467190be08bdca09cebc28455dfb"
-      initupload: "gcr.io/k8s-prow/initupload@sha256:b60dce2ff0de7ca3a40f16d15d308de1376bfc9d44d2a602f7aa5dbf28f849e3"
-      entrypoint: "gcr.io/k8s-prow/entrypoint@sha256:e5345b572c44425bb3b03ae2aebe3084ebec9786fcb998771f8cf9dc9bcc76a6"
-      sidecar: "gcr.io/k8s-prow/sidecar@sha256:98216d2e6186287167eefb966c48f81fcf8c2d3ec463664e1c31264ae2c929c7"
+      clonerefs: gcr.io/k8s-prow/clonerefs:v20180916-38d429f98
+      initupload: gcr.io/k8s-prow/initupload:v20180916-38d429f98
+      entrypoint: gcr.io/k8s-prow/entrypoint:v20180916-38d429f98
+      sidecar: gcr.io/k8s-prow/sidecar:v20180916-38d429f98
     gcs_configuration:
       bucket: "gob-prow"
       path_strategy: "explicit"

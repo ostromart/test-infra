@@ -75,7 +75,7 @@ spec:
     spec:
       containers:
       - name: plank
-        image: gcr.io/k8s-prow/plank:v20180916-0acd8baea
+        image: gcr.io/k8s-prow/plank:v20180916-38d429f98
         args:
         - --dry-run=false
         - --github-token-file=
@@ -103,7 +103,7 @@ spec:
     spec:
       containers:
       - name: sinker
-        image: gcr.io/k8s-prow/sinker:v20180916-0acd8baea
+        image: gcr.io/k8s-prow/sinker:v20180916-38d429f98
         volumeMounts:
         - name: config
           mountPath: /etc/config
@@ -134,7 +134,7 @@ spec:
       terminationGracePeriodSeconds: 30
       containers:
       - name: deck
-        image: gcr.io/k8s-prow/deck:v20180916-0acd8baea
+        image: gcr.io/k8s-prow/deck:v20180916-38d429f98
         ports:
           - name: http
             containerPort: 8080
@@ -175,7 +175,7 @@ spec:
       terminationGracePeriodSeconds: 30
       containers:
       - name: horologium
-        image: gcr.io/k8s-prow/horologium:v20180916-0acd8baea
+        image: gcr.io/k8s-prow/horologium:v20180916-38d429f98
         volumeMounts:
         - name: config
           mountPath: /etc/config
@@ -241,7 +241,7 @@ spec:
       terminationGracePeriodSeconds: 30
       containers:
       - name: gerrit
-        image: gcr.io/k8s-prow/gerrit:v20180916-0acd8baea
+        image: gcr.io/k8s-prow/gerrit:v20180916-38d429f98
         args:
         - --config-path=/etc/config/config.yaml
         - --cookiefile=/etc/cookies/cookies
@@ -286,4 +286,4 @@ spec:
       terminationGracePeriodSeconds: 30
       containers:
       - name: crier
-        image: gcr.io/k8s-prow/gerrit-crier:v20180916-0acd8baea
+        image: gcr.io/k8s-prow/gerrit-crier:v20180916-38d429f98

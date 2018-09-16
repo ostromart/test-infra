@@ -75,7 +75,7 @@ spec:
     spec:
       containers:
       - name: plank
-        image: gcr.io/k8s-prow/plank:v20180915-d96fd1bde
+        image: gcr.io/k8s-prow/plank:v20180916-0acd8baea
         args:
         - --dry-run=false
         - --github-token-file=
@@ -103,7 +103,7 @@ spec:
     spec:
       containers:
       - name: sinker
-        image: gcr.io/k8s-prow/sinker:v20180915-d96fd1bde
+        image: gcr.io/k8s-prow/sinker:v20180916-0acd8baea
         volumeMounts:
         - name: config
           mountPath: /etc/config
@@ -134,7 +134,7 @@ spec:
       terminationGracePeriodSeconds: 30
       containers:
       - name: deck
-        image: gcr.io/k8s-prow/deck:v20180915-d96fd1bde
+        image: gcr.io/k8s-prow/deck:v20180916-0acd8baea
         ports:
           - name: http
             containerPort: 8080
@@ -175,7 +175,7 @@ spec:
       terminationGracePeriodSeconds: 30
       containers:
       - name: horologium
-        image: gcr.io/k8s-prow/horologium:v20180915-d96fd1bde
+        image: gcr.io/k8s-prow/horologium:v20180916-0acd8baea
         volumeMounts:
         - name: config
           mountPath: /etc/config
@@ -241,9 +241,10 @@ spec:
       terminationGracePeriodSeconds: 30
       containers:
       - name: gerrit
-        image: gcr.io/gob-prow/gerrit:senlu-ae413b92
+        image: gcr.io/k8s-prow/gerrit:v20180916-0acd8baea
         args:
         - --config-path=/etc/config/config.yaml
+        - --cookiefile=/etc/cookies/cookies
         - --gerrit-projects=https://gke-internal-review.googlesource.com=test-infra,kubernetes,net/mci,syllogi/cluster-management,kubernetes/gke-common-webhooks,syllogi/logmon,GoogleCloudPlatform/redis-operator,GoogleCloudPlatform/k8s-stackdriver
         - --gerrit-projects=https://team-review.googlesource.com=alphabetcloud/galu,gke-kubernetes-enterprise-control/prototype,big-compute-eng/batch
         - --gerrit-projects=https://velostrata-internal-review.googlesource.com=fejta-demo
@@ -252,12 +253,19 @@ spec:
         - name: config
           mountPath: /etc/config
           readOnly: true
-        - mountPath: /store
-          name: gerrit-volume
+        - name: gerrit-volume
+          mountPath: /store
+        - name: cookies
+          mountPath: /etc/cookies
+          readOnly: true
       volumes:
       - name: config
         configMap:
           name: config
+      - name: cookies
+        secret:
+          defaultMode: 420
+          secretName: http-cookiefile
       - name: gerrit-volume
         persistentVolumeClaim:
           claimName: gerrit-storage
@@ -278,4 +286,4 @@ spec:
       terminationGracePeriodSeconds: 30
       containers:
       - name: crier
-        image: gcr.io/k8s-prow/gerrit-crier:v20180915-d96fd1bde
+        image: gcr.io/k8s-prow/gerrit-crier:v20180916-0acd8baea

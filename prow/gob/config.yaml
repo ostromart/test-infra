@@ -110,6 +110,16 @@ presubmits:
   - name: presubmit-velostrata-internal-fejta-demo-pass
     decorate: true
     always_run: true
+    extra_refs:
+    - org: fejta
+      repo: test-infra
+      base_ref: demo
+      path_alias: k8s.io/test-infra
+    - org: on-prem
+      repo: secret
+      base_ref: master
+      clone_uri: http://35.230.59.165/git/demo.git
+      path_alias: on-prem/secret
     spec:
       containers:
       - image: busybox

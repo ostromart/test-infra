@@ -2460,8 +2460,8 @@ periodics:
       - --
       - --check-leaked-resources
       - --extract=ci/latest
-      - --image-family=cos-beta
-      - --image-project=cos-cloud-shielded
+      - --image-family=cos-69-lts
+      - --image-project=gce-uefi-images
       - --gcp-node-image=custom
       - --gcp-zone=us-central1-f
       - --ginkgo-parallel=25
@@ -2485,8 +2485,8 @@ periodics:
       - --
       - --check-leaked-resources
       - --extract=ci/latest
-      - --image-family=cos-beta
-      - --image-project=cos-cloud-shielded
+      - --image-family=cos-69-lts
+      - --image-project=gce-uefi-images
       - --gcp-node-image=custom
       - --gcp-zone=us-central1-f
       - --provider=gce
@@ -2509,8 +2509,8 @@ periodics:
       - --
       - --check-leaked-resources
       - --extract=ci/latest
-      - --image-family=cos-beta
-      - --image-project=cos-cloud-shielded
+      - --image-family=cos-69-lts
+      - --image-project=gce-uefi-images
       - --gcp-node-image=custom
       - --gcp-zone=us-central1-f
       - --ginkgo-parallel=25

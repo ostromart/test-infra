@@ -806,7 +806,7 @@ periodics:
      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
        args:
        - --clean
-       - --repo=gke-internal.googlesource.com/GoogleCloudPlatform/k8s-stackdriver
+       - --repo=gke-internal.googlesource.com/GoogleCloudPlatform/k8s-stackdriver=fast-autoscaling
        - --root=/go/src
        - --timeout=30
        - --scenario=execute

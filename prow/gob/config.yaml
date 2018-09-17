@@ -1002,6 +1002,134 @@ periodics:
        - --test-cmd=../vertical-pod-autoscaler/hack/run-e2e-tests.sh
        - --test-cmd-args=full-vpa
        - --timeout=60m
+ - interval: 2h
+   name: ci-autoscaling-vpa-recommender-e2e
+   agent: kubernetes
+   labels:
+     preset-k8s-ssh: "true"
+     preset-vpa-alpha: "true"
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
+       args:
+       - --timeout=80
+       - --repo=k8s.io/autoscaler=master
+       - --root=/go/src
+       - --upload=gs://gob-prow/logs
+       - --scenario=kubernetes_e2e
+       - --
+       - --check-leaked-resources
+       - --deployment=gke
+       - --extract=gs://kubernetes-release-gke-internal/ci/latest-autoscaling-vpa-recommender.txt
+       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+       - --gcp-node-image=gci
+       - --gcp-project=prow-gob-vpa
+       - --gcp-zone=us-central1-f
+       - --ginkgo-parallel=1
+       - --gke-command-group=beta
+       - --gke-create-command=container clusters create --enable-vertical-pod-autoscaling
+       - --gke-environment=test
+       - --provider=gke
+       - --test=false
+       - --test-cmd=../vertical-pod-autoscaler/hack/run-e2e-tests.sh
+       - --test-cmd-args=recommender
+       - --timeout=60m
+ - interval: 2h
+   name: ci-autoscaling-vpa-updater-e2e
+   agent: kubernetes
+   labels:
+     preset-k8s-ssh: "true"
+     preset-vpa-alpha: "true"
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
+       args:
+       - --timeout=80
+       - --repo=k8s.io/autoscaler=master
+       - --root=/go/src
+       - --upload=gs://gob-prow/logs
+       - --scenario=kubernetes_e2e
+       - --
+       - --check-leaked-resources
+       - --deployment=gke
+       - --extract=gs://kubernetes-release-gke-internal/ci/latest-autoscaling-vpa-updater.txt
+       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+       - --gcp-node-image=gci
+       - --gcp-project=prow-gob-vpa
+       - --gcp-zone=us-central1-f
+       - --ginkgo-parallel=1
+       - --gke-command-group=beta
+       - --gke-create-command=container clusters create --enable-vertical-pod-autoscaling
+       - --gke-environment=test
+       - --provider=gke
+       - --test=false
+       - --test-cmd=../vertical-pod-autoscaler/hack/run-e2e-tests.sh
+       - --test-cmd-args=updater
+       - --timeout=60m
+ - interval: 2h
+   name: ci-autoscaling-vpa-admission-controller-e2e
+   agent: kubernetes
+   labels:
+     preset-k8s-ssh: "true"
+     preset-vpa-alpha: "true"
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
+       args:
+       - --timeout=80
+       - --repo=k8s.io/autoscaler=master
+       - --root=/go/src
+       - --upload=gs://gob-prow/logs
+       - --scenario=kubernetes_e2e
+       - --
+       - --check-leaked-resources
+       - --deployment=gke
+       - --extract=gs://kubernetes-release-gke-internal/ci/latest-autoscaling-vpa-admission-controller.txt
+       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+       - --gcp-node-image=gci
+       - --gcp-project=prow-gob-vpa
+       - --gcp-zone=us-central1-f
+       - --ginkgo-parallel=1
+       - --gke-command-group=beta
+       - --gke-create-command=container clusters create --enable-vertical-pod-autoscaling
+       - --gke-environment=test
+       - --provider=gke
+       - --test=false
+       - --test-cmd=../vertical-pod-autoscaler/hack/run-e2e-tests.sh
+       - --test-cmd-args=admission-controller
+       - --timeout=60m
+ - interval: 2h
+   name: ci-autoscaling-vpa-actuation-e2e
+   agent: kubernetes
+   labels:
+     preset-k8s-ssh: "true"
+     preset-vpa-alpha: "true"
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
+       args:
+       - --timeout=80
+       - --repo=k8s.io/autoscaler=master
+       - --root=/go/src
+       - --upload=gs://gob-prow/logs
+       - --scenario=kubernetes_e2e
+       - --
+       - --check-leaked-resources
+       - --deployment=gke
+       - --extract=gs://kubernetes-release-gke-internal/ci/latest-autoscaling-vpa-actuation.txt
+       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+       - --gcp-node-image=gci
+       - --gcp-project=prow-gob-vpa
+       - --gcp-zone=us-central1-f
+       - --ginkgo-parallel=1
+       - --gke-command-group=beta
+       - --gke-create-command=container clusters create --enable-vertical-pod-autoscaling
+       - --gke-environment=test
+       - --provider=gke
+       - --test=false
+       - --test-cmd=../vertical-pod-autoscaler/hack/run-e2e-tests.sh
+       - --test-cmd-args=actuation
+       - --timeout=60m
 
  # Production continuous prober for go/nomos.  See go/nomos-production.
  # Using prime numbers as intervals so that runs would spread out.

@@ -1150,8 +1150,7 @@ periodics:
    labels:
      preset-dind-enabled: "true"
    spec:
-     # If the pod runs for more than 20 minutes, stop it.
-     activeDeadlineSeconds: 1200
+     activeDeadlineSeconds: 7200  # 2 hours, there are long running tests.
      containers:
      - image: gcr.io/stolos-dev/e2e-prober:test-e2e-latest
        imagePullPolicy: Always
@@ -1190,7 +1189,7 @@ periodics:
      preset-service-account: "true"
      preset-dind-enabled: "true"
    spec:
-     activeDeadlineSeconds: 1200
+     activeDeadlineSeconds: 7200 # 2 hours. these tests take a long time.
      containers:
      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
        args:
@@ -1279,6 +1278,7 @@ periodics:
      preset-service-account: "true"
      preset-dind-enabled: "true"
    spec:
+     activeDeadlineSeconds: 7200 # 2 hours. these tests take a long time.
      containers:
      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
        args:

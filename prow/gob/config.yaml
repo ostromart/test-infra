@@ -304,7 +304,7 @@ presubmits:
     spec:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-1.11
-        commands:
+        command:
         - ./cluster-api/scripts/ci-build.sh
   - name: pull-syllogi-cluster-api-make
     always_run: true
@@ -330,7 +330,7 @@ presubmits:
     spec:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
-        commands:
+        command:
         - ./cluster-api/scripts/ci-test.sh
   - name: pull-syllogi-cli-build
     always_run: true
@@ -338,7 +338,7 @@ presubmits:
     spec:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-1.11
-        commands:
+        command:
         - ./syllogi-cli/scripts/ci-build.sh
   - name: pull-syllogi-cli-make
     always_run: true
@@ -364,7 +364,7 @@ presubmits:
     spec:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
-        commands:
+        command:
         - ./syllogi-cli/scripts/ci-test.sh
   https://gke-internal-review.googlesource.com/syllogi/logmon:
   - name: pull-syllogi-logmon-gofmt
@@ -373,7 +373,7 @@ presubmits:
     spec:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-1.11
-        commands:
+        command:
         - ./hack/verify-gofmt.sh
   # TODO(senlu): Consider a rewrite of this into the modern prow format.
   https://team-review.googlesource.com/gke-kubernetes-enterprise-control/prototype:
@@ -401,7 +401,7 @@ presubmits:
       containers:
       - image: gcr.io/kubebatchtest/prowcontainers/prowcontainer:final
         imagePullPolicy: Always
-        commands:
+        command:
         - ./prow/RunAcceptanceTests.sh
   https://gke-internal-review.googlesource.com/GoogleCloudPlatform/redis-operator:
   # TODO(krzyzacy) : migrate kubetest jobs to podutils

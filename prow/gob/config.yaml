@@ -136,25 +136,16 @@ presubmits:
 
   https://gke-internal-review.googlesource.com/test-infra:
   - name: pull-test-infra-presubmit
-    agent: kubernetes
-    context: pull-test-infra-presubmit
+    decorate: true
     always_run: true
-    rerun_command: "/test pull-test-infra-presubmit"
-    trigger: "(?m)^/test (all|pull-test-infra-presubmit),?(\\s+|$)"
     labels:
       preset-service-account: "true"
     spec:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
-        args:
-        - --clean
-        - --repo=gke-internal.googlesource.com/test-infra=$(PULL_REFS)
-        - --service-account=/etc/service-account/service-account.json
-        - --upload=gs://gob-prow/pr-logs
-        - --scenario=execute
-        - -- # end bootstrap args, scenario args below
-        - /workspace/gke-internal.googlesource.com/test-infra/prow/hack/verify-config.sh
-  # TODO: convert to podutils
+        command:
+        - ./prow/hack/verify-config.sh
+  # TODO: convert to podutils (keep this for demo)
   - name: pull-test-infra-hello-git
     always_run: true
     labels:
@@ -164,7 +155,7 @@ presubmits:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180913-094478d32-krzyzacy
         args:
         - --clean
-        - --repo=gke-internal.googlesource.com/test-infra=$(PULL_REFS)
+        - --repo=gke-internal-review.googlesource.com/test-infra=$(PULL_REFS)
         - --repo=github.com/krzyzacy/hello-github=master
         - --repo=ec2-18-191-106-213.us-east-2.compute.amazonaws.com:/home/git/hello-aws.git
         - --ssh=/aws-ssh-key/.ssh/ssh-private
@@ -185,31 +176,29 @@ presubmits:
           secretName: aws-ssh-key
   https://gke-internal-review.googlesource.com/kubernetes:
   - name: pull-gob-kubernetes-build
-    agent: kubernetes
-    context: pull-gob-kubernetes-build
+    decorate: true
     always_run: true
-    rerun_command: "/test pull-gob-kubernetes-build"
-    trigger: "(?m)^/test (all|pull-gob-kubernetes-build),?(\\s+|$)"
+    extra_refs:
+    - org: kubernetes
+      repo: test-infra
+      base_ref: master
+      path_alias: k8s.io/test-infra
+    - org: kubernetes
+      repo: release
+      base_ref: master
+      path_alias: k8s.io/release
     labels:
-      preset-service-account: "true"
+      preset-dind-enabled: "true"
     spec:
       containers:
       - image: gcr.io/k8s-testimages/bootstrap:v20180215-b2a89850e
+        command:
+        - runner.sh
+        - ../../../k8s.io/test-infra/scenarios/kubernetes_build.py
         args:
-        - --clean
-        - --repo=gke-internal.googlesource.com/kubernetes=$(PULL_REFS)
-        - --repo=k8s.io/release
-        - --root=/go/src
-        - --timeout=30
-        - --scenario=kubernetes_build
-        - --upload=gs://gob-prow/pr-logs
-        - --
         - --fast
         - --release=gob-prow
-        - --push-build-script=../../k8s.io/release/push-build.sh
-        env:
-        - name: DOCKER_IN_DOCKER_ENABLED
-          value: "true"
+        - --push-build-script=../../../k8s.io/release/push-build.sh
         # docker-in-docker needs privileged mode
         securityContext:
           privileged: true
@@ -217,20 +206,9 @@ presubmits:
           requests:
             cpu: 3
             memory: "8Gi"
-        volumeMounts:
-        - name: docker-graph
-          mountPath: /docker-graph
-      volumes:
-      - name: docker-graph
-        emptyDir: {}
   - name: pull-gob-kubernetes-unit
-    agent: kubernetes
-    context: pull-gob-kubernetes-unit
     always_run: true
-    rerun_command: "/test pull-gob-kubernetes-unit"
-    trigger: "(?m)^/test (all|pull-gob-kubernetes-unit),?(\\s+|$)"
     labels:
-      preset-service-account: "true"
       preset-bazel-scratch-dir: "true"
     spec:
       containers:
@@ -254,11 +232,7 @@ presubmits:
           requests:
             memory: "6Gi"
   - name: pull-gob-kubernetes-integration
-    agent: kubernetes
-    context: pull-gob-kubernetes-integration
     always_run: true
-    rerun_command: "/test pull-gob-kubernetes-integration"
-    trigger: "(?m)^/test (all|pull-gob-kubernetes-integration),?(\\s+|$)"
     labels:
       preset-service-account: "true"
       preset-dind-enabled: "true"
@@ -283,251 +257,134 @@ presubmits:
             cpu: 3
   https://gke-internal-review.googlesource.com/kubernetes/gke-common-webhooks:
   - name: pull-webhooks-unit
-    agent: kubernetes
-    context: pull-webhooks-unit
     always_run: true
-    rerun_command: "/test pull-webhooks-unit"
-    trigger: "(?m)^/test (all|pull-webhooks-unit),?(\\s+|$)"
+    decorate: true
     labels:
       preset-service-account: "true"
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180511-51cf02e75-master
-        args:
-        - --clean
-        - --repo=gke-internal.googlesource.com/kubernetes/gke-common-webhooks=$(PULL_REFS)
-        - --service-account=/etc/service-account/service-account.json
-        - --upload=gs://gob-prow/pr-logs
-        - --scenario=execute
-        - -- # end bootstrap args, scenario args below
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
+        command:
         - "make"
         - "lint"
         - "test"
   https://gke-internal-review.googlesource.com/net/mci:
   - name: pull-mci-unit
-    agent: kubernetes
-    context: pull-mci-unit
     always_run: true
-    rerun_command: "/test pull-mci-unit"
-    trigger: "(?m)^/test (all|pull-mci-unit),?(\\s+|$)"
+    decorate: true
     labels:
-      preset-service-account: "true"
       preset-dind-enabled: "true"
     spec:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
+        command:
+        - runner.sh
         args:
-        - --clean
-        - --repo=gke-internal.googlesource.com/net/mci=$(PULL_REFS)
-        - --service-account=/etc/service-account/service-account.json
-        - --upload=gs://gob-prow/pr-logs
-        - --scenario=execute
-        - -- # end bootstrap args, scenario args below
-        - "make"
-        - "test"
+        - make
+        - test
         # docker-in-docker needs privileged mode
         securityContext:
           privileged: true
   https://team-review.googlesource.com/alphabetcloud/galu:
   - name: pull-galu-presubmit
-    agent: kubernetes
-    context: pull-galu-presubmit
     always_run: true
-    rerun_command: "/test pull-galu-presubmit"
-    trigger: "(?m)^/test (all|pull-galu-presubmit),?(\\s+|$)"
-    labels:
-      preset-service-account: "true"
+    decorate: true
     spec:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
-        args:
-        - --clean
-        - --repo=team.googlesource.com/alphabetcloud/galu=$(PULL_REFS)
-        - --service-account=/etc/service-account/service-account.json
-        - --upload=gs://galu-gob-prow/pr-logs
-        - --scenario=execute
-        - -- # end bootstrap args, scenario args below
-        - /workspace/team.googlesource.com/alphabetcloud/galu/prow/presubmit.sh
+        command:
+        - ./prow/presubmit.sh
   https://gke-internal-review.googlesource.com/syllogi/cluster-management:
   - name: pull-syllogi-cluster-api-build
-    agent: kubernetes
-    context: pull-syllogi-cluster-api-build
     always_run: true
-    rerun_command: "/test pull-syllogi-cluster-api-build"
-    trigger: "(?m)^/test (all|pull-syllogi-cluster-api-build),?(\\s+|$)"
-    labels:
-      preset-service-account: "true"
+    decorate: true
     spec:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-1.11
-        args:
-        - --clean
-        - --repo=gke-internal.googlesource.com/syllogi/cluster-management=$(PULL_REFS)
-        - --root=/go/src
-        - --service-account=/etc/service-account/service-account.json
-        - --upload=gs://syllogi-gob-prow/pr-logs
-        - --scenario=execute
-        - -- # end bootstrap args, scenario args below
-        - /go/src/gke-internal.googlesource.com/syllogi/cluster-management/cluster-api/scripts/ci-build.sh
+        commands:
+        - ./cluster-api/scripts/ci-build.sh
   - name: pull-syllogi-cluster-api-make
-    agent: kubernetes
-    context: pull-syllogi-cluster-api-make
     always_run: true
-    rerun_command: "/test pull-syllogi-cluster-api-make"
-    trigger: "(?m)^/test (all|pull-syllogi-cluster-api-make),?(\\s+|$)"
+    decorate: true
     labels:
-      preset-service-account: "true"
       preset-dind-enabled: "true"
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/gcloud-in-go:v20171113-192bec25
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-1.11
+        command:
+        - runner.sh
         args:
-        - --clean
-        - --repo=gke-internal.googlesource.com/syllogi/cluster-management=$(PULL_REFS)
-        - --root=/go/src
-        - --service-account=/etc/service-account/service-account.json
-        - --upload=gs://syllogi-gob-prow/pr-logs
-        - --timeout=90
-        - --scenario=execute
-        - -- # end bootstrap args, scenario args below
-        - /go/src/gke-internal.googlesource.com/syllogi/cluster-management/cluster-api/scripts/ci-make.sh
+        - ./cluster-api/scripts/ci-make.sh
         # docker-in-docker needs privileged mode
         securityContext:
           privileged: true
-        image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-1.11
         resources:
           requests:
             memory: "6Gi"
   - name: pull-syllogi-cluster-api-unittest
-    agent: kubernetes
-    context: pull-syllogi-cluster-api-unittest
     always_run: true
-    rerun_command: "/test pull-syllogi-cluster-api-unittest"
-    trigger: "(?m)^/test (all|pull-syllogi-cluster-api-unittest),?(\\s+|$)"
-    labels:
-      preset-service-account: "true"
+    decorate: true
     spec:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
-        args:
-        - --clean
-        - --repo=gke-internal.googlesource.com/syllogi/cluster-management=$(PULL_REFS)
-        - --root=/go/src
-        - --service-account=/etc/service-account/service-account.json
-        - --upload=gs://syllogi-gob-prow/pr-logs
-        - --scenario=execute
-        - -- # end bootstrap args, scenario args below
-        - /go/src/gke-internal.googlesource.com/syllogi/cluster-management/cluster-api/scripts/ci-test.sh
+        commands:
+        - ./cluster-api/scripts/ci-test.sh
   - name: pull-syllogi-cli-build
-    agent: kubernetes
-    context: pull-syllogi-cli-build
     always_run: true
-    rerun_command: "/test pull-syllogi-cli-build"
-    trigger: "(?m)^/test (all|pull-syllogi-cli-build),?(\\s+|$)"
-    labels:
-      preset-service-account: "true"
+    decorate: true
     spec:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-1.11
-        args:
-        - --clean
-        - --repo=gke-internal.googlesource.com/syllogi/cluster-management=$(PULL_REFS)
-        - --root=/go/src
-        - --service-account=/etc/service-account/service-account.json
-        - --upload=gs://syllogi-gob-prow/pr-logs
-        - --scenario=execute
-        - -- # end bootstrap args, scenario args below
-        - /go/src/gke-internal.googlesource.com/syllogi/cluster-management/syllogi-cli/scripts/ci-build.sh
+        commands:
+        - ./syllogi-cli/scripts/ci-build.sh
   - name: pull-syllogi-cli-make
-    agent: kubernetes
-    context: pull-syllogi-cli-make
     always_run: true
-    rerun_command: "/test pull-syllogi-cli-make"
-    trigger: "(?m)^/test (all|pull-syllogi-cli-make),?(\\s+|$)"
+    decorate: true
     labels:
-      preset-service-account: "true"
       preset-dind-enabled: "true"
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/gcloud-in-go:v20171113-192bec25
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-1.11
+        command:
+        - runner.sh
         args:
-        - --clean
-        - --repo=gke-internal.googlesource.com/syllogi/cluster-management=$(PULL_REFS)
-        - --root=/go/src
-        - --service-account=/etc/service-account/service-account.json
-        - --upload=gs://syllogi-gob-prow/pr-logs
-        - --timeout=90
-        - --scenario=execute
-        - -- # end bootstrap args, scenario args below
-        - /go/src/gke-internal.googlesource.com/syllogi/cluster-management/syllogi-cli/scripts/ci-make.sh
+        - ./syllogi-cli/scripts/ci-make.sh
         # docker-in-docker needs privileged mode
         securityContext:
           privileged: true
-        image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-1.11
         resources:
           requests:
             memory: "6Gi"
   - name: pull-syllogi-cli-unittest
-    agent: kubernetes
-    context: pull-syllogi-cli-unittest
     always_run: true
-    rerun_command: "/test pull-syllogi-cli-unittest"
-    trigger: "(?m)^/test (all|pull-syllogi-cli-unittest),?(\\s+|$)"
-    labels:
-      preset-service-account: "true"
+    decorate: true
     spec:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
-        args:
-        - --clean
-        - --repo=gke-internal.googlesource.com/syllogi/cluster-management=$(PULL_REFS)
-        - --root=/go/src
-        - --service-account=/etc/service-account/service-account.json
-        - --upload=gs://syllogi-gob-prow/pr-logs
-        - --scenario=execute
-        - -- # end bootstrap args, scenario args below
-        - /go/src/gke-internal.googlesource.com/syllogi/cluster-management/syllogi-cli/scripts/ci-test.sh
+        commands:
+        - ./syllogi-cli/scripts/ci-test.sh
   https://gke-internal-review.googlesource.com/syllogi/logmon:
   - name: pull-syllogi-logmon-gofmt
-    agent: kubernetes
-    context: pull-syllogi-logmon-gofmt
     always_run: true
-    rerun_command: "/test pull-syllogi-logmon-gofmt"
-    trigger: "(?m)^/test (all|pull-syllogi-logmon-gofmt),?(\\s+|$)"
-    labels:
-      preset-service-account: "true"
+    decorate: true
     spec:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-1.11
-        args:
-        - --clean
-        - --repo=gke-internal.googlesource.com/syllogi/logmon=$(PULL_REFS)
-        - --root=/go/src
-        - --service-account=/etc/service-account/service-account.json
-        - --upload=gs://syllogi-gob-prow/pr-logs
-        - --scenario=execute
-        - -- # end bootstrap args, scenario args below
-        - /go/src/gke-internal.googlesource.com/syllogi/logmon/hack/verify-gofmt.sh
+        commands:
+        - ./hack/verify-gofmt.sh
   # TODO(senlu): Consider a rewrite of this into the modern prow format.
   https://team-review.googlesource.com/gke-kubernetes-enterprise-control/prototype:
   - name: nomos-presubmit
-    context: nomos-presubmit
     always_run: true
-    rerun_command: "/test nomos-presubmit"
-    agent: kubernetes
+    decorate: true
     labels:
-      preset-service-account: "true"
       preset-dind-enabled: "true"
     spec:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
+        command:
+        - runner.sh
         args:
-        - --clean
-        - --timeout=300
-        - --repo=team.googlesource.com/gke-kubernetes-enterprise-control/prototype=$(PULL_REFS)
-        - --scenario=execute
-        - --upload=gs://gob-prow/pr-logs
-        - --
         - make
         - test
         # docker-in-docker needs privileged mode
@@ -535,26 +392,16 @@ presubmits:
           privileged: true
   https://team-review.googlesource.com/big-compute-eng/batch:
   - name: pull-batch-presubmit
-    agent: kubernetes
-    context: pull-batch-presubmit
     always_run: true
-    rerun_command: "/test pull-batch-presubmit"
-    trigger: "(?m)^/test (all|pull-batch-presubmit),?(\\s+|$)"
-    labels:
-      preset-service-account: "true"
+    decorate: true
     spec:
       containers:
       - image: gcr.io/kubebatchtest/prowcontainers/prowcontainer:final
         imagePullPolicy: Always
-        args:
-        - --clean
-        - --repo=team.googlesource.com/big-compute-eng/batch=$(PULL_REFS)
-        - --service-account=/etc/service-account/service-account.json
-        - --upload=gs://gob-prow/pr-logs
-        - --scenario=execute
-        - -- # end bootstrap args, scenario args below
-        - /workspace/team.googlesource.com/big-compute-eng/batch/prow/RunAcceptanceTests.sh
+        commands:
+        - ./prow/RunAcceptanceTests.sh
   https://gke-internal-review.googlesource.com/GoogleCloudPlatform/redis-operator:
+  # TODO(krzyzacy) : migrate kubetest jobs to podutils
   - name: redis-operator-e2e
     agent: kubernetes
     context: redis-operator-e2e
@@ -571,7 +418,7 @@ presubmits:
         args:
         - --clean
         - --timeout=300
-        - --repo=gke-internal.googlesource.com/GoogleCloudPlatform/redis-operator=$(PULL_REFS)
+        - --repo=gke-internal-review.googlesource.com/GoogleCloudPlatform/redis-operator=$(PULL_REFS)
         - --root=/go/src
         - --upload=gs://gob-prow/pr-logs
         - --scenario=kubernetes_e2e

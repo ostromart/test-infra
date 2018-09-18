@@ -301,6 +301,7 @@ presubmits:
   - name: pull-syllogi-cluster-api-build
     always_run: true
     decorate: true
+    path_alias: gke-internal.googlesource.com/syllogi/cluster-management
     spec:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-1.11
@@ -309,6 +310,7 @@ presubmits:
   - name: pull-syllogi-cluster-api-make
     always_run: true
     decorate: true
+    path_alias: gke-internal.googlesource.com/syllogi/cluster-management
     labels:
       preset-dind-enabled: "true"
     spec:
@@ -327,6 +329,7 @@ presubmits:
   - name: pull-syllogi-cluster-api-unittest
     always_run: true
     decorate: true
+    path_alias: gke-internal.googlesource.com/syllogi/cluster-management
     spec:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
@@ -335,6 +338,7 @@ presubmits:
   - name: pull-syllogi-cli-build
     always_run: true
     decorate: true
+    path_alias: gke-internal.googlesource.com/syllogi/cluster-management
     spec:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-1.11
@@ -343,6 +347,7 @@ presubmits:
   - name: pull-syllogi-cli-make
     always_run: true
     decorate: true
+    path_alias: gke-internal.googlesource.com/syllogi/cluster-management
     labels:
       preset-dind-enabled: "true"
     spec:
@@ -361,6 +366,7 @@ presubmits:
   - name: pull-syllogi-cli-unittest
     always_run: true
     decorate: true
+    path_alias: gke-internal.googlesource.com/syllogi/cluster-management
     spec:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
@@ -370,6 +376,7 @@ presubmits:
   - name: pull-syllogi-logmon-gofmt
     always_run: true
     decorate: true
+    path_alias: gke-internal.googlesource.com/syllogi/logmon
     spec:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-1.11

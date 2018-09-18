@@ -3,7 +3,7 @@
 TESTINFRA_ROOT=$(git rev-parse --show-toplevel)
 GUBERNATOR_URL="https://gubernator-internal.googleplex.com"
 
-cd /workspace/test-infra
+cd $GOPATH/k8s.io/test-infra
 
 # exit code
 EXIT=0

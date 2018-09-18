@@ -138,8 +138,11 @@ presubmits:
   - name: pull-test-infra-presubmit
     decorate: true
     always_run: true
-    labels:
-      preset-service-account: "true"
+    extra_refs:
+    - org: kubernetes
+      repo: test-infra
+      base_ref: master
+      path_alias: k8s.io/test-infra
     spec:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master

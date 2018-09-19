@@ -19,3 +19,14 @@ resources:
   - prow-gob-gpu-boskos-04
   state: dirty
   type: gpu-project
+- names:
+  - gke-customer-canary-testing-1
+  - gke-customer-canary-testing-2
+  - gke-customer-canary-testing-3
+  - gke-customer-canary-testing-4
+  - gke-customer-canary-testing-5
+  - gke-customer-canary-testing-6
+  - gke-customer-canary-testing-7
+  - gke-customer-canary-testing-8
+  state: dirty
+  type: canary-project

@@ -14,7 +14,7 @@ kubectl get pod
 mkpj \
 --config-path /usr/local/config/config.yaml \
 --job ${PROW_JOB} | \
-kubectl label --local=true pubsub-project=${PUBSUB_PROJECT} pubsub-topic=${PUBSUB_TOPIC} pubsub-runID=${PUBSUB_RUNID} -o yaml -f - | \
+kubectl label --local=true prow.k8s.io/pubsub-project=${PUBSUB_PROJECT} prow.k8s.io/pubsub-topic=${PUBSUB_TOPIC} prow.k8s.io/pubsub-runID=${PUBSUB_RUNID} -o yaml -f - | \
 tee prowjob.yaml
 
 kubectl apply -f prowjob.yaml

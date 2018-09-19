@@ -37,7 +37,7 @@ clean:
 
 build: clean gather-files build-docker
 
-all: build push clean
+all: build push-docker clean
 
 local-test:
 	docker run -e "PUBSUB_PROJECT=gke-release" -e "PUBSUB_TOPIC=louhi-prow" -e "PUBSUB_RUNID=abc123" -e "PROW_JOB=echo-test" -it "$(HUB)"/prow-trigger:"$(TAG)" /bin/bash

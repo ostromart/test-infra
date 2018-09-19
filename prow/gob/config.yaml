@@ -1,6 +1,7 @@
 plank:
   job_url_template: 'https://gubernator-internal.googleplex.com/build/{{with .Spec.Refs}}{{if eq .Repo "syllogi/cluster-management"}}syllogi-gob-prow{{else if eq .Repo "alphabetcloud/galu"}}galu-gob-prow{{else}}gob-prow{{end}}{{else}}gob-prow{{end}}/{{if or (eq .Spec.Type "presubmit") (eq .Spec.Type "batch")}}pr-logs/pull{{with .Spec.Refs}}/{{if eq .Org "https://gke-internal-review.googlesource.com"}}gke-internal.googlesource.com{{else if eq .Org "https://team-review.googlesource.com"}}team.googlesource.com{{else}}{{.Org}}{{end}}_{{.Repo}}{{end}}{{else}}logs{{end}}{{if eq .Spec.Type "presubmit"}}/{{with index .Spec.Refs.Pulls 0}}{{.Number}}{{end}}{{else if eq .Spec.Type "batch"}}/batch{{end}}/{{.Spec.Job}}/{{.Status.BuildID}}/'
   report_template: '[Full PR test history](https://gubernator-internal.googleplex.com/pr/{{if eq .Spec.Refs.Org "kubernetes"}}{{if eq .Spec.Refs.Repo "kubernetes"}}{{else}}{{.Spec.Refs.Repo}}/{{end}}{{else}}{{.Spec.Refs.Org}}_{{.Spec.Refs.Repo}}/{{end}}{{with index .Spec.Refs.Pulls 0}}{{.Number}}{{end}}). [Your PR dashboard](https://gubernator-internal.googleplex.com/pr/{{with index .Spec.Refs.Pulls 0}}{{.Author}}{{end}}).'
+  job_url_prefix: https://gubernator-internal.googleplex.com/build/
   pod_pending_timeout: 60m
   default_decoration_config:
     timeout: 7200000000000 # 2h
@@ -349,6 +350,7 @@ presubmits:
     decorate: true
     path_alias: gke-internal.googlesource.com/syllogi/cluster-management
     labels:
+      preset-service-account: "true"
       preset-dind-enabled: "true"
     spec:
       containers:

@@ -1497,7 +1497,7 @@ periodics:
        securityContext:
          privileged: true
 
- - interval: 30m
+ - interval: 2h
    name: ci-managed-certs-gke-e2e
    agent: kubernetes
    labels:
@@ -1510,7 +1510,7 @@ periodics:
        - --clean
        - --repo=gke-internal.googlesource.com/managed-certs-gke
        - --root=/go/src
-       - --timeout=65
+       - --timeout=270
        - --scenario=kubernetes_e2e
        - --upload=gs://gob-prow/logs
        - -- # stop bootstrap flags
@@ -1527,7 +1527,7 @@ periodics:
        - --provider=gke
        - --test=false
        - --test-cmd=../hack/e2e.sh
-       - --timeout=45m
+       - --timeout=4h
 
  - interval: 1h
    name: periodic-syllogi-cluster-api-build

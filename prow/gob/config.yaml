@@ -412,6 +412,10 @@ presubmits:
         imagePullPolicy: Always
         command:
         - ./prow/RunAcceptanceTests.sh
+        resources:
+          requests:
+            cpu: 4
+            memory: "8Gi"
   https://gke-internal-review.googlesource.com/GoogleCloudPlatform/redis-operator:
   # TODO(krzyzacy) : migrate kubetest jobs to podutils
   - name: redis-operator-e2e
@@ -1616,3 +1620,7 @@ periodics:
        - --scenario=execute
        - --
        - /workspace/team.googlesource.com/big-compute-eng/batch/prow/RunAcceptanceTests.sh
+       resources:
+          requests:
+            cpu: 4
+            memory: "8Gi"

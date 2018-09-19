@@ -839,6 +839,38 @@ periodics:
        - --test-cmd-args=--ginkgo.focus=\[Feature:NodeAutoProvisioningWithGPU\]
        - --timeout=2h
 
+ - interval: 4h
+   name: ci-autoscaling-nap-multizonal-e2e
+   agent: kubernetes
+   labels:
+     preset-k8s-ssh: "true"
+     preset-service-account: "true"
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+       args:
+       - --timeout=320
+       - --repo=gke-internal.googlesource.com/gke-autoscaling=master
+       - --root=/go/src
+       - --upload=gs://gob-prow/logs
+       - --scenario=kubernetes_e2e
+       - --
+       - --check-leaked-resources
+       - --cluster=gke-autoscaling-cluster
+       - --deployment=gke
+       - --extract=gs://kubernetes-release-gke-internal/ci/latest-autoscaling.txt
+       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+       - --gcp-node-image=gci
+       - --gcp-zone=us-central1-f
+       - --gke-node-locations=us-central1-f,us-central1-a,us-central1-b
+       - --ginkgo-parallel=1
+       - --gke-environment=test
+       - --provider=gke
+       - --test=false
+       - --test-cmd=../test/cluster-autoscaler/e2e/hack/run-e2e.sh
+       - --test-cmd-args=--ginkgo.focus=\[Feature:NodeAutoProvisioningMultizonal\]
+       - --timeout=5h
+
  - interval: 2h
    name: ci-autoscaling-vpa-full-e2e
    agent: kubernetes

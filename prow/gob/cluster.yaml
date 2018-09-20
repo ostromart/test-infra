@@ -245,7 +245,7 @@ spec:
         args:
         - --config-path=/etc/config/config.yaml
         - --cookiefile=/etc/cookies/cookies
-        - --gerrit-projects=https://gke-internal-review.googlesource.com=test-infra,kubernetes,net/mci,syllogi/cluster-management,kubernetes/gke-common-webhooks,syllogi/logmon,GoogleCloudPlatform/redis-operator,GoogleCloudPlatform/k8s-stackdriver,cluster-lifecycle/cluster-operators
+        - --gerrit-projects=https://gke-internal-review.googlesource.com=test-infra,kubernetes,net/mci,syllogi/cluster-management,kubernetes/gke-common-webhooks,syllogi/logmon,GoogleCloudPlatform/redis-operator,GoogleCloudPlatform/k8s-stackdriver,cluster-lifecycle/cluster-operators,GoogleCloudPlatform/cronanything
         - --gerrit-projects=https://team-review.googlesource.com=alphabetcloud/galu,gke-kubernetes-enterprise-control/prototype,big-compute-eng/batch
         - --gerrit-projects=https://velostrata-internal-review.googlesource.com=fejta-demo
         - --last-sync-fallback=/store/gerrit
@@ -290,7 +290,7 @@ spec:
         args:
         - --gerrit
         - --cookiefile=/etc/cookies/cookies
-        - --gerrit-projects=https://gke-internal-review.googlesource.com=test-infra,kubernetes,net/mci,syllogi/cluster-management,kubernetes/gke-common-webhooks,syllogi/logmon,GoogleCloudPlatform/redis-operator,GoogleCloudPlatform/k8s-stackdriver,cluster-lifecycle/cluster-operators
+        - --gerrit-projects=https://gke-internal-review.googlesource.com=test-infra,kubernetes,net/mci,syllogi/cluster-management,kubernetes/gke-common-webhooks,syllogi/logmon,GoogleCloudPlatform/redis-operator,GoogleCloudPlatform/k8s-stackdriver,cluster-lifecycle/cluster-operators,GoogleCloudPlatform/cronanything
         - --gerrit-projects=https://team-review.googlesource.com=alphabetcloud/galu,gke-kubernetes-enterprise-control/prototype,big-compute-eng/batch
         - --gerrit-projects=https://velostrata-internal-review.googlesource.com=fejta-demo
         volumeMounts:

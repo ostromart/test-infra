@@ -109,21 +109,27 @@ presets:
 presubmits:
   https://velostrata-internal-review.googlesource.com/fejta-demo:
   - name: presubmit-velostrata-internal-fejta-demo-pass
-    decorate: true
     always_run: true
+    # Enables pod-utils, which inject init and sidecar containers into your pod.
+    # init - checks out your PR correctly
+    # sidecar - uploads your result to testgrid
+    decorate: true
+    # Check out additional repos with extra_refs, for example:
     extra_refs:
     - org: fejta
       repo: test-infra
-      base_ref: demo
+      base_ref: demo  # A branch with my change in a github fork
       path_alias: k8s.io/test-infra
     - org: on-prem
       repo: secret
       base_ref: master
-      clone_uri: http://35.230.59.165/git/demo.git
+      clone_uri: http://35.230.59.165/git/demo.git # And secret on-prem code
       path_alias: on-prem/secret
-    spec:
+    spec: # This is a podspec, add any podspec fields below
       containers:
-      - image: busybox
+      # Bring any image, such as this cloud builder image.
+      # No changes necessary for minimal testgrid integration!
+      - image: gcr.io/cloud-builders/kubectl
         command:
         - ./pass.sh
   - name: presubmit-velostrata-internal-fejta-demo-fail

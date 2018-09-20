@@ -769,7 +769,7 @@ periodics:
        - -- # stop bootstrap flags
        - --env=TAG=ci_latest_1_3
        - --env=REGISTRY=gcr.io/gke-autoscaling-gcr
-       - ./hack/release-ci.sh
+       - ./cluster-autoscaler/hack/release-ci.sh
        # docker-in-docker needs privileged mode
        securityContext:
          privileged: true

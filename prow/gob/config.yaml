@@ -813,6 +813,39 @@ periodics:
        - --timeout=7h
 
  - interval: 2h
+   name: ci-autoscaling-ca-gpu-e2e
+   agent: kubernetes
+   labels:
+     preset-k8s-ssh: "true"
+     preset-service-account: "true"
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+       args:
+       - --timeout=150
+       - --repo=gke-internal.googlesource.com/gke-autoscaling=master
+       - --root=/go/src
+       - --upload=gs://gob-prow/logs
+       - --scenario=kubernetes_e2e
+       - --
+       - --check-leaked-resources
+       - --cluster=gke-autoscaling-cluster
+       - --deployment=gke
+       - --extract=gs://kubernetes-release-gke-internal/ci/latest-autoscaling.txt
+       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+       - --gcp-node-image=gci
+       - --gcp-zone=us-west1-b
+       - --gcp-project-type=gpu-project
+       - --ginkgo-parallel=1
+       - --gke-environment=test
+       - --provider=gke
+       - --test=false
+       - --env=TESTED_GPU_TYPE=nvidia-tesla-k80
+       - --test-cmd=../test/cluster-autoscaler/e2e/hack/run-e2e.sh
+       - --test-cmd-args=--ginkgo.focus=\[Feature:ClusterSizeAutoscalingGpu\]
+       - --timeout=2h
+
+ - interval: 2h
    name: ci-autoscaling-nap-e2e
    agent: kubernetes
    labels:
@@ -937,6 +970,39 @@ periodics:
        - --test-cmd=../test/cluster-autoscaler/e2e/hack/run-e2e.sh
        - --test-cmd-args=--ginkgo.focus=\[Feature:ClusterSizeAutoscalingScaleUp\]|\[Feature:ClusterSizeAutoscalingScaleDown\]
        - --timeout=7h
+
+ - interval: 2h
+   name: ci-autoscaling-ca-gpu-e2e-1-11
+   agent: kubernetes
+   labels:
+     preset-k8s-ssh: "true"
+     preset-service-account: "true"
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+       args:
+       - --timeout=150
+       - --repo=gke-internal.googlesource.com/gke-autoscaling=master
+       - --root=/go/src
+       - --upload=gs://gob-prow/logs
+       - --scenario=kubernetes_e2e
+       - --
+       - --check-leaked-resources
+       - --cluster=gke-autoscaling-cluster
+       - --deployment=gke
+       - --extract=gs://kubernetes-release-gke-internal/ci/latest-autoscaling-1-11.txt
+       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+       - --gcp-node-image=gci
+       - --gcp-zone=us-west1-b
+       - --gcp-project-type=gpu-project
+       - --ginkgo-parallel=1
+       - --gke-environment=test
+       - --provider=gke
+       - --test=false
+       - --env=TESTED_GPU_TYPE=nvidia-tesla-k80
+       - --test-cmd=../test/cluster-autoscaler/e2e/hack/run-e2e.sh
+       - --test-cmd-args=--ginkgo.focus=\[Feature:ClusterSizeAutoscalingGpu\]
+       - --timeout=2h
 
  - interval: 2h
    name: ci-autoscaling-nap-e2e-1-11

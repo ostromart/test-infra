@@ -262,8 +262,6 @@ presubmits:
         - runner.sh
         - ../../../k8s.io/test-infra/scenarios/kubernetes_verify.py
         args:
-        - --upload=gs://gob-prow/pr-logs
-        - --
         - --branch=master
         - --force
         - --prow

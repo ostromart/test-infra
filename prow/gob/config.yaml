@@ -218,18 +218,21 @@ presubmits:
             memory: "8Gi"
   - name: pull-gob-kubernetes-unit
     always_run: true
+    decorate: true
+    extra_refs:
+    - org: kubernetes
+      repo: test-infra
+      base_ref: master
+      path_alias: k8s.io/test-infra
     labels:
       preset-bazel-scratch-dir: "true"
     spec:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+        command:
+        - runner.sh
+        - ../../../k8s.io/test-infra/scenarios/kubernetes_bazel.py
         args:
-        - --clean
-        - --repo=gke-internal.googlesource.com/kubernetes=$(PULL_REFS)
-        - --service-account=/etc/service-account/service-account.json
-        - --upload=gs://gob-prow/pr-logs
-        - --scenario=kubernetes_bazel
-        - -- # end bootstrap args, scenario args below
         - --test=//... -//build/... -//vendor/...
         - --manual-test=//hack:verify-all
         - --test-args=--config=unit
@@ -243,17 +246,22 @@ presubmits:
             memory: "6Gi"
   - name: pull-gob-kubernetes-integration
     always_run: true
+    decorate: true
+    extra_refs:
+    - org: kubernetes
+      repo: test-infra
+      base_ref: master
+      path_alias: k8s.io/test-infra
     labels:
       preset-service-account: "true"
       preset-dind-enabled: "true"
     spec:
       containers:
       - image: gcr.io/k8s-testimages/bootstrap:v20180918-02b56f8a8
+        command:
+        - runner.sh
+        - ../../../k8s.io/test-infra/scenarios/kubernetes_verify.py
         args:
-        - --clean
-        - --repo=gke-internal.googlesource.com/kubernetes=$(PULL_REFS)
-        - --timeout=100
-        - --scenario=kubernetes_verify
         - --upload=gs://gob-prow/pr-logs
         - --
         - --branch=master

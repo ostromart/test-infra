@@ -155,35 +155,6 @@ presubmits:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
         command:
         - ./prow/hack/verify-config.sh
-  # TODO: convert to podutils (keep this for demo)
-  - name: pull-test-infra-hello-git
-    always_run: true
-    labels:
-      preset-service-account: "true"
-    spec:
-      containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180913-094478d32-krzyzacy
-        args:
-        - --clean
-        - --repo=gke-internal-review.googlesource.com/test-infra=$(PULL_REFS)
-        - --repo=github.com/krzyzacy/hello-github=master
-        - --repo=ec2-18-191-106-213.us-east-2.compute.amazonaws.com:/home/git/hello-aws.git
-        - --ssh=/aws-ssh-key/.ssh/ssh-private
-        - --root=/go/src
-        - --service-account=/etc/service-account/service-account.json
-        - --upload=gs://gob-prow/pr-logs
-        - --scenario=execute
-        - --
-        - find
-        - /go/src
-        volumeMounts:
-        - name: aws-ssh-key
-          mountPath: /aws-ssh-key/.ssh
-      volumes:
-      - name: aws-ssh-key
-        secret:
-          defaultMode: 0400
-          secretName: aws-ssh-key
   https://gke-internal-review.googlesource.com/kubernetes:
   - name: pull-gob-kubernetes-build
     decorate: true
@@ -198,6 +169,7 @@ presubmits:
       base_ref: master
       path_alias: k8s.io/release
     labels:
+      preset-service-account: "true"
       preset-dind-enabled: "true"
     spec:
       containers:

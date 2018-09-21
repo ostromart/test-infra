@@ -5,6 +5,11 @@ resources:
   - prow-gob-boskos-03
   - prow-gob-boskos-04
   - prow-gob-boskos-05
+  - prow-gob-boskos-06
+  - prow-gob-boskos-07
+  - prow-gob-boskos-08
+  - prow-gob-boskos-09
+  - prow-gob-boskos-10
   state: dirty
   type: gke-project
 - names:

@@ -853,7 +853,7 @@ periodics:
      containers:
      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
        args:
-       - --timeout=300
+       - --timeout=320
        - --repo=gke-internal.googlesource.com/gke-autoscaling=master
        - --root=/go/src
        - --upload=gs://gob-prow/logs
@@ -873,7 +873,7 @@ periodics:
        - --test=false
        - --test-cmd=../test/cluster-autoscaler/e2e/hack/run-e2e.sh
        - --test-cmd-args=--ginkgo.focus=\[Feature:NodeAutoProvisioningWithGPU\]
-       - --timeout=2h
+       - --timeout=5h
 
  - interval: 4h
    name: ci-autoscaling-nap-multizonal-e2e
@@ -979,7 +979,7 @@ periodics:
      containers:
      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
        args:
-       - --timeout=300
+       - --timeout=320
        - --repo=gke-internal.googlesource.com/gke-autoscaling=master
        - --root=/go/src
        - --upload=gs://gob-prow/logs
@@ -999,7 +999,7 @@ periodics:
        - --test=false
        - --test-cmd=../test/cluster-autoscaler/e2e/hack/run-e2e.sh
        - --test-cmd-args=--ginkgo.focus=\[Feature:NodeAutoProvisioningWithGPU\]
-       - --timeout=2h
+       - --timeout=5h
 
  - interval: 2h
    name: ci-autoscaling-vpa-full-e2e

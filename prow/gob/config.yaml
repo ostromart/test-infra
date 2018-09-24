@@ -458,7 +458,7 @@ presubmits:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
         command:
-        - "make"
+        - ./hack/test-prow.sh
   - name: cronanything-e2e
     always_run: true
     labels:

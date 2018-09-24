@@ -368,6 +368,16 @@ presubmits:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-1.11
         command:
         - ./hack/verify-gofmt.sh
+  https://gke-internal-review.googlesource.com/cluster-lifecycle/cluster-operators:
+  - name: pull-cluster-lifecycle-cluster-operators-unittest
+    always_run: true
+    decorate: true
+    path_alias: gke-internal.googlesource.com/cluster-lifecycle/cluster-operators
+    spec:
+      containers:
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+        command:
+        - ./scripts/ci-test.sh
   # TODO(senlu): Consider a rewrite of this into the modern prow format.
   https://team-review.googlesource.com/gke-kubernetes-enterprise-control/prototype:
   - name: nomos-presubmit

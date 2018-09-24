@@ -15,5 +15,7 @@ resources:
 - names:
   - prow-gob-gpu-boskos-01
   - prow-gob-gpu-boskos-02
+  - prow-gob-gpu-boskos-03
+  - prow-gob-gpu-boskos-04
   state: dirty
   type: gpu-project

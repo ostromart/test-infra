@@ -453,6 +453,7 @@ presubmits:
   - name: cronanything-test
     always_run: true
     decorate: true
+    path_alias: k8s.io/cronanything
     spec:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master

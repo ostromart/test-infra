@@ -467,10 +467,16 @@ presubmits:
       preset-k8s-ssh: "true"
       preset-service-account: "true"
       preset-dind-enabled: "true"
+    extra_refs:
+    - org: kubernetes
+      repo: test-infra
+      base_ref: master
+      path_alias: k8s.io/test-infra
     spec:
       containers:
       - command:
-        - ./scenarios/kubernetes_e2e.py
+        - runner.sh
+        - ../../../k8s.io/test-infra/scenarios/kubernetes_e2e.py
         args:
         - --check-leaked-resources
         - --cluster=gke-cronanything-cluster

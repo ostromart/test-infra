@@ -456,26 +456,22 @@ presubmits:
     path_alias: k8s.io/cronanything
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180924-8e8468033-master
         command:
         - ./hack/test-prow.sh
   - name: cronanything-e2e
     always_run: true
+    decorate: true
+    path_alias: k8s.io/cronanything
     labels:
       preset-k8s-ssh: "true"
       preset-service-account: "true"
       preset-dind-enabled: "true"
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+      - command:
+        - ./scenarios/kubernetes_e2e.py
         args:
-        - --clean
-        - --timeout=300
-        - --repo=gke-internal-review.googlesource.com/GoogleCloudPlatform/cronanything=$(PULL_REFS)
-        - --root=/go/src
-        - --upload=gs://gob-prow/pr-logs
-        - --scenario=kubernetes_e2e
-        - --
         - --check-leaked-resources
         - --cluster=gke-cronanything-cluster
         - --deployment=gke
@@ -489,9 +485,9 @@ presubmits:
         - --test=false
         - --test-cmd=../hack/e2e-prow.sh
         - --timeout=1h
+        image: gcr.io/k8s-testimages/kubekins-e2e:v20180924-8e8468033-master
         securityContext:
           privileged: true
-
 
 
 periodics:

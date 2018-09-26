@@ -409,7 +409,7 @@ presubmits:
         resources:
           requests:
             cpu: 4
-            memory: "8Gi"
+            memory: "16Gi"
   https://gke-internal-review.googlesource.com/GoogleCloudPlatform/redis-operator:
   # TODO(krzyzacy) : migrate kubetest jobs to podutils
   - name: redis-operator-e2e
@@ -1734,4 +1734,4 @@ periodics:
        resources:
           requests:
             cpu: 4
-            memory: "8Gi"
+            memory: "16Gi"

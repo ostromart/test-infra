@@ -25,3 +25,7 @@ update-boskos: get-cluster-credentials
 .PHONY: update-boskos-config
 update-boskos-config: get-cluster-credentials
 	kubectl create configmap resources --from-file=config=boskos/resources.yaml --dry-run -o yaml | kubectl --namespace="$(JOB_NAMESPACE)" replace configmap resources -f -
+
+.PHONY: update-greenhouse
+update-greenhouse: get-cluster-credentials
+	kubectl apply -f greenhouse/deployment.yaml

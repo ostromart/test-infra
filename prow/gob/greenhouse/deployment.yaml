@@ -1,0 +1,38 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: greenhouse
+  labels:
+    app: greenhouse
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: greenhouse
+    spec:
+      containers:
+      - name: greenhouse
+        image: gcr.io/k8s-testimages/greenhouse:latest
+        imagePullPolicy: Always
+        ports:
+        - name: cache
+          containerPort: 8080
+        args:
+        - --dir=/data
+        - --min-percent-blocks-free=2
+        volumeMounts:
+        - name: cache
+          mountPath: /data
+      volumes:
+      - name: cache
+        persistentVolumeClaim:
+          claimName: greenhouse
+      # run on our dedicated node
+      tolerations:
+      - key: "dedicated"
+        operator: "Equal"
+        value: "greenhouse"
+        effect: "NoSchedule"
+      nodeSelector:
+        dedicated: "greenhouse"

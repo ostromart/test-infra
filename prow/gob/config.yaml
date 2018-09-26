@@ -476,7 +476,7 @@ presubmits:
       containers:
       - command:
         - runner.sh
-        - ../../../k8s.io/test-infra/scenarios/kubernetes_e2e.py
+        - ../../k8s.io/test-infra/scenarios/kubernetes_e2e.py
         args:
         - --check-leaked-resources
         - --cluster=gke-cronanything-cluster

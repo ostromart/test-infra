@@ -1684,6 +1684,7 @@ periodics:
    agent: kubernetes
    labels:
      preset-service-account: "true"
+     preset-bazel-remote-cache-enabled: "true"
    spec:
      containers:
      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-1.11
@@ -1695,6 +1696,9 @@ periodics:
        - --scenario=execute
        - --
        - /go/src/gke-internal.googlesource.com/syllogi/cluster-management/syllogi-cli/scripts/ci-build.sh
+       resources:
+          requests:
+            memory: "6Gi"
 
  - interval: 1h
    name: periodic-syllogi-cli-unittest

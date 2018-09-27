@@ -292,6 +292,9 @@ presubmits:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-1.11
         command:
         - ./cluster-api/scripts/ci-build.sh
+      resources:
+         requests:
+           memory: "6Gi"
   - name: pull-syllogi-cluster-api-make
     always_run: true
     decorate: true
@@ -324,11 +327,16 @@ presubmits:
     always_run: true
     decorate: true
     path_alias: gke-internal.googlesource.com/syllogi/cluster-management
+    labels:
+      preset-bazel-remote-cache-enabled: "true"
     spec:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-1.11
         command:
         - ./syllogi-cli/scripts/ci-build.sh
+      resources:
+         requests:
+           memory: "6Gi"
   - name: pull-syllogi-cli-make
     always_run: true
     decorate: true
@@ -1721,6 +1729,9 @@ periodics:
        - --scenario=execute
        - --
        - /go/src/gke-internal.googlesource.com/syllogi/cluster-management/cluster-api/scripts/ci-build.sh
+     resources:
+        requests:
+          memory: "6Gi"
 
  - interval: 1h
    name: periodic-syllogi-cluster-api-unittest

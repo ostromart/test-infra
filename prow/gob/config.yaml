@@ -1739,3 +1739,117 @@ periodics:
           requests:
             cpu: 4
             memory: "16Gi"
+
+ - name: ci-runsc-build
+   interval: 30m
+   agent: kubernetes
+   labels:
+     preset-service-account: "true"
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180829-29e661965-experimental
+       args:
+       - --repo=github.com/google/gvisor=master
+       - --repo=team.googlesource.com/gke-kubernetes-tholos/runsc-scripts=master
+       - --root=/go/src
+       - --upload=gs://gob-prow/logs
+       - --scenario=execute
+       - --
+       - /go/src/team.googlesource.com/gke-kubernetes-tholos/runsc-scripts/build.sh
+
+ - interval: 1h
+   agent: kubernetes
+   name: ci-containerd-runsc-node-e2e
+   labels:
+     preset-service-account: "true"
+     preset-k8s-ssh: "true"
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
+       args:
+       - --repo=k8s.io/kubernetes
+       - --repo=github.com/containerd/cri=master
+       - --repo=team.googlesource.com/gke-kubernetes-tholos/runsc-scripts=master
+       - --root=/go/src
+       - --upload=gs://gob-prow/logs
+       - --scenario=kubernetes_e2e
+       - --timeout=90
+       - --
+       - --node-args=--image-config-file=/go/src/team.googlesource.com/gke-kubernetes-tholos/runsc-scripts/image-config.yaml
+       - --deployment=node
+       - --gcp-project=cri-containerd-node-e2e
+       - --gcp-zone=us-central1-f
+       - '--node-test-args=--container-runtime=remote --container-runtime-endpoint=unix:///run/containerd/containerd.sock --container-runtime-process-name=/home/containerd/usr/local/bin/containerd --container-runtime-pid-file= --kubelet-flags="--cgroups-per-qos=true --cgroup-root=/ --runtime-cgroups=/system.slice/containerd.service" --extra-log="{\"name\": \"containerd.log\", \"journalctl\": [\"-u\", \"containerd\"]}"'
+       - --node-tests=true
+       - --provider=gce
+       - '--test_args=--nodes=8 --focus="\[NodeConformance\]|\[NodeFeature:FSGroup\]|\[NodeFeature:\sImageID\]" --skip="\[Flaky\]|\[Serial\]" --flakeAttempts=2'
+       - --timeout=65m
+
+ - interval: 1h
+   agent: kubernetes
+   name: ci-containerd-runsc-node-e2e-multicontainer
+   labels:
+     preset-service-account: "true"
+     preset-k8s-ssh: "true"
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
+       args:
+       - --repo=k8s.io/kubernetes
+       - --repo=github.com/containerd/cri=master
+       - --repo=team.googlesource.com/gke-kubernetes-tholos/runsc-scripts=master
+       - --root=/go/src
+       - --upload=gs://gob-prow/logs
+       - --scenario=kubernetes_e2e
+       - --timeout=90
+       - --
+       - --node-args=--image-config-file=/go/src/team.googlesource.com/gke-kubernetes-tholos/runsc-scripts/image-config-mc.yaml
+       - --deployment=node
+       - --gcp-project=cri-containerd-node-e2e
+       - --gcp-zone=us-central1-f
+       - '--node-test-args=--container-runtime=remote --container-runtime-endpoint=unix:///run/containerd/containerd.sock --container-runtime-process-name=/home/containerd/usr/local/bin/containerd --container-runtime-pid-file= --kubelet-flags="--cgroups-per-qos=true --cgroup-root=/ --runtime-cgroups=/system.slice/containerd.service" --extra-log="{\"name\": \"containerd.log\", \"journalctl\": [\"-u\", \"containerd\"]}"'
+       - --node-tests=true
+       - --provider=gce
+       - '--test_args=--nodes=8 --focus="\[NodeConformance\]|\[NodeFeature:FSGroup\]|\[NodeFeature:\sImageID\]" --skip="\[Flaky\]|\[Serial\]" --flakeAttempts=2'
+       - --timeout=65m
+
+ - interval: 1h
+   agent: kubernetes
+   name: ci-containerd-runsc-e2e
+   labels:
+     preset-service-account: "true"
+     preset-k8s-ssh: "true"
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
+       args:
+       - --repo=github.com/containerd/cri=master
+       - --repo=team.googlesource.com/gke-kubernetes-tholos/runsc-scripts=master
+       - --upload=gs://gob-prow/logs
+       - --scenario=kubernetes_e2e
+       - --timeout=70
+       - --
+       - --check-leaked-resources
+       - --env=KUBE_MASTER_EXTRA_METADATA=user-data=/workspace/github.com/containerd/cri/test/e2e/master.yaml,containerd-configure-sh=/workspace/github.com/containerd/cri/cluster/gce/configure.sh,containerd-extra-init-sh=/workspace/team.googlesource.com/gke-kubernetes-tholos/runsc-scripts/runsc-e2e-init.sh,containerd-env=/workspace/team.googlesource.com/gke-kubernetes-tholos/runsc-scripts/env
+       - --env=KUBE_NODE_EXTRA_METADATA=user-data=/workspace/github.com/containerd/cri/test/e2e/node.yaml,containerd-configure-sh=/workspace/github.com/containerd/cri/cluster/gce/configure.sh,containerd-extra-init-sh=/workspace/team.googlesource.com/gke-kubernetes-tholos/runsc-scripts/runsc-e2e-init.sh,containerd-env=/workspace/team.googlesource.com/gke-kubernetes-tholos/runsc-scripts/env
+       - --env=STORAGE_BACKEND=etcd2
+       - --env=TEST_ETCD_IMAGE=2.2.1
+       - --env=TEST_ETCD_VERSION=2.2.1
+       - --env=ENABLE_POD_SECURITY_POLICY=true
+       - --env=LOG_DUMP_SYSTEMD_SERVICES=containerd containerd-installation
+       - --env=KUBE_CONTAINER_RUNTIME=remote
+       - --env=KUBE_CONTAINER_RUNTIME_ENDPOINT=unix:///run/containerd/containerd.sock
+       - --env=KUBE_CONTAINER_RUNTIME_NAME=containerd
+       - --env=KUBE_LOAD_IMAGE_COMMAND=/home/containerd/usr/local/bin/ctr cri load
+       - --env=NETWORK_PROVIDER=
+       - --env=NON_MASQUERADE_CIDR=0.0.0.0/0
+       - --env=KUBELET_TEST_ARGS=--runtime-cgroups=/system.slice/containerd.service
+       - --extract=ci/latest
+       - --gcp-project=cri-containerd-node-e2e
+       - --gcp-node-image=gci
+       - --gcp-nodes=4
+       - --gcp-zone=us-central1-f
+       - --ginkgo-parallel=30
+       - --provider=gce
+       - --test_args=--ginkgo.focus=Conformance --minStartupPods=8",
+       - --timeout=50m

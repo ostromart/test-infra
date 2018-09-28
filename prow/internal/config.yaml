@@ -2345,7 +2345,7 @@ periodics:
       - --upload=gs://gke-prow/logs
       - --
       - --check-leaked-resources
-      - --extract=ci/latest
+      - --extract=ci/k8s-stable1
       - --image-family=cos-69-lts
       - --image-project=gce-uefi-images
       - --gcp-node-image=custom
@@ -2370,7 +2370,7 @@ periodics:
       - --upload=gs://gke-prow/logs
       - --
       - --check-leaked-resources
-      - --extract=ci/latest
+      - --extract=ci/k8s-stable1
       - --image-family=cos-69-lts
       - --image-project=gce-uefi-images
       - --gcp-node-image=custom
@@ -2394,7 +2394,7 @@ periodics:
       - --upload=gs://gke-prow/logs
       - --
       - --check-leaked-resources
-      - --extract=ci/latest
+      - --extract=ci/k8s-stable1
       - --image-family=cos-69-lts
       - --image-project=gce-uefi-images
       - --gcp-node-image=custom

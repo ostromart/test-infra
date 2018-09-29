@@ -1863,7 +1863,6 @@ periodics:
        - --env=STORAGE_BACKEND=etcd2
        - --env=TEST_ETCD_IMAGE=2.2.1
        - --env=TEST_ETCD_VERSION=2.2.1
-       - --env=ENABLE_POD_SECURITY_POLICY=true
        - --env=LOG_DUMP_SYSTEMD_SERVICES=containerd containerd-installation
        - --env=KUBE_CONTAINER_RUNTIME=remote
        - --env=KUBE_CONTAINER_RUNTIME_ENDPOINT=unix:///run/containerd/containerd.sock

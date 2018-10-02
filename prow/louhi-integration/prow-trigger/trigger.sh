@@ -17,4 +17,7 @@ mkpj \
 kubectl label --local=true prow.k8s.io/pubsub-project=${PUBSUB_PROJECT} prow.k8s.io/pubsub-topic=${PUBSUB_TOPIC} prow.k8s.io/pubsub-runID=${PUBSUB_RUNID} -o yaml -f - | \
 tee prowjob.yaml
 
+# Manually add spec "report: true"
+sed -i '/agent:\ kubernetes/a \ \ report: true' prowjob.yaml
+
 kubectl apply -f prowjob.yaml

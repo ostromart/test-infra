@@ -302,3 +302,5 @@ spec:
         secret:
           defaultMode: 420
           secretName: http-cookiefile
+      nodeSelector:
+        cloud.google.com/gke-nodepool: pubsub-node-pool

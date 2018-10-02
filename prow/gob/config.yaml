@@ -1880,5 +1880,5 @@ periodics:
        - --provider=gce
        - --test=false
        - --test-cmd=/workspace/team.googlesource.com/gke-kubernetes-tholos/runsc-scripts/run-e2e.sh
-       - --test_args=--ginkgo.focus=Conformance --minStartupPods=8
+       - --test-cmd-args=--ginkgo.focus=Conformance --minStartupPods=8
        - --timeout=180m

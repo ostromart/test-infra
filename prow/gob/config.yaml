@@ -503,6 +503,23 @@ presubmits:
         image: gcr.io/k8s-testimages/kubekins-e2e:v20180924-8e8468033-master
         securityContext:
           privileged: true
+  https://cnrm-review.googlesource.com/cnrm:
+  - name: cnrm-build
+    always_run: true
+    decorate: true
+    spec:
+      containers:
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-1.11
+        command:
+        - ./scripts/ci-build.sh
+  - name: cnrm-test
+    always_run: true
+    decorate: true
+    spec:
+      containers:
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+        command:
+        - ./scripts/ci-test.sh
 
 
 periodics:
@@ -2132,3 +2149,39 @@ periodics:
        - --timeout=120m
        - --upgrade_args=--ginkgo.focus=\[Feature:ClusterDowngrade\] --upgrade-target=gke-default --upgrade-image=gci
        image: gcr.io/k8s-testimages/kubekins-e2e:v20180912-7a027de0c-master
+
+ - interval: 1h
+   name: periodic-cnrm-build
+   agent: kubernetes
+   labels:
+     preset-service-account: "true"
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-1.11
+       args:
+       - --clean
+       - --repo=cnrm.googlesource.com/cnrm
+       - --root=/go/src
+       - --upload=gs://gob-prow/logs
+       - --scenario=execute
+       - --
+       - /go/src/cnrm.googlesource.com/cnrm/scripts/ci-build.sh
+
+ - interval: 1h
+   name: periodic-cnrm-test
+   agent: kubernetes
+   labels:
+     preset-service-account: "true"
+     preset-k8s-ssh: "true"
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+       args:
+       - --clean
+       - --repo=cnrm.googlesource.com/cnrm
+       - --root=/go/src
+       - --upload=gs://gob-prow/logs
+       - --scenario=execute
+       - --
+       - /go/src/cnrm.googlesource.com/cnrm/scripts/ci-test.sh
+

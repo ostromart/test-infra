@@ -295,6 +295,7 @@ spec:
         - --gerrit-projects=https://team-review.googlesource.com=alphabetcloud/galu,gke-kubernetes-enterprise-control/prototype,big-compute-eng/batch
         - --gerrit-projects=https://velostrata-internal-review.googlesource.com=fejta-demo
         - --gerrit-projects=https://cnrm-review.googlesource.com=cnrm
+        - --pubsub
         volumeMounts:
         - name: cookies
           mountPath: /etc/cookies

@@ -1962,6 +1962,7 @@ periodics:
        - --timeout=920
        - --bare
        - --scenario=kubernetes_e2e
+       - --upload=gs://gob-prow/logs
        - --
        - --check-leaked-resources
        - --check-version-skew=false
@@ -1990,6 +1991,7 @@ periodics:
        - --timeout=920
        - --bare
        - --scenario=kubernetes_e2e
+       - --upload=gs://gob-prow/logs
        - --
        - --check-leaked-resources
        - --check-version-skew=false
@@ -2018,6 +2020,7 @@ periodics:
        - --timeout=140
        - --bare
        - --scenario=kubernetes_e2e
+       - --upload=gs://gob-prow/logs
        - --
        - --check-leaked-resources
        - --check-version-skew=false
@@ -2047,6 +2050,7 @@ periodics:
        - --timeout=920
        - --bare
        - --scenario=kubernetes_e2e
+       - --upload=gs://gob-prow/logs
        - --
        - --check-leaked-resources
        - --check-version-skew=false
@@ -2077,6 +2081,7 @@ periodics:
        - --timeout=920
        - --bare
        - --scenario=kubernetes_e2e
+       - --upload=gs://gob-prow/logs
        - --
        - --check-leaked-resources
        - --check-version-skew=false
@@ -2106,6 +2111,7 @@ periodics:
        - --timeout=140
        - --bare
        - --scenario=kubernetes_e2e
+       - --upload=gs://gob-prow/logs
        - --
        - --check-leaked-resources
        - --check-version-skew=false
@@ -2136,6 +2142,7 @@ periodics:
        - --timeout=920
        - --bare
        - --scenario=kubernetes_e2e
+       - --upload=gs://gob-prow/logs
        - --
        - --check-leaked-resources
        - --check-version-skew=false
@@ -2165,6 +2172,7 @@ periodics:
        - --timeout=140
        - --bare
        - --scenario=kubernetes_e2e
+       - --upload=gs://gob-prow/logs
        - --
        - --check-leaked-resources
        - --check-version-skew=false

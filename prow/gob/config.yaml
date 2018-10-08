@@ -1832,6 +1832,7 @@ periodics:
        - --gcp-zone=us-central1-f
        - --extract=v1.11.3
        - --provider=gce
+       - --test=false
        - --test-cmd=/workspace/team.googlesource.com/big-compute-eng/batch/prow/RunEndToEndTestsOnGce.sh
        - --timeout=40m
 

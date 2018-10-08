@@ -1001,6 +1001,7 @@ periodics:
        - --gcp-zone=us-central1-f
        - --gke-node-locations=us-central1-f,us-central1-a,us-central1-b
        - --gke-shape={"default":{"Nodes":1,"MachineType":"n1-standard-2"}}
+       - --gke-single-zone-node-instance-group=false
        - --ginkgo-parallel=1
        - --gke-environment=test
        - --provider=gke

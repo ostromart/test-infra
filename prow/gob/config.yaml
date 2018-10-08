@@ -515,6 +515,7 @@ presubmits:
   - name: cnrm-build
     always_run: true
     decorate: true
+    path_alias: cnrm.googlesource.com/cnrm
     spec:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-1.11
@@ -523,6 +524,7 @@ presubmits:
   - name: cnrm-test
     always_run: true
     decorate: true
+    path_alias: cnrm.googlesource.com/cnrm
     spec:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master

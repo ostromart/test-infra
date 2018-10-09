@@ -1842,6 +1842,13 @@ periodics:
        - --test=false
        - --test-cmd=/workspace/team.googlesource.com/big-compute-eng/batch/prow/RunEndToEndTestsOnGce.sh
        - --timeout=40m
+       securityContext:
+         privileged: true
+       resources:
+         requests:
+           cpu: 4
+           memory: "8Gi"
+
 
  - name: ci-runsc-build
    interval: 30m

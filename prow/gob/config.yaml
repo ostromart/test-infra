@@ -2242,3 +2242,31 @@ periodics:
        - --
        - /go/src/cnrm.googlesource.com/cnrm/scripts/ci-test.sh
 
+ - interval: 1h
+   agent: kubernetes
+   name: ci-kubernetes-e2e-gob-gke-ipv4-cidr
+   labels:
+     preset-service-account: "true"
+     preset-k8s-ssh: "true"
+   spec:
+     containers:
+     - args:
+       - --timeout=70
+       - --bare
+       - --upload=gs://gob-prow/logs
+       - --scenario=kubernetes_e2e
+       - --
+       - --check-leaked-resources
+       - --cluster=
+       - --deployment=gke
+       - --extract=gke-latest
+       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+       - --gcp-node-image=gci
+       - --gcp-zone=us-central1-f
+       - --ginkgo-parallel
+       - --gke-environment=test
+       - --gke-create-command=container clusters create --quiet --enable-ip-alias --create-subnetwork name=ip-alias-subnet --cluster-ipv4-cidr=172.16.0.0/12
+       - --provider=gke
+       - --test_args=--ginkgo.skip=\[Slow\]|\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\] --minStartupPods=8
+       - --timeout=50m
+       image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master

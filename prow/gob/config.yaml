@@ -1695,6 +1695,7 @@ periodics:
       - --upload=gs://gob-prow/logs
       - -- # end bootstrap args, scenario args below
       - /workspace/gke-internal.googlesource.com/gke-autoscaling/test/fast-scaling-tests/generate_metrics_file.sh
+
    # managed certs in gke jobs
  - interval: 30m
    name: ci-managed-certs-gke-image-build
@@ -1727,6 +1728,7 @@ periodics:
    labels:
      preset-service-account: "true"
      preset-k8s-ssh: "true"
+     preset-dind-enabled: "true"
    spec:
      containers:
      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
@@ -1752,6 +1754,9 @@ periodics:
        - --test=false
        - --test-cmd=../hack/e2e.sh
        - --timeout=4h
+       # docker-in-docker needs privileged mode
+       securityContext:
+         privileged: true
 
  - interval: 1h
    name: periodic-syllogi-cluster-api-build

@@ -1227,7 +1227,7 @@ periodics:
        - --scenario=kubernetes_e2e
        - --
        - --check-leaked-resources
-       - --cluster=vpa-full-1-11
+       - --cluster=1-11-vpa-full
        - --deployment=gke
        - --extract=gs://kubernetes-release-gke-internal/ci/latest-autoscaling-1-11.txt
        - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging

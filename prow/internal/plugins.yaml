@@ -15,10 +15,17 @@ plugins:
   - size
   - trigger
   - wip
-  googleprivate/ml:
-  - size
+  googleprivate/kubeflow:
   - assign
   - lgtm
   - milestone
+  - size
+  - trigger
+  - wip
+  googleprivate/ml:
+  - assign
+  - lgtm
+  - milestone
+  - size
   - trigger
   - wip

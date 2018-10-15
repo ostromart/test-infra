@@ -23,6 +23,7 @@ tide:
   queries:
   - repos:
     - GoogleCloudPlatform/k8s-tpu-operator
+    - googleprivate/kubeflow
     labels:
     - lgtm
     - approved

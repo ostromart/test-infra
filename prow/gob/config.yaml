@@ -1353,7 +1353,7 @@ periodics:
      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
        args:
        - --timeout=80
-       - --repo=k8s.io/autoscaler=master
+       - --repo=gke-internal.googlesource.com/gke-autoscaling=master
        - --root=/go/src
        - --upload=gs://gob-prow/logs
        - --scenario=kubernetes_e2e
@@ -1372,7 +1372,7 @@ periodics:
        - --gke-environment=test
        - --provider=gke
        - --test=false
-       - --test-cmd=../vertical-pod-autoscaler/hack/run-e2e-tests.sh
+       - --test-cmd=../test/vertical-pod-autoscaler/e2e/hack/run-e2e.sh
        - --test-cmd-args=actuation
        - --timeout=60m
 

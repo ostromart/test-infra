@@ -1902,7 +1902,7 @@ periodics:
        - --repo=team.googlesource.com/big-compute-eng/batch
        - --upload=gs://gob-prow/logs
        - --scenario=kubernetes_e2e
-       - --timeout=60
+       - --timeout=110
        - --
        - --gcp-project=kubebatchtest
        - --gcp-zone=us-central1-f
@@ -1910,7 +1910,7 @@ periodics:
        - --provider=gce
        - --test=false
        - --test-cmd=/workspace/team.googlesource.com/big-compute-eng/batch/prow/RunEndToEndTestsOnGce.sh
-       - --timeout=40m
+       - --timeout=90m
        securityContext:
          privileged: true
        resources:

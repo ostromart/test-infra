@@ -417,6 +417,18 @@ presubmits:
         # docker-in-docker needs privileged mode
         securityContext:
           privileged: true
+  https://team-review.googlesource.com/cloud-kubernetes-gse-dev-team/serving:
+  - name: pull-build-unit-presubmit
+    always_run: true
+    decorate: true
+    spec:
+      containers:
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+        command:
+        - ./test/presubmit-tests.sh
+        args:
+        - --build-tests
+        - --unit-tests
   https://team-review.googlesource.com/big-compute-eng/batch:
   - name: pull-batch-presubmit
     always_run: true

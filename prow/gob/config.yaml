@@ -461,6 +461,7 @@ presubmits:
   - name: pull-build-unit-presubmit
     always_run: true
     decorate: true
+    path_alias: github.com/knative/serving
     spec:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master

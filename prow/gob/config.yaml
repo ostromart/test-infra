@@ -2096,6 +2096,7 @@ periodics:
    agent: kubernetes
    labels:
      preset-service-account: "true"
+   clone_uri: https://gke-internal.git.corp.google.com/syllogi/cluster-management
    extra_refs:
    - org: gke-internal.googlesource.com/syllogi
      repo: cluster-management
@@ -2118,6 +2119,7 @@ periodics:
    labels:
      preset-service-account: "true"
      preset-k8s-ssh: "true"
+   clone_uri: https://gke-internal.git.corp.google.com/syllogi/cluster-management
    extra_refs:
    - org: gke-internal.googlesource.com/syllogi
      repo: cluster-management
@@ -2137,6 +2139,7 @@ periodics:
    labels:
      preset-service-account: "true"
      preset-bazel-remote-cache-enabled: "true"
+   clone_uri: https://gke-internal.git.corp.google.com/syllogi/cluster-management
    extra_refs:
       - org: gke-internal.googlesource.com/syllogi
         repo: cluster-management
@@ -2159,6 +2162,7 @@ periodics:
    labels:
      preset-service-account: "true"
      preset-bazel-remote-cache-enabled: "true"
+   clone_uri: https://gke-internal.git.corp.google.com/syllogi/cluster-management
    extra_refs:
       - org: gke-internal.googlesource.com/syllogi
         repo: cluster-management

@@ -1989,9 +1989,9 @@ periodics:
        - --scenario=execute
        - --
        - /go/src/gke-internal.googlesource.com/syllogi/cluster-management/cluster-api/scripts/ci-build.sh
-     resources:
-        requests:
-          memory: "6Gi"
+       resources:
+          requests:
+            memory: "6Gi"
 
  - interval: 1h
    name: periodic-syllogi-cluster-api-unittest
@@ -2066,9 +2066,9 @@ periodics:
        - --scenario=execute
        - --
        - /go/src/gke-internal.googlesource.com/syllogi/cluster-management/bundle/scripts/ci-build.sh
-     resources:
-        requests:
-          memory: "6Gi"
+       resources:
+          requests:
+            memory: "6Gi"
 
  - interval: 1h
    name: periodic-syllogi-bundle-unittest
@@ -2089,6 +2089,86 @@ periodics:
        - /go/src/gke-internal.googlesource.com/syllogi/cluster-management/bundle/scripts/ci-test.sh
 
 
+ - interval: 1h
+   name: periodic-syllogi-cluster-api-build-eap2.0
+   always_run: true
+   decorate: true
+   agent: kubernetes
+   labels:
+     preset-service-account: "true"
+   extra_refs:
+   - org: gke-internal.googlesource.com/syllogi
+     repo: cluster-management
+     base_ref: release-eap-2.0
+     path_alias: gke-internal.googlesource.com/syllogi/cluster-management
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-1.11
+       command:
+       - ./cluster-api/scripts/ci-build.sh
+       resources:
+          requests:
+            memory: "6Gi"
+
+ - interval: 1h
+   name: periodic-syllogi-cluster-api-unittest-eap2.0
+   always_run: true
+   decorate: true
+   agent: kubernetes
+   labels:
+     preset-service-account: "true"
+     preset-k8s-ssh: "true"
+   extra_refs:
+   - org: gke-internal.googlesource.com/syllogi
+     repo: cluster-management
+     base_ref: release-eap-2.0
+     path_alias: gke-internal.googlesource.com/syllogi/cluster-management
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-1.11
+       command:
+       - ./cluster-api/scripts/ci-test.sh
+
+ - interval: 1h
+   name: periodic-syllogi-cli-build-eap2.0
+   always_run: true
+   decorate: true
+   agent: kubernetes
+   labels:
+     preset-service-account: "true"
+     preset-bazel-remote-cache-enabled: "true"
+   extra_refs:
+      - org: gke-internal.googlesource.com/syllogi
+        repo: cluster-management
+        base_ref: release-eap-2.0
+        path_alias: gke-internal.googlesource.com/syllogi/cluster-management
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-1.11
+       command:
+       - ./syllogi-cli/scripts/ci-build.sh
+       resources:
+         requests:
+           memory: "6Gi"
+
+ - interval: 1h
+   name: periodic-syllogi-cli-unittest-eap2.0
+   always_run: true
+   decorate: true
+   agent: kubernetes
+   labels:
+     preset-service-account: "true"
+     preset-bazel-remote-cache-enabled: "true"
+   extra_refs:
+      - org: gke-internal.googlesource.com/syllogi
+        repo: cluster-management
+        base_ref: release-eap-2.0
+        path_alias: gke-internal.googlesource.com/syllogi/cluster-management
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-1.11
+       command:
+       - ./syllogi-cli/scripts/ci-test.sh
  - interval: 1h
    name: ci-bigcomputeeng-batch-acceptance-tests
    agent: kubernetes

@@ -706,7 +706,7 @@ periodics:
        - --upload=gs://gob-prow/logs
        - --
        - --check-leaked-resources
-       - --cluster=gke-scale-cluster-canary
+       - --cluster=gke-spanetcd
        - --deployment=gke
        - --extract=gke-latest
        - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
@@ -714,8 +714,7 @@ periodics:
        - --gcp-project=wojtekt-gke-dev
        - --gcp-zone=us-central1-c
        - --ginkgo-parallel=30
-       - --env=CLOUDSDK_API_ENDPOINT_OVERRIDES_CONTAINER=https://wojtekt-gke-sandbox-test-container.sandbox.googleapis.com/
-       - --gke-environment=test
+       - --gke-environment=https://wojtekt-gke-sandbox-test-container.sandbox.googleapis.com/
        - --gke-create-command=container clusters create --quiet --cluster-version=1.13.0-alpha.0.2097+72db8265bd36f3-dirty-wojtekt --num-nodes=4
        - --provider=gke
        - --test_args=--ginkgo.flakeAttempts=2 --ginkgo.skip=\[Slow\]|\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\] --minStartupPods=8

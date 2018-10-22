@@ -16,6 +16,7 @@ plugins:
   - trigger
   - wip
   googleprivate/kubeflow:
+  - approve
   - assign
   - lgtm
   - milestone

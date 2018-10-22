@@ -731,7 +731,7 @@ periodics:
        - --timeout=200m
        image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
 
- - interval: 2h
+ - interval: 30m
    agent: kubernetes
    name: ci-kubernetes-e2e-gke-spanetcd
    labels:

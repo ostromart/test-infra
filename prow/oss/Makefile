@@ -1,8 +1,6 @@
 # These are the usual GKE variables.
-# google-oss-prow
-PROJECT       ?= solar-climber-220218
-# google-oss-prow
-BUILD_PROJECT ?= solar-climber-220218
+PROJECT       ?= oss-prow
+BUILD_PROJECT ?= oss-prow
 ZONE          ?= us-west1-a
 CLUSTER       ?= prow
 JOB_NAMESPACE ?= test-pods

@@ -2148,7 +2148,7 @@ periodics:
      repo: cluster-management
      base_ref: release-eap-2.0
      path_alias: gke-internal.googlesource.com/syllogi/cluster-management
-     clone_uri: https://gke-internal.git.corp.google.com/syllogi/cluster-management
+     clone_uri: https://gke-internal.googlesource.com/syllogi/cluster-management
    decoration_config:
      gcs_configuration:
        bucket: "syllogi-gob-prow"
@@ -2175,7 +2175,7 @@ periodics:
      repo: cluster-management
      base_ref: release-eap-2.0
      path_alias: gke-internal.googlesource.com/syllogi/cluster-management
-     clone_uri: https://gke-internal.git.corp.google.com/syllogi/cluster-management
+     clone_uri: https://gke-internal.googlesource.com/syllogi/cluster-management
    decoration_config:
      gcs_configuration:
        bucket: "syllogi-gob-prow"
@@ -2199,7 +2199,7 @@ periodics:
         repo: cluster-management
         base_ref: release-eap-2.0
         path_alias: gke-internal.googlesource.com/syllogi/cluster-management
-        clone_uri: https://gke-internal.git.corp.google.com/syllogi/cluster-management
+        clone_uri: https://gke-internal.googlesource.com/syllogi/cluster-management
    decoration_config:
      gcs_configuration:
        bucket: "syllogi-gob-prow"
@@ -2226,7 +2226,7 @@ periodics:
         repo: cluster-management
         base_ref: release-eap-2.0
         path_alias: gke-internal.googlesource.com/syllogi/cluster-management
-        clone_uri: https://gke-internal.git.corp.google.com/syllogi/cluster-management
+        clone_uri: https://gke-internal.googlesource.com/syllogi/cluster-management
    decoration_config:
      gcs_configuration:
        bucket: "syllogi-gob-prow"

@@ -75,7 +75,7 @@ spec:
     spec:
       containers:
       - name: plank
-        image: gcr.io/k8s-prow/plank:v20180919-9f4e6c730
+        image: gcr.io/k8s-prow/plank:v20181019-08e9d55c9
         args:
         - --dry-run=false
         - --github-token-file=
@@ -103,7 +103,7 @@ spec:
     spec:
       containers:
       - name: sinker
-        image: gcr.io/k8s-prow/sinker:v20180919-9f4e6c730
+        image: gcr.io/k8s-prow/sinker:v20181019-08e9d55c9
         volumeMounts:
         - name: config
           mountPath: /etc/config
@@ -134,7 +134,7 @@ spec:
       terminationGracePeriodSeconds: 30
       containers:
       - name: deck
-        image: gcr.io/k8s-prow/deck:v20180919-9f4e6c730
+        image: gcr.io/k8s-prow/deck:v20181019-08e9d55c9
         ports:
           - name: http
             containerPort: 8080
@@ -175,7 +175,7 @@ spec:
       terminationGracePeriodSeconds: 30
       containers:
       - name: horologium
-        image: gcr.io/k8s-prow/horologium:v20180919-9f4e6c730
+        image: gcr.io/k8s-prow/horologium:v20181019-08e9d55c9
         volumeMounts:
         - name: config
           mountPath: /etc/config
@@ -241,7 +241,7 @@ spec:
       terminationGracePeriodSeconds: 30
       containers:
       - name: gerrit
-        image: gcr.io/k8s-prow/gerrit:v20180925-a87ce709e
+        image: gcr.io/k8s-prow/gerrit:v20181019-08e9d55c9
         args:
         - --config-path=/etc/config/config.yaml
         - --cookiefile=/etc/cookies/cookies
@@ -287,15 +287,15 @@ spec:
       terminationGracePeriodSeconds: 30
       containers:
       - name: crier
-        image: gcr.io/k8s-prow/crier:v20180923-f4dcfcecf
+        image: gcr.io/k8s-prow/crier:v20181019-08e9d55c9
         args:
-        - --gerrit
+        - --gerrit-workers=1
+        - --pubsub-workers=1
         - --cookiefile=/etc/cookies/cookies
         - --gerrit-projects=https://gke-internal-review.googlesource.com=test-infra,kubernetes,net/mci,syllogi/cluster-management,kubernetes/gke-common-webhooks,syllogi/logmon,GoogleCloudPlatform/redis-operator,GoogleCloudPlatform/k8s-stackdriver,cluster-lifecycle/cluster-operators,GoogleCloudPlatform/cronanything
         - --gerrit-projects=https://team-review.googlesource.com=alphabetcloud/galu,gke-kubernetes-enterprise-control/prototype,big-compute-eng/batch,cloud-kubernetes-gse-dev-team/serving
         - --gerrit-projects=https://velostrata-internal-review.googlesource.com=fejta-demo
         - --gerrit-projects=https://cnrm-review.googlesource.com=cnrm
-        - --pubsub
         volumeMounts:
         - name: cookies
           mountPath: /etc/cookies

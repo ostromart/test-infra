@@ -1,0 +1,24 @@
+presubmits:
+  https://gke-internal-review.googlesource.com/cluster-lifecycle/cluster-operators:
+  - name: pull-cluster-lifecycle-cluster-operators-unittest
+    always_run: true
+    decorate: true
+    path_alias: gke-internal.googlesource.com/cluster-lifecycle/cluster-operators
+    spec:
+      containers:
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+        command:
+        - ./scripts/ci-test.sh
+  - name: pull-cluster-lifecycle-cluster-operators-smoketest
+    always_run: true
+    decorate: true
+    labels:
+      preset-service-account: "true"
+    path_alias: gke-internal.googlesource.com/cluster-lifecycle/cluster-operators
+    spec:
+      containers:
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+        command:
+        - runner.sh
+        args:
+        - ./scripts/ci-e2e.sh

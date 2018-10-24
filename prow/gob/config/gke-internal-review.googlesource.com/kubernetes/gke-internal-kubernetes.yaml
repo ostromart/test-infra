@@ -1,0 +1,199 @@
+presubmits:  
+  https://gke-internal-review.googlesource.com/kubernetes:
+  - name: pull-gob-kubernetes-build
+    decorate: true
+    always_run: true
+    extra_refs:
+    - org: kubernetes
+      repo: test-infra
+      base_ref: master
+      path_alias: k8s.io/test-infra
+    - org: kubernetes
+      repo: release
+      base_ref: master
+      path_alias: k8s.io/release
+    labels:
+      preset-service-account: "true"
+      preset-dind-enabled: "true"
+    spec:
+      containers:
+      - image: gcr.io/k8s-testimages/bootstrap:v20180918-02b56f8a8
+        command:
+        - runner.sh
+        - ../../../k8s.io/test-infra/scenarios/kubernetes_build.py
+        args:
+        - --fast
+        - --release=gob-prow
+        - --push-build-script=../../../k8s.io/release/push-build.sh
+        # docker-in-docker needs privileged mode
+        securityContext:
+          privileged: true
+        resources:
+          requests:
+            cpu: 3
+            memory: "8Gi"
+  - name: pull-gob-kubernetes-unit
+    always_run: true
+    decorate: true
+    extra_refs:
+    - org: kubernetes
+      repo: test-infra
+      base_ref: master
+      path_alias: k8s.io/test-infra
+    labels:
+      preset-bazel-scratch-dir: "true"
+    spec:
+      containers:
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+        command:
+        - runner.sh
+        - ../../../k8s.io/test-infra/scenarios/kubernetes_bazel.py
+        args:
+        - --test=//... -//build/... -//vendor/...
+        - --manual-test=//hack:verify-all
+        - --test-args=--config=unit
+        - --test-args=--build_tag_filters=-e2e,-integration
+        - --test-args=--test_tag_filters=-e2e,-integration
+        - --test-args=--flaky_test_attempts=3
+        securityContext:
+          privileged: true
+        resources:
+          requests:
+            memory: "6Gi"
+  - name: pull-gob-kubernetes-integration
+    always_run: true
+    decorate: true
+    extra_refs:
+    - org: kubernetes
+      repo: test-infra
+      base_ref: master
+      path_alias: k8s.io/test-infra
+    labels:
+      preset-service-account: "true"
+      preset-dind-enabled: "true"
+    spec:
+      containers:
+      - image: gcr.io/k8s-testimages/bootstrap:v20180918-02b56f8a8
+        command:
+        - runner.sh
+        - ../../../k8s.io/test-infra/scenarios/kubernetes_verify.py
+        args:
+        - --branch=master
+        - --force
+        - --prow
+        # docker-in-docker needs privileged mode
+        securityContext:
+          privileged: true
+        resources:
+          requests:
+            cpu: 3
+
+periodics:
+ - interval: 1h
+   name: ci-kubernetes-bazel-test
+   agent: kubernetes
+   labels:
+     preset-service-account: "true"
+     preset-bazel-scratch-dir: "true"
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+       args:
+       - --clean
+       - --job=$(JOB_NAME)
+       - --repo=gke-internal.googlesource.com/kubernetes
+       - --service-account=/etc/service-account/service-account.json
+       - --upload=gs://gob-prow/logs
+       - --scenario=kubernetes_bazel
+       - -- # end bootstrap args, scenario args below
+       - --test=//... -//build/... -//vendor/...
+       - --manual-test=//hack:verify-all
+       - --test-args=--config=unit
+       - --test-args=--build_tag_filters=-e2e,-integration
+       - --test-args=--test_tag_filters=-e2e,-integration
+       - --test-args=--flaky_test_attempts=3
+       securityContext:
+         privileged: true
+       resources:
+         requests:
+           memory: "6Gi"
+ - interval: 30m
+   name: ci-kubernetes-build
+   agent: kubernetes
+   labels:
+     preset-service-account: "true"
+     preset-dind-enabled: "true"
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/bootstrap:v20180918-02b56f8a8
+       args:
+       - --clean
+       - --repo=gke-internal.googlesource.com/kubernetes
+       - --repo=k8s.io/release
+       - --root=/go/src
+       - --timeout=30
+       - --scenario=kubernetes_build
+       - --upload=gs://gob-prow/logs
+       - --
+       - --fast
+       - --release=gob-prow
+       - --push-build-script=../../k8s.io/release/push-build.sh
+       # docker-in-docker needs privileged mode
+       securityContext:
+         privileged: true
+       resources:
+         requests:
+           cpu: 3
+           memory: "8Gi"
+ - interval: 1h
+   name: ci-kubernetes-integration
+   agent: kubernetes
+   labels:
+     preset-service-account: "true"
+     preset-dind-enabled: "true"
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/bootstrap:v20180918-02b56f8a8
+       args:
+       - --clean
+       - --repo=gke-internal.googlesource.com/kubernetes
+       - --timeout=100
+       - --scenario=kubernetes_verify
+       - --upload=gs://gob-prow/logs
+       - --
+       - --branch=master
+       - --force
+       - --prow
+       # docker-in-docker needs privileged mode
+       securityContext:
+         privileged: true
+       resources:
+         requests:
+           cpu: 3
+ - interval: 1h
+   agent: kubernetes
+   name: ci-kubernetes-e2e-gob-gke
+   labels:
+     preset-service-account: "true"
+     preset-k8s-ssh: "true"
+   spec:
+     containers:
+     - args:
+       - --timeout=70
+       - --bare
+       - --upload=gs://gob-prow/logs
+       - --scenario=kubernetes_e2e
+       - --
+       - --check-leaked-resources
+       - --cluster=
+       - --deployment=gke
+       - --extract=gke-latest
+       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+       - --gcp-node-image=gci
+       - --gcp-zone=us-central1-f
+       - --ginkgo-parallel
+       - --gke-environment=staging
+       - --provider=gke
+       - --test_args=--ginkgo.skip=\[Slow\]|\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\] --minStartupPods=8
+       - --timeout=50m
+       image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master

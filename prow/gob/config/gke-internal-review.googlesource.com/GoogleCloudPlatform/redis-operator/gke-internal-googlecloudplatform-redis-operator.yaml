@@ -1,0 +1,40 @@
+presubmits:
+  https://gke-internal-review.googlesource.com/GoogleCloudPlatform/redis-operator:
+  # TODO(krzyzacy) : migrate kubetest jobs to podutils
+  - name: redis-operator-e2e
+    agent: kubernetes
+    context: redis-operator-e2e
+    always_run: true
+    rerun_command: "/test redis-operator-e2e"
+    trigger: "(?m)^/test (all|redis-operator-e2e),?(\\s+|$)"
+    labels:
+      preset-k8s-ssh: "true"
+      preset-service-account: "true"
+      preset-dind-enabled: "true"
+    spec:
+      containers:
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+        args:
+        - --clean
+        - --timeout=300
+        - --repo=gke-internal-review.googlesource.com/GoogleCloudPlatform/redis-operator=$(PULL_REFS)
+        - --root=/go/src
+        - --upload=gs://gob-prow/pr-logs
+        - --scenario=kubernetes_e2e
+        - --
+        - --check-leaked-resources
+        - --cluster=gke-redis-operator-cluster
+        - --deployment=gke
+        - --extract=gke-latest
+        - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+        - --gcp-node-image=gci
+        - --gcp-zone=us-central1-f
+        - --gke-environment=test
+        - --gke-shape={"default":{"Nodes":2,"MachineType":"n1-standard-4"}}
+        - --gke-additional-zones=us-central1-a,us-central1-b
+        - --provider=gke
+        - --test=false
+        - --test-cmd=../hack/e2e.sh
+        - --timeout=1h
+        securityContext:
+          privileged: true

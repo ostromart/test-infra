@@ -1,0 +1,242 @@
+periodics:
+ # GKE upgrades
+ - interval: 2h
+   name: ci-kubernetes-e2e-gke-gci-new-gci-master-upgrade-cluster
+   labels:
+     preset-service-account: "true"
+     preset-k8s-ssh: "true"
+   spec:
+     containers:
+     - args:
+       - --timeout=920
+       - --bare
+       - --scenario=kubernetes_e2e
+       - --upload=gs://gob-prow/logs
+       - --
+       - --check-leaked-resources
+       - --check-version-skew=false
+       - --deployment=gke
+       - --extract=gke-latest
+       - --extract=gke-default
+       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+       - --gcp-node-image=gci
+       - --gcp-project-type=canary-project
+       - --gcp-zone=us-east1-a
+       - --gke-environment=test
+       - --provider=gke
+       - --test_args=--ginkgo.focus=\[Slow\]|\[Serial\]|\[Disruptive\] --ginkgo.skip=\[Flaky\]|\[Feature:.+\] --kubectl-path=../../../../kubernetes_skew/cluster/kubectl.sh --minStartupPods=8
+       - --timeout=900m
+       - --upgrade_args=--ginkgo.focus=\[Feature:ClusterUpgrade\] --upgrade-target=gke-latest --upgrade-image=gci
+       image: gcr.io/k8s-testimages/kubekins-e2e:v20180912-7a027de0c-master
+
+ - interval: 2h
+   name: ci-kubernetes-e2e-gke-gci-new-gci-master-upgrade-cluster-new
+   labels:
+     preset-service-account: "true"
+     preset-k8s-ssh: "true"
+   spec:
+     containers:
+     - args:
+       - --timeout=920
+       - --bare
+       - --scenario=kubernetes_e2e
+       - --upload=gs://gob-prow/logs
+       - --
+       - --check-leaked-resources
+       - --check-version-skew=false
+       - --deployment=gke
+       - --extract=gke-latest
+       - --extract=gke-default
+       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+       - --gcp-node-image=gci
+       - --gcp-project-type=canary-project
+       - --gcp-zone=us-east1-a
+       - --gke-environment=test
+       - --provider=gke
+       - --skew
+       - --timeout=900m
+       - --upgrade_args=--ginkgo.focus=\[Feature:ClusterUpgrade\] --upgrade-target=gke-latest --upgrade-image=gci
+       image: gcr.io/k8s-testimages/kubekins-e2e:v20180912-7a027de0c-master
+
+ - interval: 2h
+   name: ci-kubernetes-e2e-gke-gci-new-gci-master-upgrade-cluster-parallel
+   labels:
+     preset-service-account: "true"
+     preset-k8s-ssh: "true"
+   spec:
+     containers:
+     - args:
+       - --timeout=140
+       - --bare
+       - --scenario=kubernetes_e2e
+       - --upload=gs://gob-prow/logs
+       - --
+       - --check-leaked-resources
+       - --check-version-skew=false
+       - --deployment=gke
+       - --extract=gke-latest
+       - --extract=gke-default
+       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+       - --gcp-node-image=gci
+       - --gcp-project-type=canary-project
+       - --gcp-zone=us-east1-a
+       - --ginkgo-parallel
+       - --gke-environment=test
+       - --provider=gke
+       - --test_args=--ginkgo.skip=\[Slow\]|\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\] --kubectl-path=../../../../kubernetes_skew/cluster/kubectl.sh --minStartupPods=8
+       - --timeout=120m
+       - --upgrade_args=--ginkgo.focus=\[Feature:ClusterUpgrade\] --upgrade-target=gke-latest --upgrade-image=gci
+       image: gcr.io/k8s-testimages/kubekins-e2e:v20180912-7a027de0c-master
+
+ - interval: 2h
+   name: ci-kubernetes-e2e-gke-gci-new-gci-master-upgrade-master
+   labels:
+     preset-service-account: "true"
+     preset-k8s-ssh: "true"
+   spec:
+     containers:
+     - args:
+       - --timeout=920
+       - --bare
+       - --scenario=kubernetes_e2e
+       - --upload=gs://gob-prow/logs
+       - --
+       - --check-leaked-resources
+       - --check-version-skew=false
+       - --deployment=gke
+       - --extract=gke-latest
+       - --extract=gke-default
+       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+       - --gcp-node-image=gci
+       - --gcp-project-type=canary-project
+       - --gcp-zone=us-east1-a
+       - --gke-environment=test
+       - --provider=gke
+       - --test_args=--kubectl-path=../../../../kubernetes_skew/cluster/kubectl.sh --minStartupPods=8
+       - --timeout=900m
+       - --upgrade_args=--ginkgo.focus=\[Feature:MasterUpgrade\] --upgrade-target=gke-latest --upgrade-image=gci
+       image: gcr.io/k8s-testimages/kubekins-e2e:v20180912-7a027de0c-master
+
+
+
+ - interval: 2h
+   name: ci-kubernetes-e2e-gke-beta-stable1-downgrade-cluster
+   labels:
+     preset-service-account: "true"
+     preset-k8s-ssh: "true"
+   spec:
+     containers:
+     - args:
+       - --timeout=920
+       - --bare
+       - --scenario=kubernetes_e2e
+       - --upload=gs://gob-prow/logs
+       - --
+       - --check-leaked-resources
+       - --check-version-skew=false
+       - --deployment=gke
+       - --extract=gke-default
+       - --extract=gke-latest
+       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+       - --gcp-node-image=gci
+       - --gcp-project-type=canary-project
+       - --gcp-zone=us-east1-a
+       - --gke-environment=test
+       - --provider=gke
+       - --skew
+       - --test_args=--ginkgo.focus=\[Slow\]|\[Serial\]|\[Disruptive\] --ginkgo.skip=\[Flaky\]|\[Feature:.+\] --kubectl-path=../../../../kubernetes_skew/cluster/kubectl.sh --minStartupPods=8
+       - --timeout=900m
+       - --upgrade_args=--ginkgo.focus=\[Feature:ClusterDowngrade\] --upgrade-target=gke-default --upgrade-image=gci
+       image: gcr.io/k8s-testimages/kubekins-e2e:v20180912-7a027de0c-master
+
+ - interval: 2h
+   name: ci-kubernetes-e2e-gke-beta-stable1-downgrade-cluster-parallel
+   labels:
+     preset-service-account: "true"
+     preset-k8s-ssh: "true"
+   spec:
+     containers:
+     - args:
+       - --timeout=140
+       - --bare
+       - --scenario=kubernetes_e2e
+       - --upload=gs://gob-prow/logs
+       - --
+       - --check-leaked-resources
+       - --check-version-skew=false
+       - --deployment=gke
+       - --extract=gke-default
+       - --extract=gke-latest
+       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+       - --gcp-node-image=gci
+       - --gcp-project-type=canary-project
+       - --gcp-zone=us-east1-a
+       - --ginkgo-parallel
+       - --gke-environment=test
+       - --provider=gke
+       - --skew
+       - --test_args=--ginkgo.skip=\[Slow\]|\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\] --kubectl-path=../../../../kubernetes_skew/cluster/kubectl.sh --minStartupPods=8
+       - --timeout=120m
+       - --upgrade_args=--ginkgo.focus=\[Feature:ClusterDowngrade\] --upgrade-target=gke-default --upgrade-image=gci
+       image: gcr.io/k8s-testimages/kubekins-e2e:v20180912-7a027de0c-master
+
+ - interval: 2h
+   name: ci-kubernetes-e2e-gke-gci-master-gci-new-downgrade-cluster
+   labels:
+     preset-service-account: "true"
+     preset-k8s-ssh: "true"
+   spec:
+     containers:
+     - args:
+       - --timeout=920
+       - --bare
+       - --scenario=kubernetes_e2e
+       - --upload=gs://gob-prow/logs
+       - --
+       - --check-leaked-resources
+       - --check-version-skew=false
+       - --deployment=gke
+       - --extract=gke-default
+       - --extract=gke-latest
+       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+       - --gcp-node-image=gci
+       - --gcp-project-type=canary-project
+       - --gcp-zone=us-east1-a
+       - --gke-environment=test
+       - --provider=gke
+       - --skew
+       - --test_args=--ginkgo.focus=\[Slow\]|\[Serial\]|\[Disruptive\] --ginkgo.skip=\[Flaky\]|\[Feature:.+\] --kubectl-path=../../../../kubernetes_skew/cluster/kubectl.sh --minStartupPods=8
+       - --timeout=900m
+       - --upgrade_args=--ginkgo.focus=\[Feature:ClusterDowngrade\] --upgrade-target=gke-default --upgrade-image=gci
+       image: gcr.io/k8s-testimages/kubekins-e2e:v20180912-7a027de0c-master
+
+ - interval: 2h
+   name: ci-kubernetes-e2e-gke-gci-master-gci-new-downgrade-cluster-parallel
+   labels:
+     preset-service-account: "true"
+     preset-k8s-ssh: "true"
+   spec:
+     containers:
+     - args:
+       - --timeout=140
+       - --bare
+       - --scenario=kubernetes_e2e
+       - --upload=gs://gob-prow/logs
+       - --
+       - --check-leaked-resources
+       - --check-version-skew=false
+       - --deployment=gke
+       - --extract=gke-default
+       - --extract=gke-latest
+       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+       - --gcp-node-image=gci
+       - --gcp-project-type=canary-project
+       - --gcp-zone=us-east1-a
+       - --ginkgo-parallel
+       - --gke-environment=test
+       - --provider=gke
+       - --skew
+       - --test_args=--ginkgo.skip=\[Slow\]|\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\] --kubectl-path=../../../../kubernetes_skew/cluster/kubectl.sh --minStartupPods=8
+       - --timeout=120m
+       - --upgrade_args=--ginkgo.focus=\[Feature:ClusterDowngrade\] --upgrade-target=gke-default --upgrade-image=gci
+       image: gcr.io/k8s-testimages/kubekins-e2e:v20180912-7a027de0c-master

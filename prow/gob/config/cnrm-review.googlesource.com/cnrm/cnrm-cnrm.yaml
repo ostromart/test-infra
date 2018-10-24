@@ -1,0 +1,56 @@
+presubmits:
+  https://cnrm-review.googlesource.com/cnrm:
+  - name: cnrm-build
+    always_run: true
+    decorate: true
+    path_alias: cnrm.googlesource.com/cnrm
+    spec:
+      containers:
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-1.11
+        command:
+        - ./scripts/ci-build.sh
+  - name: cnrm-test
+    always_run: true
+    decorate: true
+    path_alias: cnrm.googlesource.com/cnrm
+    spec:
+      containers:
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+        command:
+        - ./scripts/ci-test.sh
+
+periodics:
+ - interval: 1h
+   name: periodic-cnrm-build
+   agent: kubernetes
+   labels:
+     preset-service-account: "true"
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-1.11
+       args:
+       - --clean
+       - --repo=cnrm.googlesource.com/cnrm
+       - --root=/go/src
+       - --upload=gs://gob-prow/logs
+       - --scenario=execute
+       - --
+       - /go/src/cnrm.googlesource.com/cnrm/scripts/ci-build.sh
+
+ - interval: 1h
+   name: periodic-cnrm-test
+   agent: kubernetes
+   labels:
+     preset-service-account: "true"
+     preset-k8s-ssh: "true"
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+       args:
+       - --clean
+       - --repo=cnrm.googlesource.com/cnrm
+       - --root=/go/src
+       - --upload=gs://gob-prow/logs
+       - --scenario=execute
+       - --
+       - /go/src/cnrm.googlesource.com/cnrm/scripts/ci-test.sh

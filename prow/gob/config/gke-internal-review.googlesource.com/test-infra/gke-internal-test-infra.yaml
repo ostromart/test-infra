@@ -1,0 +1,15 @@
+presubmits:  
+  https://gke-internal-review.googlesource.com/test-infra:
+  - name: pull-test-infra-presubmit
+    decorate: true
+    always_run: true
+    extra_refs:
+    - org: kubernetes
+      repo: test-infra
+      base_ref: master
+      path_alias: k8s.io/test-infra
+    spec:
+      containers:
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+        command:
+        - ./prow/hack/verify-config.sh

@@ -80,14 +80,21 @@ spec:
         - --dry-run=false
         - --github-token-path=
         - --skip-report=true
+        - --job-config-path=/etc/job-config
         volumeMounts:
         - name: config
           mountPath: /etc/config
+          readOnly: true
+        - name: job-config
+          mountPath: /etc/job-config
           readOnly: true
       volumes:
       - name: config
         configMap:
           name: config
+      - name: job-config
+        configMap:
+          name: job-config
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
@@ -105,14 +112,22 @@ spec:
       containers:
       - name: sinker
         image: gcr.io/k8s-prow/sinker:v20181025-4852d342a
+        args:
+        - --job-config-path=/etc/job-config
         volumeMounts:
         - name: config
           mountPath: /etc/config
+          readOnly: true
+        - name: job-config
+          mountPath: /etc/job-config
           readOnly: true
       volumes:
       - name: config
         configMap:
           name: config
+      - name: job-config
+        configMap:
+          name: job-config
 ---
 apiVersion: extensions/v1beta1
 kind: Deployment
@@ -137,16 +152,24 @@ spec:
       - name: deck
         image: gcr.io/k8s-prow/deck:v20181025-4852d342a
         ports:
-          - name: http
-            containerPort: 8080
+        - name: http
+          containerPort: 8080
+        args:
+        - --job-config-path=/etc/job-config
         volumeMounts:
         - name: config
           mountPath: /etc/config
+          readOnly: true
+        - name: job-config
+          mountPath: /etc/job-config
           readOnly: true
       volumes:
       - name: config
         configMap:
           name: config
+      - name: job-config
+        configMap:
+          name: job-config
 ---
 apiVersion: v1
 kind: Service
@@ -177,14 +200,22 @@ spec:
       containers:
       - name: horologium
         image: gcr.io/k8s-prow/horologium:v20181025-4852d342a
+        args:
+        - --job-config-path=/etc/job-config
         volumeMounts:
         - name: config
           mountPath: /etc/config
+          readOnly: true
+        - name: job-config
+          mountPath: /etc/job-config
           readOnly: true
       volumes:
       - name: config
         configMap:
           name: config
+      - name: job-config
+        configMap:
+          name: job-config
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
@@ -245,6 +276,7 @@ spec:
         image: gcr.io/k8s-prow/gerrit:v20181025-4852d342a
         args:
         - --config-path=/etc/config/config.yaml
+        - --job-config-path=/etc/job-config
         - --cookiefile=/etc/cookies/cookies
         - --gerrit-projects=https://gke-internal-review.googlesource.com=test-infra,kubernetes,net/mci,syllogi/cluster-management,kubernetes/gke-common-webhooks,syllogi/logmon,GoogleCloudPlatform/redis-operator,GoogleCloudPlatform/k8s-stackdriver,cluster-lifecycle/cluster-operators,GoogleCloudPlatform/cronanything
         - --gerrit-projects=https://team-review.googlesource.com=alphabetcloud/galu,gke-kubernetes-enterprise-control/prototype,big-compute-eng/batch,cloud-kubernetes-gse-dev-team/serving
@@ -255,6 +287,9 @@ spec:
         - name: config
           mountPath: /etc/config
           readOnly: true
+        - name: job-config
+          mountPath: /etc/job-config
+          readOnly: true
         - name: gerrit-volume
           mountPath: /store
         - name: cookies
@@ -264,6 +299,9 @@ spec:
       - name: config
         configMap:
           name: config
+      - name: job-config
+        configMap:
+          name: job-config
       - name: cookies
         secret:
           defaultMode: 420
@@ -288,7 +326,7 @@ spec:
       terminationGracePeriodSeconds: 30
       containers:
       - name: crier
-        image: gcr.io/k8s-prow/crier:v20181025-5ac752840
+        image: gcr.io/k8s-prow/crier:v20181026-892a0faeb
         args:
         - --gerrit-workers=1
         - --pubsub-workers=1

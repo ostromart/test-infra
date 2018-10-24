@@ -1,0 +1,379 @@
+presubmits:
+  https://gke-internal-review.googlesource.com/syllogi/cluster-management:
+  - name: pull-syllogi-cluster-api-build
+    always_run: true
+    decorate: true
+    path_alias: gke-internal.googlesource.com/syllogi/cluster-management
+    decoration_config:
+      gcs_configuration:
+        bucket: "syllogi-gob-prow"
+        path_strategy: "explicit"
+    spec:
+      containers:
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-1.11
+        command:
+        - ./cluster-api/scripts/ci-build.sh
+      resources:
+         requests:
+           memory: "6Gi"
+  - name: pull-syllogi-cluster-api-make
+    always_run: true
+    decorate: true
+    decoration_config:
+      gcs_configuration:
+        bucket: "syllogi-gob-prow"
+        path_strategy: "explicit"
+    path_alias: gke-internal.googlesource.com/syllogi/cluster-management
+    labels:
+      preset-dind-enabled: "true"
+    spec:
+      containers:
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-1.11
+        command:
+        - runner.sh
+        args:
+        - ./cluster-api/scripts/ci-make.sh
+        # docker-in-docker needs privileged mode
+        securityContext:
+          privileged: true
+        resources:
+          requests:
+            memory: "6Gi"
+  - name: pull-syllogi-cluster-api-unittest
+    always_run: true
+    decorate: true
+    path_alias: gke-internal.googlesource.com/syllogi/cluster-management
+    decoration_config:
+      gcs_configuration:
+        bucket: "syllogi-gob-prow"
+        path_strategy: "explicit"
+    spec:
+      containers:
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+        command:
+        - ./cluster-api/scripts/ci-test.sh
+  - name: pull-syllogi-cli-build
+    always_run: true
+    decorate: true
+    path_alias: gke-internal.googlesource.com/syllogi/cluster-management
+    labels:
+      preset-bazel-remote-cache-enabled: "true"
+    decoration_config:
+      gcs_configuration:
+        bucket: "syllogi-gob-prow"
+        path_strategy: "explicit"
+    spec:
+      containers:
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-1.11
+        command:
+        - ./syllogi-cli/scripts/ci-build.sh
+      resources:
+         requests:
+           memory: "6Gi"
+  - name: pull-syllogi-cli-make
+    always_run: true
+    decorate: true
+    path_alias: gke-internal.googlesource.com/syllogi/cluster-management
+    labels:
+      preset-service-account: "true"
+      preset-dind-enabled: "true"
+    decoration_config:
+      gcs_configuration:
+        bucket: "syllogi-gob-prow"
+        path_strategy: "explicit"
+    spec:
+      containers:
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-1.11
+        command:
+        - runner.sh
+        args:
+        - ./syllogi-cli/scripts/ci-make.sh
+        # docker-in-docker needs privileged mode
+        securityContext:
+          privileged: true
+        resources:
+          requests:
+            memory: "6Gi"
+  - name: pull-syllogi-cli-unittest
+    always_run: true
+    decorate: true
+    path_alias: gke-internal.googlesource.com/syllogi/cluster-management
+    decoration_config:
+      gcs_configuration:
+        bucket: "syllogi-gob-prow"
+        path_strategy: "explicit"
+    spec:
+      containers:
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+        command:
+        - ./syllogi-cli/scripts/ci-test.sh
+  - name: pull-syllogi-bundle-build
+    always_run: true
+    decorate: true
+    path_alias: gke-internal.googlesource.com/syllogi/cluster-management
+    decoration_config:
+      gcs_configuration:
+        bucket: "syllogi-gob-prow"
+        path_strategy: "explicit"
+    spec:
+      containers:
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-1.11
+        command:
+        - ./bundle/scripts/ci-build.sh
+      resources:
+         requests:
+           memory: "6Gi"
+  - name: pull-syllogi-bundle-make
+    always_run: true
+    decorate: true
+    path_alias: gke-internal.googlesource.com/syllogi/cluster-management
+    labels:
+      preset-dind-enabled: "true"
+    decoration_config:
+      gcs_configuration:
+        bucket: "syllogi-gob-prow"
+        path_strategy: "explicit"
+    spec:
+      containers:
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-1.11
+        command:
+        - runner.sh
+        args:
+        - ./bundle/scripts/ci-make.sh
+        # docker-in-docker needs privileged mode
+        securityContext:
+          privileged: true
+        resources:
+          requests:
+            memory: "6Gi"
+  - name: pull-syllogi-bundle-unittest
+    always_run: true
+    decorate: true
+    path_alias: gke-internal.googlesource.com/syllogi/cluster-management
+    decoration_config:
+      gcs_configuration:
+        bucket: "syllogi-gob-prow"
+        path_strategy: "explicit"
+    spec:
+      containers:
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+        command:
+        - ./bundle/scripts/ci-test.sh
+
+periodics:
+ - interval: 1h
+   name: periodic-syllogi-cluster-api-build
+   agent: kubernetes
+   labels:
+     preset-service-account: "true"
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-1.11
+       args:
+       - --clean
+       - --repo=gke-internal.googlesource.com/syllogi/cluster-management
+       - --root=/go/src
+       - --upload=gs://syllogi-gob-prow/logs
+       - --scenario=execute
+       - --
+       - /go/src/gke-internal.googlesource.com/syllogi/cluster-management/cluster-api/scripts/ci-build.sh
+       resources:
+          requests:
+            memory: "6Gi"
+
+ - interval: 1h
+   name: periodic-syllogi-cluster-api-unittest
+   agent: kubernetes
+   labels:
+     preset-service-account: "true"
+     preset-k8s-ssh: "true"
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+       args:
+       - --clean
+       - --repo=gke-internal.googlesource.com/syllogi/cluster-management
+       - --root=/go/src
+       - --upload=gs://syllogi-gob-prow/logs
+       - --scenario=execute
+       - --
+       - /go/src/gke-internal.googlesource.com/syllogi/cluster-management/cluster-api/scripts/ci-test.sh
+
+ - interval: 1h
+   name: periodic-syllogi-cli-build
+   agent: kubernetes
+   labels:
+     preset-service-account: "true"
+     preset-bazel-remote-cache-enabled: "true"
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-1.11
+       args:
+       - --clean
+       - --repo=gke-internal.googlesource.com/syllogi/cluster-management
+       - --root=/go/src
+       - --upload=gs://syllogi-gob-prow/logs
+       - --scenario=execute
+       - --
+       - /go/src/gke-internal.googlesource.com/syllogi/cluster-management/syllogi-cli/scripts/ci-build.sh
+       resources:
+          requests:
+            memory: "6Gi"
+
+ - interval: 1h
+   name: periodic-syllogi-cli-unittest
+   agent: kubernetes
+   labels:
+     preset-service-account: "true"
+     preset-k8s-ssh: "true"
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+       args:
+       - --clean
+       - --repo=gke-internal.googlesource.com/syllogi/cluster-management
+       - --root=/go/src
+       - --upload=gs://syllogi-gob-prow/logs
+       - --scenario=execute
+       - --
+       - /go/src/gke-internal.googlesource.com/syllogi/cluster-management/syllogi-cli/scripts/ci-test.sh
+
+ - interval: 1h
+   name: periodic-syllogi-bundle-build
+   agent: kubernetes
+   labels:
+     preset-service-account: "true"
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-1.11
+       args:
+       - --clean
+       - --repo=gke-internal.googlesource.com/syllogi/cluster-management
+       - --root=/go/src
+       - --upload=gs://syllogi-gob-prow/logs
+       - --scenario=execute
+       - --
+       - /go/src/gke-internal.googlesource.com/syllogi/cluster-management/bundle/scripts/ci-build.sh
+       resources:
+          requests:
+            memory: "6Gi"
+
+ - interval: 1h
+   name: periodic-syllogi-bundle-unittest
+   agent: kubernetes
+   labels:
+     preset-service-account: "true"
+     preset-k8s-ssh: "true"
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+       args:
+       - --clean
+       - --repo=gke-internal.googlesource.com/syllogi/cluster-management
+       - --root=/go/src
+       - --upload=gs://syllogi-gob-prow/logs
+       - --scenario=execute
+       - --
+       - /go/src/gke-internal.googlesource.com/syllogi/cluster-management/bundle/scripts/ci-test.sh
+
+
+ - interval: 1h
+   name: periodic-syllogi-cluster-api-build-eap2.0
+   always_run: true
+   decorate: true
+   agent: kubernetes
+   labels:
+     preset-service-account: "true"
+   extra_refs:
+   - org: gke-internal.googlesource.com/syllogi
+     repo: cluster-management
+     base_ref: release-eap-2.0
+     path_alias: gke-internal.googlesource.com/syllogi/cluster-management
+     clone_uri: https://gke-internal.googlesource.com/syllogi/cluster-management
+   decoration_config:
+     gcs_configuration:
+       bucket: "syllogi-gob-prow"
+       path_strategy: "explicit"
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-1.11
+       command:
+       - ./cluster-api/scripts/ci-build.sh
+       resources:
+          requests:
+            memory: "6Gi"
+
+ - interval: 1h
+   name: periodic-syllogi-cluster-api-unittest-eap2.0
+   always_run: true
+   decorate: true
+   agent: kubernetes
+   labels:
+     preset-service-account: "true"
+     preset-k8s-ssh: "true"
+   extra_refs:
+   - org: gke-internal.googlesource.com/syllogi
+     repo: cluster-management
+     base_ref: release-eap-2.0
+     path_alias: gke-internal.googlesource.com/syllogi/cluster-management
+     clone_uri: https://gke-internal.googlesource.com/syllogi/cluster-management
+   decoration_config:
+     gcs_configuration:
+       bucket: "syllogi-gob-prow"
+       path_strategy: "explicit"
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-1.11
+       command:
+       - ./cluster-api/scripts/ci-test.sh
+
+ - interval: 1h
+   name: periodic-syllogi-cli-build-eap2.0
+   always_run: true
+   decorate: true
+   agent: kubernetes
+   labels:
+     preset-service-account: "true"
+     preset-bazel-remote-cache-enabled: "true"
+   extra_refs:
+   - org: gke-internal.googlesource.com/syllogi
+     repo: cluster-management
+     base_ref: release-eap-2.0
+     path_alias: gke-internal.googlesource.com/syllogi/cluster-management
+     clone_uri: https://gke-internal.googlesource.com/syllogi/cluster-management
+   decoration_config:
+     gcs_configuration:
+       bucket: "syllogi-gob-prow"
+       path_strategy: "explicit"
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-1.11
+       command:
+       - ./syllogi-cli/scripts/ci-build.sh
+       resources:
+         requests:
+           memory: "6Gi"
+
+ - interval: 1h
+   name: periodic-syllogi-cli-unittest-eap2.0
+   always_run: true
+   decorate: true
+   agent: kubernetes
+   labels:
+     preset-service-account: "true"
+     preset-bazel-remote-cache-enabled: "true"
+   extra_refs:
+   - org: gke-internal.googlesource.com/syllogi
+     repo: cluster-management
+     base_ref: release-eap-2.0
+     path_alias: gke-internal.googlesource.com/syllogi/cluster-management
+     clone_uri: https://gke-internal.googlesource.com/syllogi/cluster-management
+   decoration_config:
+     gcs_configuration:
+       bucket: "syllogi-gob-prow"
+       path_strategy: "explicit"
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-1.11
+       command:
+       - ./syllogi-cli/scripts/ci-test.sh

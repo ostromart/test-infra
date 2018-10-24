@@ -1,0 +1,18 @@
+presubmits:
+  https://gke-internal-review.googlesource.com/net/mci:
+  - name: pull-mci-unit
+    always_run: true
+    decorate: true
+    labels:
+      preset-dind-enabled: "true"
+    spec:
+      containers:
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+        command:
+        - runner.sh
+        args:
+        - make
+        - test
+        # docker-in-docker needs privileged mode
+        securityContext:
+          privileged: true

@@ -1,0 +1,271 @@
+presubmits:
+  # TODO(senlu): Consider a rewrite of this into the modern prow format.
+  https://team-review.googlesource.com/gke-kubernetes-enterprise-control/prototype:
+  - name: nomos-presubmit
+    always_run: true
+    decorate: true
+    labels:
+      preset-dind-enabled: "true"
+    spec:
+      containers:
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+        command:
+        - runner.sh
+        args:
+        - make
+        - test
+        # docker-in-docker needs privileged mode
+        securityContext:
+          privileged: true
+
+periodics:
+ # Production continuous prober for go/nomos.  See go/nomos-production.
+ # Using prime numbers as intervals so that runs would spread out.
+ - interval: 13m
+   name: nomos-prober
+   agent: kubernetes
+   decorate: true
+   labels:
+     preset-dind-enabled: "true"
+   spec:
+     activeDeadlineSeconds: 7200  # 2 hours, there are long running tests.
+     containers:
+     - image: gcr.io/stolos-dev/e2e-prober:test-e2e-latest
+       imagePullPolicy: Always
+       command:
+       - /opt/testing/e2e/setup.sh
+       args:
+       # '--flag=value' syntax doesn't work here. Flag parameters are quoted.
+       - --gcp-prober-cred
+       - "/etc/prober-gcp-service-account/prober_runner_client_key.json"
+       - --gcp-runner-cred
+       - "gs://stolos-dev/e2e/nomos-e2e.joonix.net/test_runner_client_key.json"
+       - --gcp-watcher-cred
+       - "gs://stolos-dev/e2e/nomos-e2e.joonix.net/watcher_client_key.json"
+       - --importer
+       - "gcp"
+       - --skip-installation
+       - --tap
+       - --test
+       securityContext:
+         privileged: true
+       volumeMounts:
+       - name: prober-cred
+         mountPath: /etc/prober-gcp-service-account
+         readOnly: true
+     volumes:
+     - name: prober-cred
+       secret:
+         secretName: nomos-prober-runner-gcp-client-key
+
+ # Continuous integration runs all nomos tests based off of contents of the
+ # "master" branch, reinstalling the contents of the cluster in the process.
+ - interval: 19m
+   name: nomos-ci
+   agent: kubernetes
+   labels:
+     preset-service-account: "true"
+     preset-dind-enabled: "true"
+   spec:
+     activeDeadlineSeconds: 7200 # 2 hours. these tests take a long time.
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+       args:
+       - --clean
+       - --timeout=300
+       - --repo=team.googlesource.com/gke-kubernetes-enterprise-control/prototype=master
+       - --scenario=execute
+       - --upload=gs://gob-prow/logs
+       - --
+       - make
+       - ci-test-e2e
+       env:
+       # The ambient UNIX user name as would be defined inside a shell.
+       - name: USER
+         value: "nomos-ci"
+       # The ambient UNIX numeric user id as would be defined inside a shell.
+       - name: UID
+         value: "10333"
+       # The ambient UNIX numeric group id as would be defined inside a shell.
+       - name: GID
+         value: "10333"
+       # docker-in-docker needs privileged mode
+       securityContext:
+         privileged: true
+       volumeMounts:
+       - name: prober-cred
+         mountPath: /etc/prober-gcp-service-account
+         readOnly: true
+     volumes:
+     - name: prober-cred
+       secret:
+         secretName: nomos-prober-runner-gcp-client-key
+
+# Runs a release process that builds go/nomos releases based off of latest HEAD
+# that passes the build.
+ - interval: 24h
+   name: nomos-release
+   agent: kubernetes
+   labels:
+     preset-service-account: "true"
+     preset-dind-enabled: "true"
+   spec:
+     activeDeadlineSeconds: 7200  # 2 hours
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+       args:
+       - --clean
+       - --timeout=300
+       - --repo=team.googlesource.com/gke-kubernetes-enterprise-control/prototype=master
+       - --scenario=execute
+       - --upload=gs://gob-prow/logs
+       - --
+       - make
+       - --
+       - --makefile=Makefile.release
+       - autorelease
+       env:
+       # The ambient UNIX user name as would be defined inside a shell.
+       - name: USER
+         value: "nomos-release"
+       # The ambient UNIX numeric user id as would be defined inside a shell.
+       - name: UID
+         value: "10333"
+       # The ambient UNIX numeric group id as would be defined inside a shell.
+       - name: GID
+         value: "10333"
+       # docker-in-docker needs privileged mode
+       securityContext:
+         privileged: true
+       volumeMounts:
+       - name: prober-cred
+         mountPath: /etc/prober-gcp-service-account
+         readOnly: true
+     volumes:
+     - name: prober-cred
+       secret:
+         secretName: nomos-prober-runner-gcp-client-key
+
+# Tests go/nomos against GKE 1.10.x.
+# See "nomos-ci" job above for all relevant comments.  The jobs should be by
+# and large the same.
+ - interval: 23m
+   name: nomos-ci-gke-110
+   agent: kubernetes
+   labels:
+     preset-service-account: "true"
+     preset-dind-enabled: "true"
+   spec:
+     activeDeadlineSeconds: 7200 # 2 hours. these tests take a long time.
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+       args:
+       - --clean
+       - --timeout=300
+       - --repo=team.googlesource.com/gke-kubernetes-enterprise-control/prototype=master
+       - --scenario=execute
+       - --upload=gs://gob-prow/logs
+       - --
+       - make
+       - ci-test-e2e
+       env:
+       # The ambient UNIX user name as would be defined inside a shell.
+       - name: USER
+         value: "nomos-ci-gke-110"
+       # The ambient UNIX numeric user id as would be defined inside a shell.
+       - name: UID
+         value: "10333"
+       # The ambient UNIX numeric group id as would be defined inside a shell.
+       - name: GID
+         value: "10333"
+       # docker-in-docker needs privileged mode
+       securityContext:
+         privileged: true
+       volumeMounts:
+       - name: prober-cred
+         mountPath: /etc/prober-gcp-service-account
+         readOnly: true
+     volumes:
+     - name: prober-cred
+       secret:
+         secretName: nomos-prober-runner-gcp-client-key
+
+# Tests go/nomos against an alpha GKE 1.9.7 cluster.
+# See "nomos-ci" job above for all relevant comments.  The jobs should be by
+# and large the same.
+ - interval: 23m
+   name: nomos-ci-gke-197-a
+   agent: kubernetes
+   labels:
+     preset-service-account: "true"
+     preset-dind-enabled: "true"
+   spec:
+     activeDeadlineSeconds: 7200
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+       args:
+       - --clean
+       - --timeout=300
+       - --repo=team.googlesource.com/gke-kubernetes-enterprise-control/prototype=master
+       - --scenario=execute
+       - --upload=gs://gob-prow/logs
+       - --
+       - make
+       - ci-test-e2e
+       env:
+       - name: USER
+         value: "nomos-ci-gke-197-a"
+       - name: UID
+         value: "10333"
+       - name: GID
+         value: "10333"
+       securityContext:
+         privileged: true
+       volumeMounts:
+       - name: prober-cred
+         mountPath: /etc/prober-gcp-service-account
+         readOnly: true
+     volumes:
+     - name: prober-cred
+       secret:
+         secretName: nomos-prober-runner-gcp-client-key
+
+# Tests go/nomos against an alpha GKE 1.10.x cluster.
+# See "nomos-ci" job above for all relevant comments.  The jobs should be by
+# and large the same.
+ - interval: 23m
+   name: nomos-ci-gke-110-a
+   agent: kubernetes
+   labels:
+     preset-service-account: "true"
+     preset-dind-enabled: "true"
+   spec:
+     activeDeadlineSeconds: 7200
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+       args:
+       - --clean
+       - --timeout=300
+       - --repo=team.googlesource.com/gke-kubernetes-enterprise-control/prototype=master
+       - --scenario=execute
+       - --upload=gs://gob-prow/logs
+       - --
+       - make
+       - ci-test-e2e
+       env:
+       - name: USER
+         value: "nomos-ci-gke-110-a"
+       - name: UID
+         value: "10333"
+       - name: GID
+         value: "10333"
+       securityContext:
+         privileged: true
+       volumeMounts:
+       - name: prober-cred
+         mountPath: /etc/prober-gcp-service-account
+         readOnly: true
+     volumes:
+     - name: prober-cred
+       secret:
+         secretName: nomos-prober-runner-gcp-client-key

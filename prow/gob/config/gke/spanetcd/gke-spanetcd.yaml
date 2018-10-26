@@ -28,3 +28,55 @@ periodics:
        - --test_args=--ginkgo.flakeAttempts=2 --ginkgo.skip=\[Slow\]|\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\] --minStartupPods=8
        - --timeout=50m
        image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+ - cron: '0 0 31 2 *' # manual job, set to Feb 31st to never be triggered automatically
+   name: ci-kubernetes-e2e-gce-spanetcd-scale
+   labels:
+     preset-service-account: "true"
+     preset-k8s-ssh: "true"
+   spec:
+     containers:
+     - args:
+       - --timeout=1320
+       - --bare
+       - --scenario=kubernetes_e2e
+       - --upload=gs://gob-prow/logs
+       - --
+       - --cluster=gce-spanetcd
+       # TODO(wojtekt): Extract those into a preset.
+       - --env=ENABLE_APISERVER_ADVANCED_AUDIT=false
+       - --env=HEAPSTER_MACHINE_TYPE=n1-standard-16
+       - --env=MASTER_MIN_CPU_ARCHITECTURE=Intel Broadwell
+       - --env=NODE_SIZE=n1-standard-1
+       - --env=NODE_DISK_SIZE=50GB
+       - --env=REGISTER_MASTER=true
+       - --env=LOGROTATE_MAX_SIZE=5G
+       - --env=KUBE_GCE_ENABLE_IP_ALIASES=true
+       - --env=ETCD_EXTRA_ARGS=--enable-pprof
+       - --env=CONTROLLER_MANAGER_TEST_ARGS=--profiling --kube-api-qps=100 --kube-api-burst=100
+       - --env=KUBELET_TEST_ARGS=--enable-debugging-handlers
+       - --env=KUBEPROXY_TEST_ARGS=--profiling
+       - --env=SCHEDULER_TEST_ARGS=--profiling --kube-api-qps=100 --kube-api-burst=100
+       - --env=PREPULL_E2E_IMAGES=false
+       - --env=TEST_CLUSTER_LOG_LEVEL=--v=2
+       - --env=TEST_CLUSTER_RESYNC_PERIOD=--min-resync-period=12h
+       - --env=TEST_CLUSTER_DELETE_COLLECTION_WORKERS=--delete-collection-workers=16
+       - --env=ENABLE_BIG_CLUSTER_SUBNETS=true
+       # spanetcd setup
+       - --env=ETCD_SERVERS=https://gke-spanetcd.sandbox.google.com:443
+       - --env=CLUSTER_PATH=projects/15738514763/locations/us-east1-a/clusters/spanetcd-scale
+       # Use a custom version that supports communication with spanetcd.
+       - --extract=v1.13.0-alpha.0.2097+72db8265bd36f3-dirty-wojtekt
+       - --gcp-node-image=gci
+       # TODO(wojtekt): Once we know it works, bump this.
+       - --gcp-nodes=5
+       - --gcp-project=k8s-scale-testing
+       - --gcp-zone=us-east1-b
+       - --provider=gce
+       - --test_args=--ginkgo.focus=\[Feature:Performance\] --minStartupPods=8 --node-schedulable-timeout=90m --gather-resource-usage=masteranddns --gather-metrics-at-teardown=master
+       - --timeout=1290m
+       - --use-logexporter
+       image: gcr.io/k8s-testimages/kubekins-e2e:v20181024-be2f242dd-master
+       resources:
+         requests:
+           cpu: 6
+           memory: "16Gi"

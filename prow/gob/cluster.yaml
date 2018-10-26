@@ -282,6 +282,7 @@ spec:
         - --gerrit-projects=https://team-review.googlesource.com=alphabetcloud/galu,gke-kubernetes-enterprise-control/prototype,big-compute-eng/batch,cloud-kubernetes-gse-dev-team/serving
         - --gerrit-projects=https://velostrata-internal-review.googlesource.com=fejta-demo
         - --gerrit-projects=https://cnrm-review.googlesource.com=cnrm
+        - --gerrit-projects=https://cloudesf-review.googlesource.com=gcpproxy
         - --last-sync-fallback=/store/gerrit
         volumeMounts:
         - name: config
@@ -335,6 +336,7 @@ spec:
         - --gerrit-projects=https://team-review.googlesource.com=alphabetcloud/galu,gke-kubernetes-enterprise-control/prototype,big-compute-eng/batch,cloud-kubernetes-gse-dev-team/serving
         - --gerrit-projects=https://velostrata-internal-review.googlesource.com=fejta-demo
         - --gerrit-projects=https://cnrm-review.googlesource.com=cnrm
+        - --gerrit-projects=https://cloudesf-review.googlesource.com=gcpproxy
         volumeMounts:
         - name: cookies
           mountPath: /etc/cookies

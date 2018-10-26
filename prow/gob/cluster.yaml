@@ -278,7 +278,7 @@ spec:
         - --config-path=/etc/config/config.yaml
         - --job-config-path=/etc/job-config
         - --cookiefile=/etc/cookies/cookies
-        - --gerrit-projects=https://gke-internal-review.googlesource.com=test-infra,kubernetes,net/mci,syllogi/cluster-management,kubernetes/gke-common-webhooks,syllogi/logmon,GoogleCloudPlatform/redis-operator,GoogleCloudPlatform/k8s-stackdriver,cluster-lifecycle/cluster-operators,GoogleCloudPlatform/cronanything
+        - --gerrit-projects=https://gke-internal-review.googlesource.com=test-infra,kubernetes,net/mci,syllogi/cluster-management,kubernetes/gke-common-webhooks,syllogi/logmon,GoogleCloudPlatform/redis-operator,GoogleCloudPlatform/k8s-stackdriver,cluster-lifecycle/cluster-operators,GoogleCloudPlatform/cronanything,kubernetes-sigs/gcp-compute-persistent-disk-csi-driver
         - --gerrit-projects=https://team-review.googlesource.com=alphabetcloud/galu,gke-kubernetes-enterprise-control/prototype,big-compute-eng/batch,cloud-kubernetes-gse-dev-team/serving
         - --gerrit-projects=https://velostrata-internal-review.googlesource.com=fejta-demo
         - --gerrit-projects=https://cnrm-review.googlesource.com=cnrm
@@ -331,7 +331,7 @@ spec:
         - --gerrit-workers=1
         - --pubsub-workers=1
         - --cookiefile=/etc/cookies/cookies
-        - --gerrit-projects=https://gke-internal-review.googlesource.com=test-infra,kubernetes,net/mci,syllogi/cluster-management,kubernetes/gke-common-webhooks,syllogi/logmon,GoogleCloudPlatform/redis-operator,GoogleCloudPlatform/k8s-stackdriver,cluster-lifecycle/cluster-operators,GoogleCloudPlatform/cronanything
+        - --gerrit-projects=https://gke-internal-review.googlesource.com=test-infra,kubernetes,net/mci,syllogi/cluster-management,kubernetes/gke-common-webhooks,syllogi/logmon,GoogleCloudPlatform/redis-operator,GoogleCloudPlatform/k8s-stackdriver,cluster-lifecycle/cluster-operators,GoogleCloudPlatform/cronanything,kubernetes-sigs/gcp-compute-persistent-disk-csi-driver
         - --gerrit-projects=https://team-review.googlesource.com=alphabetcloud/galu,gke-kubernetes-enterprise-control/prototype,big-compute-eng/batch,cloud-kubernetes-gse-dev-team/serving
         - --gerrit-projects=https://velostrata-internal-review.googlesource.com=fejta-demo
         - --gerrit-projects=https://cnrm-review.googlesource.com=cnrm

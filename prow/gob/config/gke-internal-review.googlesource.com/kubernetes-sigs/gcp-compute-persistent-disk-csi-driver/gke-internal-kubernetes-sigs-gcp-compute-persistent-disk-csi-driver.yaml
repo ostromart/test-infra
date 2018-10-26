@@ -1,0 +1,21 @@
+periodics:
+ - interval: 2h
+   name: periodic-gcp-pd-csi-driver-k8s-integration-latest
+   agent: kubernetes
+   labels:
+     preset-service-account: "true"
+     preset-dind-enabled: "true"
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-1.11
+       args:
+       - --clean
+       - --repo=gke-internal.googlesource.com/kubernetes-sigs/gcp-compute-persistent-disk-csi-driver
+       - --root=/go/src
+       - --upload=gs://gob-prow/logs
+       - --scenario=execute
+       - --timeout=60
+       - --
+       - test/run-k8s-integration.sh
+       securityContext:
+         privileged: true

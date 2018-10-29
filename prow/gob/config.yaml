@@ -31,6 +31,8 @@ presets:
   env:
   - name: GOOGLE_APPLICATION_CREDENTIALS
     value: /etc/service-account/service-account.json
+  - name: E2E_GOOGLE_APPLICATION_CREDENTIALS
+    value: /etc/service-account/service-account.json
   volumes:
   - name: service
     secret:
@@ -61,6 +63,8 @@ presets:
     preset-vpa-alpha: "true"
   env:
   - name: GOOGLE_APPLICATION_CREDENTIALS
+    value: /etc/service-account/vpa-eap-service-account.json
+  - name: E2E_GOOGLE_APPLICATION_CREDENTIALS
     value: /etc/service-account/vpa-eap-service-account.json
   volumes:
   - name: service

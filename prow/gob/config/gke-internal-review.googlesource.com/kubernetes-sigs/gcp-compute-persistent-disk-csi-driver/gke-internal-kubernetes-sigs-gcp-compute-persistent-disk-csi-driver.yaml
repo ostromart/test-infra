@@ -10,7 +10,7 @@ periodics:
    - org: gke-internal.googlesource.com/kubernetes-sigs
      repo: gcp-compute-persistent-disk-csi-driver
      base_ref: master
-     path_alias: sigs.k8s.io/gcp-compute-persistent-disk-driver
+     path_alias: sigs.k8s.io/gcp-compute-persistent-disk-csi-driver
      clone_uri: https://gke-internal.googlesource.com/kubernetes-sigs/gcp-compute-persistent-disk-csi-driver
    spec:
      containers:

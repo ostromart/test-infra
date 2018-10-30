@@ -11,6 +11,8 @@ presubmits:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-1.11
         command:
+        - runner.sh
+        args:
         - test/run-k8s-integration.sh
         env:
         - name: GCE_PD_BOSKOS_RESOURCE_TYPE
@@ -35,6 +37,8 @@ periodics:
      containers:
      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-1.11
        command:
+       - runner.sh
+       args:
        - test/run-k8s-integration.sh
        env:
        - name: GCE_PD_BOSKOS_RESOURCE_TYPE

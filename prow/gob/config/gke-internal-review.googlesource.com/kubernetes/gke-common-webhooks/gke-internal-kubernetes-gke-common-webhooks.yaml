@@ -3,6 +3,7 @@ presubmits:
   - name: pull-webhooks-unit
     always_run: true
     decorate: true
+    path_alias: k8s.io/gke-common-webhooks
     labels:
       preset-service-account: "true"
     spec:

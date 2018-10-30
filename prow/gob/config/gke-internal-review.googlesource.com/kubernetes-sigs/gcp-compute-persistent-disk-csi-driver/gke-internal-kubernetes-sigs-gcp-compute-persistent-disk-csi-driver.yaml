@@ -1,3 +1,22 @@
+presubmits:
+  https://gke-internal-review.googlesource.com/kubernetes-sigs/gcp-compute-persistent-disk-csi-driver:
+  - name: pull-gcp-pd-csi-driver-k8s-integration-latest
+    decorate: true
+    always_run: true
+    path_alias: sigs.k8s.io/gcp-compute-persistent-disk-csi-driver
+    labels:
+      preset-service-account: "true"
+      preset-dind-enabled: "true"
+    spec:
+      containers:
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-1.11
+        command:
+        - test/run-k8s-integration.sh
+        env:
+        - name: GCE_PD_BOSKOS_RESOURCE_TYPE
+          value: "gke-project"
+        securityContext:
+          privileged: true
 periodics:
  - interval: 2h
    name: periodic-gcp-pd-csi-driver-k8s-integration-latest
@@ -17,5 +36,8 @@ periodics:
      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-1.11
        command:
        - test/run-k8s-integration.sh
+       env:
+       - name: GCE_PD_BOSKOS_RESOURCE_TYPE
+         value: "gke-project"
        securityContext:
          privileged: true

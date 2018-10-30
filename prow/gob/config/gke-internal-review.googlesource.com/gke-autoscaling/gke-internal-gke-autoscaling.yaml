@@ -50,6 +50,142 @@ periodics:
       - --upload=gs://gob-prow/logs
       - -- # end bootstrap args, scenario args below
       - /workspace/gke-internal.googlesource.com/gke-autoscaling/test/fast-scaling-tests/test_experimental_ssd_us-east2-a.sh
+ - interval: 60m
+   name: periodic_fast_autoscaling_test_prod_cpu
+   agent: kubernetes
+   labels:
+     preset-k8s-ssh: "true"
+     preset-service-account: "true"
+   spec:
+    containers:
+    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+      args:
+      - --clean
+      - --repo=gke-internal.googlesource.com/gke-autoscaling
+      - --timeout=60
+      - --scenario=execute
+      - --upload=gs://gob-prow/logs
+      - -- # end bootstrap args, scenario args below
+      - /workspace/gke-internal.googlesource.com/gke-autoscaling/test/fast-scaling-tests/prow/test_prod_cpu.sh
+ - interval: 60m
+   name: periodic_fast_autoscaling_test_prod_custom_metric
+   agent: kubernetes
+   labels:
+     preset-k8s-ssh: "true"
+     preset-service-account: "true"
+   spec:
+    containers:
+    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+      args:
+      - --clean
+      - --repo=gke-internal.googlesource.com/gke-autoscaling
+      - --timeout=60
+      - --scenario=execute
+      - --upload=gs://gob-prow/logs
+      - -- # end bootstrap args, scenario args below
+      - /workspace/gke-internal.googlesource.com/gke-autoscaling/test/fast-scaling-tests/prow/test_prod_custom_metric.sh
+ - interval: 60m
+   name: periodic_fast_autoscaling_test_prod_hermes_cpu
+   agent: kubernetes
+   labels:
+     preset-k8s-ssh: "true"
+     preset-service-account: "true"
+   spec:
+    containers:
+    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+      args:
+      - --clean
+      - --repo=gke-internal.googlesource.com/gke-autoscaling
+      - --timeout=60
+      - --scenario=execute
+      - --upload=gs://gob-prow/logs
+      - -- # end bootstrap args, scenario args below
+      - /workspace/gke-internal.googlesource.com/gke-autoscaling/test/fast-scaling-tests/prow/test_prod_hermes_cpu.sh
+ - interval: 60m
+   name: periodic_fast_autoscaling_test_prod_hermes_custom_metric
+   agent: kubernetes
+   labels:
+     preset-k8s-ssh: "true"
+     preset-service-account: "true"
+   spec:
+    containers:
+    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+      args:
+      - --clean
+      - --repo=gke-internal.googlesource.com/gke-autoscaling
+      - --timeout=60
+      - --scenario=execute
+      - --upload=gs://gob-prow/logs
+      - -- # end bootstrap args, scenario args below
+      - /workspace/gke-internal.googlesource.com/gke-autoscaling/test/fast-scaling-tests/prow/test_prod_hermes_custom_metric.sh
+ - interval: 60m
+   name: periodic_fast_autoscaling_test_experimental_cpu
+   agent: kubernetes
+   labels:
+     preset-k8s-ssh: "true"
+     preset-service-account: "true"
+   spec:
+    containers:
+    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+      args:
+      - --clean
+      - --repo=gke-internal.googlesource.com/gke-autoscaling
+      - --timeout=60
+      - --scenario=execute
+      - --upload=gs://gob-prow/logs
+      - -- # end bootstrap args, scenario args below
+      - /workspace/gke-internal.googlesource.com/gke-autoscaling/test/fast-scaling-tests/prow/test_experimental_cpu.sh
+ - interval: 60m
+   name: periodic_fast_autoscaling_test_experimental_custom_metric
+   agent: kubernetes
+   labels:
+     preset-k8s-ssh: "true"
+     preset-service-account: "true"
+   spec:
+    containers:
+    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+      args:
+      - --clean
+      - --repo=gke-internal.googlesource.com/gke-autoscaling
+      - --timeout=60
+      - --scenario=execute
+      - --upload=gs://gob-prow/logs
+      - -- # end bootstrap args, scenario args below
+      - /workspace/gke-internal.googlesource.com/gke-autoscaling/test/fast-scaling-tests/prow/test_experimental_custom_metric.sh
+ - interval: 60m
+   name: periodic_fast_autoscaling_test_experimental_ssd_cpu
+   agent: kubernetes
+   labels:
+     preset-k8s-ssh: "true"
+     preset-service-account: "true"
+   spec:
+    containers:
+    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+      args:
+      - --clean
+      - --repo=gke-internal.googlesource.com/gke-autoscaling
+      - --timeout=60
+      - --scenario=execute
+      - --upload=gs://gob-prow/logs
+      - -- # end bootstrap args, scenario args below
+      - /workspace/gke-internal.googlesource.com/gke-autoscaling/test/fast-scaling-tests/prow/test_experimental_ssd_cpu.sh
+ - interval: 60m
+   name: periodic_fast_autoscaling_test_experimental_ssd_custom_metric
+   agent: kubernetes
+   labels:
+     preset-k8s-ssh: "true"
+     preset-service-account: "true"
+   spec:
+    containers:
+    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+      args:
+      - --clean
+      - --repo=gke-internal.googlesource.com/gke-autoscaling
+      - --timeout=60
+      - --scenario=execute
+      - --upload=gs://gob-prow/logs
+      - -- # end bootstrap args, scenario args below
+      - /workspace/gke-internal.googlesource.com/gke-autoscaling/test/fast-scaling-tests/prow/test_experimental_ssd_custom_metric.sh
  - interval: 30m
    name: periodic_fast_autoscaling_generate_metrics_file
    agent: kubernetes

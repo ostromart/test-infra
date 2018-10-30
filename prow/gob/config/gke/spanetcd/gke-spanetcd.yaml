@@ -23,7 +23,7 @@ periodics:
        - --gcp-zone=us-central1-c
        - --ginkgo-parallel=30
        - --gke-environment=https://wojtekt-gke-sandbox-test-container.sandbox.googleapis.com/
-       - --gke-create-command=container clusters create --quiet --cluster-version=1.13.0-alpha.0.2097+72db8265bd36f3-dirty-wojtekt --num-nodes=4
+       - --gke-create-command=container clusters create --quiet --cluster-version=1.13.0-alpha.3.13+f44313006668ef-dirty-spanetcd --num-nodes=4
        - --provider=gke
        - --test_args=--ginkgo.flakeAttempts=2 --ginkgo.skip=\[Slow\]|\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\] --minStartupPods=8
        - --timeout=50m
@@ -63,12 +63,12 @@ periodics:
        - --env=ENABLE_BIG_CLUSTER_SUBNETS=true
        # spanetcd setup
        - --env=ETCD_SERVERS=https://gke-spanetcd.sandbox.google.com:443
-       - --env=CLUSTER_PATH=projects/15738514763/locations/us-east1-a/clusters/spanetcd-scale
+       - --env=CLUSTER_PATH=projects/15738514763/locations/us-east1-a/clusters/spanetcd-scale-5
        # Use a custom version that supports communication with spanetcd.
-       - --extract=v1.13.0-alpha.0.2097+72db8265bd36f3-dirty-wojtekt
+       - --extract=gs://kubernetes-release-gke-internal/devel/v1.13.0-alpha.3.14+49909275ccb5c1-dirty-spanetcd
        - --gcp-node-image=gci
        # TODO(wojtekt): Once we know it works, bump this.
-       - --gcp-nodes=5
+       - --gcp-nodes=100
        - --gcp-project=k8s-scale-testing
        - --gcp-zone=us-east1-b
        - --provider=gce

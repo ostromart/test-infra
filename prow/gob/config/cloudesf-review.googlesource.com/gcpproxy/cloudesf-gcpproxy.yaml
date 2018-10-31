@@ -6,7 +6,7 @@ presubmits:
     path_alias: cloudesf.googlesource.com/gcpproxy
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+      - image: gcr.io/cloudesf-testing/gcpproxy-prow:v20181031-f39afb6-master
         command:
         - ./prow/gcpproxy-build.sh
   - name: cloudesf-presubmit
@@ -15,6 +15,6 @@ presubmits:
     path_alias: cloudesf.googlesource.com/gcpproxy
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+      - image: gcr.io/cloudesf-testing/gcpproxy-prow:v20181031-f39afb6-master
         command:
         - ./prow/gcpproxy-presubmit.sh

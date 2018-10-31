@@ -1199,6 +1199,7 @@ periodics:
                   cloud-k8s-guitar-xpn-host,
                   cloud-k8s-guitar-xpn-svc-1,
                   cloud-k8s-guitar-xpn-svc-2,
+                  gke-cluster-lifecycle-ci,
                   gke-e2e-binauthz-prod,
                   gke-e2e-binauthz-test,
                   gke-e2e-createdelete,

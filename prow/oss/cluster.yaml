@@ -253,7 +253,7 @@ spec:
         args:
         - --config-path=/etc/config/config.yaml
         - --cookiefile=/etc/cookies/cookies
-        - --gerrit-projects=https://kunit.googlesource.com/linux
+        - --gerrit-projects=https://kunit.googlesource.com=linux
         - --last-sync-fallback=/store/gerrit
         volumeMounts:
         - name: config
@@ -297,7 +297,7 @@ spec:
         args:
         - --gerrit
         - --cookiefile=/etc/cookies/cookies
-        - --gerrit-projects=https://kunit.googlesource.com/linux
+        - --gerrit-projects=https://kunit.googlesource.com=linux
         volumeMounts:
         - name: cookies
           mountPath: /etc/cookies

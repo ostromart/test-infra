@@ -16,7 +16,8 @@ rules:
   - secrets
   verbs:
   - create
-  - replace
+  - get
+  - update
 ---
 
 kind: RoleBinding
@@ -84,7 +85,8 @@ rules:
   - secrets
   verbs:
   - create
-  - replace
+  - get
+  - update
 ---
 
 kind: RoleBinding

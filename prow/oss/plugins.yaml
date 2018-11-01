@@ -1,0 +1,11 @@
+plugins:
+  GoogleCloudPlatform/gke-tracing-demo:
+  - approve
+  - assign
+  - cat
+  - dog
+  - lgtm
+  - owners-label
+  - size
+  - trigger
+

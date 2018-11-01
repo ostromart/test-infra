@@ -368,6 +368,180 @@ presubmits:
           defaultMode: 0400
           secretName: ssh-knative
 
+  # TODO(yangpa): pipeline project is currently transfering code from googleprivate/ml -> kubeflow/pipelines
+  # Once transfer is done and the project is public, I'll clean up entries from both projects and use
+  # public prow instead.
+  kubeflow/pipelines:
+  - name: mlpipeline-build-image
+    agent: kubernetes
+    context: mlpipeline-build-image
+    always_run: true
+    skip_report: false
+    rerun_command: /test mlpipeline-build-image
+    trigger: (?m)^/test (all|mlpipeline-build-image),?(\s+|$)
+    labels:
+      preset-service-account: "true"
+    spec:
+      containers:
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
+        args:
+        - --clean
+        - --repo=github.com/kubeflow/$(REPO_NAME)=$(PULL_REFS)
+        - --service-account=/etc/service-account/service-account.json
+        - --upload=gs://gke-prow/pr-logs
+        - --ssh=/etc/ssh-knative/ssh-knative
+        - --scenario=execute
+        - -- # end bootstrap args, scenario args below
+        - -- # end kubernetes_execute_bazel flags (consider following flags as text)
+        - ./test/presubmit-tests.sh
+        - "--workflow_file"
+        - "build_image.yaml"
+        volumeMounts:
+        - mountPath: /etc/ssh-knative
+          name: ssh-knative
+      volumes:
+      - name: ssh-knative
+        secret:
+          defaultMode: 0400
+          secretName: ssh-knative
+    run_after_success:
+    - name: mlpipeline-presubmit-e2e-test
+      agent: kubernetes
+      context: mlpipeline-presubmit-e2e-test
+      always_run: true
+      skip_report: false
+      rerun_command: /test mlpipeline-presubmit-e2e-test
+      trigger: (?m)^/test (all|mlpipeline-presubmit-e2e-test),?(\s+|$)
+      labels:
+        preset-service-account: "true"
+      spec:
+        containers:
+        - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
+          args:
+          - --clean
+          - --repo=github.com/kubeflow/$(REPO_NAME)=$(PULL_REFS)
+          - --service-account=/etc/service-account/service-account.json
+          - --upload=gs://gke-prow/pr-logs
+          - --ssh=/etc/ssh-knative/ssh-knative
+          - --scenario=execute
+          - -- # end bootstrap args, scenario args below
+          - -- # end kubernetes_execute_bazel flags (consider following flags as text)
+          - ./test/presubmit-tests.sh
+          - "--workflow_file"
+          - "e2e_test_gke.yaml"
+          - "--test_result_folder"
+          - "e2e_test"
+          volumeMounts:
+          - mountPath: /etc/ssh-knative
+            name: ssh-knative
+        volumes:
+        - name: ssh-knative
+          secret:
+            defaultMode: 0400
+            secretName: ssh-knative
+    - name: mlpipeline-presubmit-e2e-test-gce-minikube
+      agent: kubernetes
+      context: mlpipeline-presubmit-e2e-test-gce-minikube
+      always_run: true
+      skip_report: true
+      rerun_command: /test mlpipeline-presubmit-e2e-test-gce-minikube
+      trigger: (?m)^/test (all|mlpipeline-presubmit-e2e-test-gce-minikube),?(\s+|$)
+      labels:
+        preset-service-account: "true"
+      spec:
+        containers:
+        - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
+          args:
+          - --clean
+          - --repo=github.com/kubeflow/$(REPO_NAME)=$(PULL_REFS)
+          - --service-account=/etc/service-account/service-account.json
+          - --upload=gs://gke-prow/pr-logs
+          - --ssh=/etc/ssh-knative/ssh-knative
+          - --scenario=execute
+          - -- # end bootstrap args, scenario args below
+          - -- # end kubernetes_execute_bazel flags (consider following flags as text)
+          - ./test/presubmit-tests-gce-minikube.sh
+          - "--workflow_file"
+          - "e2e_test_gke.yaml"
+          - "--test_result_folder"
+          - "e2e_test"
+          volumeMounts:
+          - mountPath: /etc/ssh-knative
+            name: ssh-knative
+        volumes:
+        - name: ssh-knative
+          secret:
+            defaultMode: 0400
+            secretName: ssh-knative
+    - name: mlpipeline-presubmit-sample-test
+      agent: kubernetes
+      context: mlpipeline-presubmit-sample-test
+      always_run: true
+      skip_report: false
+      rerun_command: /test mlpipeline-presubmit-sample-test
+      trigger: (?m)^/test (all|mlpipeline-presubmit-sample-test),?(\s+|$)
+      labels:
+        preset-service-account: "true"
+      spec:
+        containers:
+        - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
+          args:
+          - --clean
+          - --repo=github.com/kubeflow/$(REPO_NAME)=$(PULL_REFS)
+          - --service-account=/etc/service-account/service-account.json
+          - --upload=gs://gke-prow/pr-logs
+          - --ssh=/etc/ssh-knative/ssh-knative
+          - --scenario=execute
+          - -- # end bootstrap args, scenario args below
+          - -- # end kubernetes_execute_bazel flags (consider following flags as text)
+          - ./test/presubmit-tests.sh
+          - "--workflow_file"
+          - "sample_test.yaml"
+          - "--test_result_folder"
+          - "sample_test"
+          volumeMounts:
+          - mountPath: /etc/ssh-knative
+            name: ssh-knative
+        volumes:
+        - name: ssh-knative
+          secret:
+            defaultMode: 0400
+            secretName: ssh-knative
+  - name: mlpipeline-presubmit-unit-test
+    agent: kubernetes
+    context: mlpipeline-presubmit-unit-test
+    always_run: true
+    skip_report: false
+    rerun_command: /test mlpipeline-presubmit-unit-test
+    trigger: (?m)^/test (all|mlpipeline-presubmit-unit-test),?(\s+|$)
+    labels:
+      preset-service-account: "true"
+    spec:
+      containers:
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
+        args:
+        - --clean
+        - --repo=github.com/kubeflow/$(REPO_NAME)=$(PULL_REFS)
+        - --service-account=/etc/service-account/service-account.json
+        - --upload=gs://gke-prow/pr-logs
+        - --ssh=/etc/ssh-knative/ssh-knative
+        - --scenario=execute
+        - -- # end bootstrap args, scenario args below
+        - -- # end kubernetes_execute_bazel flags (consider following flags as text)
+        - ./test/presubmit-tests.sh
+        - "--workflow_file"
+        - "unit_test_gke.yaml"
+        - "--test_result_folder"
+        - "backend_unit_test"
+        volumeMounts:
+        - mountPath: /etc/ssh-knative
+          name: ssh-knative
+      volumes:
+      - name: ssh-knative
+        secret:
+          defaultMode: 0400
+          secretName: ssh-knative
+
 periodics:
 - interval: 1h
   agent: kubernetes

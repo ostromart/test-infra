@@ -16,7 +16,7 @@ presubmits:
         - test/run-k8s-integration.sh
         env:
         - name: GCE_PD_BOSKOS_RESOURCE_TYPE
-          value: "gke-project"
+          value: "gke-internal-project"
         securityContext:
           privileged: true
 periodics:
@@ -42,7 +42,7 @@ periodics:
        - test/run-k8s-integration.sh
        env:
        - name: GCE_PD_BOSKOS_RESOURCE_TYPE
-         value: "gke-project"
+         value: "gke-internal-project"
        - name: GCE_PD_OVERLAY_NAME
          value: "prow-gke-head"
        - name: GCE_PD_DO_DRIVER_BUILD
@@ -71,7 +71,7 @@ periodics:
        - test/run-k8s-integration.sh
        env:
        - name: GCE_PD_BOSKOS_RESOURCE_TYPE
-         value: "gke-project"
+         value: "gke-internal-project"
        - name: GCE_PD_OVERLAY_NAME
          value: "prow-gke-staging"
        - name: GCE_PD_DO_DRIVER_BUILD

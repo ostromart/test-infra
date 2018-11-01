@@ -13,6 +13,10 @@ resources:
   state: dirty
   type: gke-project
 - names:
+  - prow-gob-internal-boskos-01
+  state: dirty
+  type: gke-internal-project
+- names:
   - prow-gob-gpu-boskos-01
   - prow-gob-gpu-boskos-02
   - prow-gob-gpu-boskos-03

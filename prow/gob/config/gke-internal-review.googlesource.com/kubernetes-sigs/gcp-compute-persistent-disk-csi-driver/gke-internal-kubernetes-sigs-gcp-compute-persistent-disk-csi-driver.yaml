@@ -49,7 +49,7 @@ periodics:
          value: "false"
        securityContext:
          privileged: true
- - interval: 2h
+ - interval: 4h
    name: periodic-gcp-pd-csi-driver-k8s-integration-staging
    agent: kubernetes
    decorate: true

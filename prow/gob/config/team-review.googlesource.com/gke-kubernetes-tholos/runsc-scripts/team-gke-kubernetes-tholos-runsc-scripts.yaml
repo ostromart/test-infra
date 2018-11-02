@@ -102,7 +102,7 @@ periodics:
        - --env=NETWORK_PROVIDER=
        - --env=NON_MASQUERADE_CIDR=0.0.0.0/0
        - --env=KUBELET_TEST_ARGS=--runtime-cgroups=/system.slice/containerd.service
-       - --extract=v1.11.2
+       - --extract=release/stable-1.11
        - --gcp-project=cri-containerd-node-e2e
        - --gcp-node-image=gci
        - --gcp-nodes=4

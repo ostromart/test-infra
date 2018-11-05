@@ -49,10 +49,10 @@ presubmits:
         path_strategy: "explicit"
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20181024-be2f242dd-master
         command:
         - ./cluster-api/scripts/ci-test.sh
-  - name: pull-syllogi-cli-build
+  - name: pull-gkectl-build
     always_run: true
     decorate: true
     path_alias: gke-internal.googlesource.com/syllogi/cluster-management
@@ -66,11 +66,11 @@ presubmits:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-1.11
         command:
-        - ./syllogi-cli/scripts/ci-build.sh
+        - ./gkectl/scripts/ci-build.sh
       resources:
          requests:
            memory: "6Gi"
-  - name: pull-syllogi-cli-make
+  - name: pull-gkectl-make
     always_run: true
     decorate: true
     path_alias: gke-internal.googlesource.com/syllogi/cluster-management
@@ -87,14 +87,14 @@ presubmits:
         command:
         - runner.sh
         args:
-        - ./syllogi-cli/scripts/ci-make.sh
+        - ./gkectl/scripts/ci-make.sh
         # docker-in-docker needs privileged mode
         securityContext:
           privileged: true
         resources:
           requests:
             memory: "6Gi"
-  - name: pull-syllogi-cli-unittest
+  - name: pull-gkectl-unittest
     always_run: true
     decorate: true
     path_alias: gke-internal.googlesource.com/syllogi/cluster-management
@@ -104,9 +104,9 @@ presubmits:
         path_strategy: "explicit"
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20181024-be2f242dd-master
         command:
-        - ./syllogi-cli/scripts/ci-test.sh
+        - ./gkectl/scripts/ci-test.sh
   - name: pull-syllogi-bundle-build
     always_run: true
     decorate: true
@@ -156,7 +156,7 @@ presubmits:
         path_strategy: "explicit"
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20181024-be2f242dd-master
         command:
         - ./bundle/scripts/ci-test.sh
 
@@ -189,7 +189,7 @@ periodics:
      preset-k8s-ssh: "true"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20181024-be2f242dd-master
        args:
        - --clean
        - --repo=gke-internal.googlesource.com/syllogi/cluster-management
@@ -200,7 +200,7 @@ periodics:
        - /go/src/gke-internal.googlesource.com/syllogi/cluster-management/cluster-api/scripts/ci-test.sh
 
  - interval: 1h
-   name: periodic-syllogi-cli-build
+   name: periodic-gkectl-build
    agent: kubernetes
    labels:
      preset-service-account: "true"
@@ -215,20 +215,20 @@ periodics:
        - --upload=gs://syllogi-gob-prow/logs
        - --scenario=execute
        - --
-       - /go/src/gke-internal.googlesource.com/syllogi/cluster-management/syllogi-cli/scripts/ci-build.sh
+       - /go/src/gke-internal.googlesource.com/syllogi/cluster-management/gkectl/scripts/ci-build.sh
        resources:
           requests:
             memory: "6Gi"
 
  - interval: 1h
-   name: periodic-syllogi-cli-unittest
+   name: periodic-gkectl-unittest
    agent: kubernetes
    labels:
      preset-service-account: "true"
      preset-k8s-ssh: "true"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20181024-be2f242dd-master
        args:
        - --clean
        - --repo=gke-internal.googlesource.com/syllogi/cluster-management
@@ -236,7 +236,7 @@ periodics:
        - --upload=gs://syllogi-gob-prow/logs
        - --scenario=execute
        - --
-       - /go/src/gke-internal.googlesource.com/syllogi/cluster-management/syllogi-cli/scripts/ci-test.sh
+       - /go/src/gke-internal.googlesource.com/syllogi/cluster-management/gkectl/scripts/ci-test.sh
 
  - interval: 1h
    name: periodic-syllogi-bundle-build
@@ -266,7 +266,7 @@ periodics:
      preset-k8s-ssh: "true"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20181024-be2f242dd-master
        args:
        - --clean
        - --repo=gke-internal.googlesource.com/syllogi/cluster-management
@@ -328,7 +328,7 @@ periodics:
        - ./cluster-api/scripts/ci-test.sh
 
  - interval: 1h
-   name: periodic-syllogi-cli-build-eap2.0
+   name: periodic-gkectl-build-eap2.0
    always_run: true
    decorate: true
    agent: kubernetes
@@ -349,13 +349,13 @@ periodics:
      containers:
      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-1.11
        command:
-       - ./syllogi-cli/scripts/ci-build.sh
+       - ./gkectl/scripts/ci-build.sh
        resources:
          requests:
            memory: "6Gi"
 
  - interval: 1h
-   name: periodic-syllogi-cli-unittest-eap2.0
+   name: periodic-gkectl-unittest-eap2.0
    always_run: true
    decorate: true
    agent: kubernetes
@@ -376,4 +376,4 @@ periodics:
      containers:
      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-1.11
        command:
-       - ./syllogi-cli/scripts/ci-test.sh
+       - ./gkectl/scripts/ci-test.sh

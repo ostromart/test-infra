@@ -271,7 +271,7 @@ presubmits:
       agent: kubernetes
       context: mlpipeline-presubmit-sample-test
       always_run: true
-      skip_report: false
+      skip_report: true
       rerun_command: /test mlpipeline-presubmit-sample-test
       trigger: (?m)^/test (all|mlpipeline-presubmit-sample-test),?(\s+|$)
       labels:

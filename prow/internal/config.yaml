@@ -499,6 +499,8 @@ presubmits:
           - "sample_test.yaml"
           - "--test_result_folder"
           - "sample_test"
+          - "--timeout"
+          - "3600"
           volumeMounts:
           - mountPath: /etc/ssh-knative
             name: ssh-knative

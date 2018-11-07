@@ -14,10 +14,20 @@ presubmits:
     decorate: true
     path_alias: cnrm.googlesource.com/cnrm
     spec:
+      volumes:
+      - name: gcp-service-account
+        secret:
+          secretName: cnrm-eap-prow
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
         command:
         - ./scripts/ci-test.sh
+        volumeMounts:
+        - name: gcp-service-account
+          mountPath: /var/secrets/google
+        env:
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: /var/secrets/google/service-account.json
 
 periodics:
  - interval: 1h

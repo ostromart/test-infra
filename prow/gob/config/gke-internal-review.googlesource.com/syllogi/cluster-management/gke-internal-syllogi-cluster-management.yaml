@@ -349,7 +349,7 @@ periodics:
      containers:
      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-1.11
        command:
-       - ./gkectl/scripts/ci-build.sh
+       - ./syllogi-cli/scripts/ci-build.sh
        resources:
          requests:
            memory: "6Gi"
@@ -376,4 +376,4 @@ periodics:
      containers:
      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-1.11
        command:
-       - ./gkectl/scripts/ci-test.sh
+       - ./syllogi-cli/scripts/ci-test.sh

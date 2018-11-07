@@ -109,3 +109,14 @@ presets:
   volumeMounts:
   - name: docker-graph
     mountPath: /docker-graph
+
+deck:
+  spyglass:
+    size_limit: 500000000 # 500MB
+    viewers:
+      "started.json|finished.json":
+      - "metadata-viewer"
+      "build-log.txt":
+      - "build-log-viewer"
+      "artifacts/junit.*\\.xml":
+      - "junit-viewer"

@@ -16,6 +16,23 @@ periodics:
        - --
        - /go/src/team.googlesource.com/gke-kubernetes-tholos/runsc-scripts/build.sh
 
+ - name: ci-gvisor-containerd-shim-build
+   interval: 1h
+   agent: kubernetes
+   labels:
+     preset-service-account: "true"
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20181024-be2f242dd-master
+       args:
+       - --repo=team.googlesource.com/gke-kubernetes-tholos/gvisor-containerd-shim=master
+       - --root=/go/src
+       - --upload=gs://gob-prow/logs
+       - --scenario=execute
+       - --
+       - make
+       - push
+
  - interval: 1h
    agent: kubernetes
    name: ci-containerd-runsc-node-e2e

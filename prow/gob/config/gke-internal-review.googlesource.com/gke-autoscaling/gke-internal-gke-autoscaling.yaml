@@ -79,7 +79,7 @@ periodics:
       args:
       - --clean
       - --repo=gke-internal.googlesource.com/gke-autoscaling
-      - --timeout=60
+      - --timeout=180
       - --scenario=execute
       - --upload=gs://gob-prow/logs
       - -- # end bootstrap args, scenario args below
@@ -113,7 +113,7 @@ periodics:
       args:
       - --clean
       - --repo=gke-internal.googlesource.com/gke-autoscaling
-      - --timeout=60
+      - --timeout=180
       - --scenario=execute
       - --upload=gs://gob-prow/logs
       - -- # end bootstrap args, scenario args below
@@ -147,7 +147,7 @@ periodics:
       args:
       - --clean
       - --repo=gke-internal.googlesource.com/gke-autoscaling
-      - --timeout=60
+      - --timeout=180
       - --scenario=execute
       - --upload=gs://gob-prow/logs
       - -- # end bootstrap args, scenario args below
@@ -181,7 +181,7 @@ periodics:
       args:
       - --clean
       - --repo=gke-internal.googlesource.com/gke-autoscaling
-      - --timeout=60
+      - --timeout=180
       - --scenario=execute
       - --upload=gs://gob-prow/logs
       - -- # end bootstrap args, scenario args below

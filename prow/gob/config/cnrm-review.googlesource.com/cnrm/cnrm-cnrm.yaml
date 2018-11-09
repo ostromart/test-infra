@@ -64,3 +64,33 @@ periodics:
        - --scenario=execute
        - --
        - /go/src/cnrm.googlesource.com/cnrm/scripts/ci-test.sh
+
+ - interval: 24h
+   name: periodic-cnrm-release
+   decorate: true
+   path_alias: cnrm.googlesource.com/cnrm
+   labels:
+     preset-dind-enabled: "true"
+   extra_refs:
+   - org: cnrm.googlesource.com
+     repo: cnrm
+     base_ref: master
+   spec:
+     volumes:
+     - name: gcp-service-account
+       secret:
+         secretName: cnrm-eap-prow
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+       command:
+       - runner.sh
+       args:
+       - ./scripts/release.sh
+       volumeMounts:
+       - name: gcp-service-account
+         mountPath: /var/secrets/google
+       env:
+       - name: GOOGLE_APPLICATION_CREDENTIALS
+         value: /var/secrets/google/service-account.json
+       securityContext:
+         privileged: true

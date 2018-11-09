@@ -18,18 +18,22 @@ periodics:
 
  - name: ci-gvisor-containerd-shim-build
    interval: 1h
+   decorate: true
    agent: kubernetes
    labels:
      preset-service-account: "true"
+   extra_refs:
+   - org: team.googlesource.com/gke-kubernetes-tholos
+     repo: gvisor-containerd-shim
+     base_ref: master
+     path_alias: gvisor.googlesource.com/gvisor-containerd-shim
+     clone_uri: https://team.googlesource.com/gke-kubernetes-tholos/gvisor-containerd-shim
    spec:
      containers:
      - image: gcr.io/k8s-testimages/kubekins-e2e:v20181024-be2f242dd-master
+       command:
+       - runner.sh
        args:
-       - --repo=team.googlesource.com/gke-kubernetes-tholos/gvisor-containerd-shim=master
-       - --root=/go/src
-       - --upload=gs://gob-prow/logs
-       - --scenario=execute
-       - --
        - make
        - push
 

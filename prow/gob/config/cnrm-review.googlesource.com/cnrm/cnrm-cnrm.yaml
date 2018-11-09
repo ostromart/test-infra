@@ -65,7 +65,7 @@ periodics:
        - --
        - /go/src/cnrm.googlesource.com/cnrm/scripts/ci-test.sh
 
- - interval: 24h
+ - cron: "0,30 * * * *"
    name: periodic-cnrm-release
    decorate: true
    labels:

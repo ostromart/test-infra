@@ -68,13 +68,14 @@ periodics:
  - interval: 24h
    name: periodic-cnrm-release
    decorate: true
-   path_alias: cnrm.googlesource.com/cnrm
    labels:
      preset-dind-enabled: "true"
    extra_refs:
    - org: cnrm.googlesource.com
      repo: cnrm
      base_ref: master
+     path_alias: cnrm.googlesource.com/cnrm
+     clone_uri: https://cnrm.googlesource.com/cnrm
    spec:
      volumes:
      - name: gcp-service-account

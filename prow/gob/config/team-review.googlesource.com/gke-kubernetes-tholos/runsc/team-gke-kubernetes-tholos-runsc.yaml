@@ -26,7 +26,7 @@ periodics:
    - org: team.googlesource.com/gke-kubernetes-tholos
      repo: gvisor-containerd-shim
      base_ref: master
-     path_alias: gvisor.googlesource.com/gvisor-containerd-shim
+     path_alias: github.com/google/gvisor-containerd-shim
      clone_uri: https://team.googlesource.com/gke-kubernetes-tholos/gvisor-containerd-shim
    spec:
      containers:

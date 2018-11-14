@@ -1,0 +1,224 @@
+periodics:
+- decorate: true
+  interval: 2h
+  labels:
+    preset-service-account: "true"
+    preset-k8s-ssh: "true"
+  name: ci-kubernetes-e2e-gke-staging-1-10-1-11-upgrade-cluster
+  spec:
+    containers:
+    - args:
+      - --check-leaked-resources
+      - --check-version-skew=false
+      - --deployment=gke
+      - --extract=gke-latest-1.11
+      - --extract=gke-latest-1.10
+      - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+      - --gcp-node-image=gci
+      - --gcp-project-type=gke-internal-project
+      - --gcp-zone=us-central1-f
+      - --gke-environment=staging
+      - --provider=gke
+      - --test_args=--ginkgo.skip=\[Flaky\]|\[Feature:.+\] --kubectl-path=../../../../kubernetes_skew/cluster/kubectl.sh --minStartupPods=8
+      - --timeout=900m
+      - --upgrade_args=--ginkgo.focus=\[Feature:ClusterUpgrade\] --upgrade-target=gke-latest-1.11 --upgrade-image=gci
+      command:
+      - runner.sh
+      - /workspace/scenarios/kubernetes_e2e.py
+      image: gcr.io/k8s-testimages/kubekins-e2e:v20181105-66d3bcb98-master
+
+- decorate: true
+  interval: 2h
+  labels:
+    preset-service-account: "true"
+    preset-k8s-ssh: "true"
+  name: ci-kubernetes-e2e-gke-staging-1-10-1-11-upgrade-cluster-new
+  spec:
+    containers:
+    - args:
+      - --check-leaked-resources
+      - --check-version-skew=false
+      - --deployment=gke
+      - --extract=gke-latest-1.11
+      - --extract=gke-latest-1.10
+      - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+      - --gcp-node-image=gci
+      - --gcp-project-type=gke-internal-project
+      - --gcp-zone=us-central1-f
+      - --gke-environment=staging
+      - --provider=gke
+      - --skew
+      - --timeout=900m
+      - --upgrade_args=--ginkgo.focus=\[Feature:ClusterUpgrade\] --upgrade-target=gke-latest-1.11 --upgrade-image=gci
+      command:
+      - runner.sh
+      - /workspace/scenarios/kubernetes_e2e.py
+      image: gcr.io/k8s-testimages/kubekins-e2e:v20181105-66d3bcb98-master
+
+- decorate: true
+  interval: 2h
+  labels:
+    preset-service-account: "true"
+    preset-k8s-ssh: "true"
+  name: ci-kubernetes-e2e-gke-staging-1-10-1-11-upgrade-master
+  spec:
+    containers:
+    - args:
+      - --check-leaked-resources
+      - --check-version-skew=false
+      - --deployment=gke
+      - --extract=gke-latest-1.11
+      - --extract=gke-latest-1.10
+      - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+      - --gcp-node-image=gci
+      - --gcp-project-type=gke-internal-project
+      - --gcp-zone=us-central1-f
+      - --gke-environment=staging
+      - --provider=gke
+      - --test_args=--kubectl-path=../../../../kubernetes_skew/cluster/kubectl.sh --minStartupPods=8
+      - --timeout=900m
+      - --upgrade_args=--ginkgo.focus=\[Feature:MasterUpgrade\] --upgrade-target=gke-latest-1.11 --upgrade-image=gci
+      command:
+      - runner.sh
+      - /workspace/scenarios/kubernetes_e2e.py
+      image: gcr.io/k8s-testimages/kubekins-e2e:v20181105-66d3bcb98-master
+
+- decorate: true
+  interval: 2h
+  labels:
+    preset-service-account: "true"
+    preset-k8s-ssh: "true"
+  name: ci-kubernetes-e2e-gke-staging-1-10-1-11-upgrade-regional-cluster
+  spec:
+    containers:
+    - args:
+      - --check-leaked-resources
+      - --check-version-skew=false
+      - --deployment=gke
+      - --extract=gke-latest-1.11
+      - --extract=gke-latest-1.10
+      - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+      - --gcp-node-image=gci
+      - --gcp-project-type=gke-internal-project
+      - --gcp-region=us-central1
+      - --gke-environment=staging
+      - --provider=gke
+      - --test_args=--gce-multizone=true --gce-multimaster=true --ginkgo.skip=\[Flaky\]|\[Feature:.+\]|Initializers|Dashboard --kubectl-path=../../../../kubernetes_skew/cluster/kubectl.sh --minStartupPods=8
+      - --timeout=900m
+      - --upgrade_args=--gce-multizone=true --gce-multimaster=true --ginkgo.focus=\[Feature:ClusterUpgrade\] --upgrade-target=gke-latest-1.11 --upgrade-image=gci
+      command:
+      - runner.sh
+      - /workspace/scenarios/kubernetes_e2e.py
+      image: gcr.io/k8s-testimages/kubekins-e2e:v20181105-66d3bcb98-master
+
+- decorate: true
+  interval: 2h
+  labels:
+    preset-service-account: "true"
+    preset-k8s-ssh: "true"
+  name: ci-kubernetes-e2e-gke-staging-1-11-1-12-upgrade-cluster
+  spec:
+    containers:
+    - args:
+      - --check-leaked-resources
+      - --check-version-skew=false
+      - --deployment=gke
+      - --extract=gke-latest-1.12
+      - --extract=gke-latest-1.11
+      - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+      - --gcp-node-image=gci
+      - --gcp-project-type=gke-internal-project
+      - --gcp-zone=us-central1-f
+      - --gke-environment=staging
+      - --provider=gke
+      - --test_args=--ginkgo.skip=\[Flaky\]|\[Feature:.+\] --kubectl-path=../../../../kubernetes_skew/cluster/kubectl.sh --minStartupPods=8
+      - --timeout=900m
+      - --upgrade_args=--ginkgo.focus=\[Feature:ClusterUpgrade\] --upgrade-target=gke-latest-1.12 --upgrade-image=gci
+      command:
+      - runner.sh
+      - /workspace/scenarios/kubernetes_e2e.py
+      image: gcr.io/k8s-testimages/kubekins-e2e:v20181105-66d3bcb98-master
+
+- decorate: true
+  interval: 2h
+  labels:
+    preset-service-account: "true"
+    preset-k8s-ssh: "true"
+  name: ci-kubernetes-e2e-gke-staging-1-11-1-12-upgrade-cluster-new
+  spec:
+    containers:
+    - args:
+      - --check-leaked-resources
+      - --check-version-skew=false
+      - --deployment=gke
+      - --extract=gke-latest-1.12
+      - --extract=gke-latest-1.11
+      - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+      - --gcp-node-image=gci
+      - --gcp-project-type=gke-internal-project
+      - --gcp-zone=us-central1-f
+      - --gke-environment=staging
+      - --provider=gke
+      - --skew
+      - --timeout=900m
+      - --upgrade_args=--ginkgo.focus=\[Feature:ClusterUpgrade\] --upgrade-target=gke-latest-1.12 --upgrade-image=gci
+      command:
+      - runner.sh
+      - /workspace/scenarios/kubernetes_e2e.py
+      image: gcr.io/k8s-testimages/kubekins-e2e:v20181105-66d3bcb98-master
+
+- decorate: true
+  interval: 2h
+  labels:
+    preset-service-account: "true"
+    preset-k8s-ssh: "true"
+  name: ci-kubernetes-e2e-gke-staging-1-11-1-12-upgrade-master
+  spec:
+    containers:
+    - args:
+      - --check-leaked-resources
+      - --check-version-skew=false
+      - --deployment=gke
+      - --extract=gke-latest-1.12
+      - --extract=gke-latest-1.11
+      - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+      - --gcp-node-image=gci
+      - --gcp-project-type=gke-internal-project
+      - --gcp-zone=us-central1-f
+      - --gke-environment=staging
+      - --provider=gke
+      - --test_args=--kubectl-path=../../../../kubernetes_skew/cluster/kubectl.sh --minStartupPods=8
+      - --timeout=900m
+      - --upgrade_args=--ginkgo.focus=\[Feature:MasterUpgrade\] --upgrade-target=gke-latest-1.12 --upgrade-image=gci
+      command:
+      - runner.sh
+      - /workspace/scenarios/kubernetes_e2e.py
+      image: gcr.io/k8s-testimages/kubekins-e2e:v20181105-66d3bcb98-master
+
+- decorate: true
+  interval: 2h
+  labels:
+    preset-service-account: "true"
+    preset-k8s-ssh: "true"
+  name: ci-kubernetes-e2e-gke-staging-1-11-1-12-upgrade-regional-cluster
+  spec:
+    containers:
+    - args:
+      - --check-leaked-resources
+      - --check-version-skew=false
+      - --deployment=gke
+      - --extract=gke-latest-1.11
+      - --extract=gke-latest-1.12
+      - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+      - --gcp-node-image=gci
+      - --gcp-project-type=gke-internal-project
+      - --gcp-region=us-central1
+      - --gke-environment=staging
+      - --provider=gke
+      - --test_args=--gce-multizone=true --gce-multimaster=true --ginkgo.skip=\[Flaky\]|\[Feature:.+\]|Initializers|Dashboard --kubectl-path=../../../../kubernetes_skew/cluster/kubectl.sh --minStartupPods=8
+      - --timeout=900m
+      - --upgrade_args=--gce-multizone=true --gce-multimaster=true --ginkgo.focus=\[Feature:ClusterUpgrade\] --upgrade-target=gke-latest-1.12 --upgrade-image=gci
+      command:
+      - runner.sh
+      - /workspace/scenarios/kubernetes_e2e.py
+      image: gcr.io/k8s-testimages/kubekins-e2e:v20181105-66d3bcb98-master

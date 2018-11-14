@@ -14,6 +14,17 @@ resources:
   type: gke-project
 - names:
   - prow-gob-internal-boskos-01
+  - prow-gob-internal-boskos-02
+  - prow-gob-internal-boskos-03
+  - prow-gob-internal-boskos-04
+  - prow-gob-internal-boskos-05
+  - prow-gob-internal-boskos-06
+  - prow-gob-internal-boskos-07
+  - prow-gob-internal-boskos-08
+  - prow-gob-internal-boskos-09
+  - prow-gob-internal-boskos-10
+  - prow-gob-internal-boskos-11
+  - prow-gob-internal-boskos-12
   state: dirty
   type: gke-internal-project
 - names:

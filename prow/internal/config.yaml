@@ -83,6 +83,29 @@ presets:
   env:
   - name: BAZEL_REMOTE_CACHE_ENABLED
     value: "true"
+- labels:
+    preset-e2e-containerd: "true"
+  env:
+  - name: LOG_DUMP_SYSTEMD_SERVICES
+    value: containerd containerd-installation
+  - name: KUBE_MASTER_EXTRA_METADATA
+    value: user-data=/workspace/github.com/containerd/cri/test/e2e/master.yaml,containerd-configure-sh=/workspace/github.com/containerd/cri/cluster/gce/configure.sh,containerd-env=/workspace/test-infra/jobs/e2e_node/containerd/cri-master/env
+  - name: KUBE_NODE_EXTRA_METADATA
+    value: user-data=/workspace/github.com/containerd/cri/test/e2e/node.yaml,containerd-configure-sh=/workspace/github.com/containerd/cri/cluster/gce/configure.sh,containerd-env=/workspace/test-infra/jobs/e2e_node/containerd/cri-master/env
+  - name: KUBE_CONTAINER_RUNTIME
+    value: remote
+  - name: KUBE_CONTAINER_RUNTIME_ENDPOINT
+    value: unix:///run/containerd/containerd.sock
+  - name: KUBE_CONTAINER_RUNTIME_NAME
+    value: containerd
+  - name: KUBE_LOAD_IMAGE_COMMAND
+    value: /home/containerd/usr/local/bin/ctr cri load
+  - name: NETWORK_PROVIDER
+    value: ""
+  - name: NON_MASQUERADE_CIDR
+    value: 0.0.0.0/0
+  - name: KUBELET_TEST_ARGS
+    value: --runtime-cgroups=/system.slice/containerd.service
 
 presubmits:
   GoogleCloudPlatform/k8s-tpu-operator:
@@ -2664,6 +2687,30 @@ periodics:
       - --timeout=150m
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 
+# TODO: Remove after we get enough benchmark data.
+- interval: 1h
+  agent: kubernetes
+  name: ci-cri-containerd-e2e-gci-serial-m70
+  labels:
+    preset-service-account: "true"
+    preset-k8s-ssh: "true"
+    preset-e2e-containerd: "true"
+  spec:
+    containers:
+    - args:
+      - --repo=github.com/containerd/cri=master
+      - --timeout=320
+      - --scenario=kubernetes_e2e
+      - --upload=gs://gke-prow/logs
+      - --
+      - --check-leaked-resources
+      - --extract=gci/gci-70
+      - --gcp-project-type=gci-qa-project
+      - --gcp-zone=us-central1-f
+      - --provider=gce
+      - --test_args=--ginkgo.focus=\[Serial\]|\[Disruptive\] --ginkgo.skip=\[Flaky\]|\[Feature:.+\] --minStartupPods=8
+      - --timeout=300m
+      image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 
 postsubmits:
   GoogleCloudPlatform/k8s-tpu-operator:

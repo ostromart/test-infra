@@ -1,6 +1,6 @@
 periodics:
- - interval: 30m
-   name: periodic_fast_autoscaling_test_prod_us-central1-a
+ - interval: 60m
+   name: periodic_fast_autoscaling_test_dev
    agent: kubernetes
    labels:
      preset-k8s-ssh: "true"
@@ -11,45 +11,11 @@ periodics:
       args:
       - --clean
       - --repo=gke-internal.googlesource.com/gke-autoscaling
-      - --timeout=20
+      - --timeout=60
       - --scenario=execute
       - --upload=gs://gob-prow/logs
       - -- # end bootstrap args, scenario args below
-      - /workspace/gke-internal.googlesource.com/gke-autoscaling/test/fast-scaling-tests/test_prod_us-central1-a.sh
- - interval: 30m
-   name: periodic_fast_autoscaling_test_experimental_us-east2-a
-   agent: kubernetes
-   labels:
-     preset-k8s-ssh: "true"
-     preset-service-account: "true"
-   spec:
-    containers:
-    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
-      args:
-      - --clean
-      - --repo=gke-internal.googlesource.com/gke-autoscaling
-      - --timeout=20
-      - --scenario=execute
-      - --upload=gs://gob-prow/logs
-      - -- # end bootstrap args, scenario args below
-      - /workspace/gke-internal.googlesource.com/gke-autoscaling/test/fast-scaling-tests/test_experimental_us-east2-a.sh
- - interval: 30m
-   name: periodic_fast_autoscaling_test_experimental_ssd_us-east2-a
-   agent: kubernetes
-   labels:
-     preset-k8s-ssh: "true"
-     preset-service-account: "true"
-   spec:
-    containers:
-    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
-      args:
-      - --clean
-      - --repo=gke-internal.googlesource.com/gke-autoscaling
-      - --timeout=20
-      - --scenario=execute
-      - --upload=gs://gob-prow/logs
-      - -- # end bootstrap args, scenario args below
-      - /workspace/gke-internal.googlesource.com/gke-autoscaling/test/fast-scaling-tests/test_experimental_ssd_us-east2-a.sh
+      - /workspace/gke-internal.googlesource.com/gke-autoscaling/test/fast-scaling-tests/prow/test_dev.sh
  - interval: 60m
    name: periodic_fast_autoscaling_test_prod_small
    agent: kubernetes

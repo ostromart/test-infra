@@ -3,6 +3,8 @@ presubmits:
   - name: pull-test-infra-presubmit
     decorate: true
     always_run: true
+    labels:
+      prow.k8s.io/gerrit-report-label: "Verified"
     extra_refs:
     - org: kubernetes
       repo: test-infra

@@ -1,0 +1,12 @@
+presubmits:
+  https://gke-internal-review.googlesource.com/onprem-lab-automation:
+  - name: pull-onprem-lab-automation-presubmit
+    decorate: true
+    always_run: true
+    spec:
+      containers:
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20181024-be2f242dd-master
+        command:
+        - make
+        args:
+        - all

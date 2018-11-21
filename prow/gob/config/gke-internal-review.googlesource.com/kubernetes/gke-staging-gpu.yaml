@@ -1,5 +1,7 @@
 periodics:
 - decorate: true
+  decoration_config:
+    timeout: 6000000000000 # 100 minutes
   interval: 2h
   labels:
     preset-service-account: "true"
@@ -27,6 +29,8 @@ periodics:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20181105-66d3bcb98-master
 
 - decorate: true
+  decoration_config:
+    timeout: 6000000000000 # 100 minutes
   interval: 12h #expensive test
   labels:
     preset-service-account: "true"

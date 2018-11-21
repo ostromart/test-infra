@@ -3,7 +3,7 @@ presubmits:
   - name: pull-onprem-lab-automation-presubmit
     decorate: true
     always_run: true
-    path_alias: gke-internal.googlesource.com/syllogi/cluster-management
+    path_alias: gke-internal.googlesource.com/onprem-lab-automation
     spec:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20181024-be2f242dd-master

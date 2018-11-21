@@ -15,6 +15,22 @@ periodics:
        - --
        - /go/src/team.googlesource.com/gke-kubernetes-tholos/runsc-scripts/release/release.sh
 
+ - name: ci-cos-xemu-build
+   interval: 6h
+   agent: kubernetes
+   labels:
+     preset-service-account: "true"
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20181024-be2f242dd-master
+       args:
+       - --repo=team.googlesource.com/gke-kubernetes-tholos/runsc-scripts=master
+       - --root=/go/src
+       - --upload=gs://gob-prow/logs
+       - --scenario=execute
+       - --
+       - /go/src/team.googlesource.com/gke-kubernetes-tholos/runsc-scripts/build-xemu-image.sh
+
  - name: ci-runsc-build
    interval: 30m
    agent: kubernetes

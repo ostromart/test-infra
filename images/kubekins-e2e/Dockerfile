@@ -31,4 +31,4 @@ RUN apt-get update && apt-get install -y \
 
 # Update the image name.
 ARG IMAGE
-ENV IMAGE=IMAGE
+ENV IMAGE=${IMAGE}

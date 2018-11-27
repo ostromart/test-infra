@@ -45,7 +45,7 @@ periodics:
       - --extract=gke-latest
       - --gcp-cloud-sdk=gs://cloud-sdk-testing/rc
       - --gcp-node-image=gci
-      - --gcp-project=k8s-gke-gpu-boskos-v100
+      - --gcp-project-type=gpu-project
       - --gcp-zone=us-central1-f
       - --gke-create-command=container clusters create --accelerator=type=nvidia-tesla-v100,count=2
       - --gke-environment=staging

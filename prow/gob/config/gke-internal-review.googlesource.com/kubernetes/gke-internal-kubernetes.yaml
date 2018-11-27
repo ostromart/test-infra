@@ -1,4 +1,4 @@
-presubmits:  
+presubmits:
   https://gke-internal-review.googlesource.com/kubernetes:
   - name: pull-gob-kubernetes-build
     decorate: true
@@ -44,7 +44,7 @@ presubmits:
       preset-bazel-scratch-dir: "true"
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+      - image: gcr.io/gke-test-infra/kubekins-e2e:v20181126-d113e47-master
         command:
         - runner.sh
         - ../../../k8s.io/test-infra/scenarios/kubernetes_bazel.py
@@ -55,11 +55,6 @@ presubmits:
         - --test-args=--build_tag_filters=-e2e,-integration
         - --test-args=--test_tag_filters=-e2e,-integration
         - --test-args=--flaky_test_attempts=3
-        securityContext:
-          privileged: true
-        resources:
-          requests:
-            memory: "6Gi"
   - name: pull-gob-kubernetes-integration
     always_run: true
     decorate: true
@@ -97,7 +92,7 @@ periodics:
      preset-bazel-scratch-dir: "true"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181126-d113e47-master
        args:
        - --clean
        - --job=$(JOB_NAME)
@@ -112,11 +107,6 @@ periodics:
        - --test-args=--build_tag_filters=-e2e,-integration
        - --test-args=--test_tag_filters=-e2e,-integration
        - --test-args=--flaky_test_attempts=3
-       securityContext:
-         privileged: true
-       resources:
-         requests:
-           memory: "6Gi"
  - interval: 30m
    name: ci-kubernetes-build
    agent: kubernetes

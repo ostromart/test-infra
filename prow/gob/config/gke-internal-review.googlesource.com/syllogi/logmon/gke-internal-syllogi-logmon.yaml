@@ -10,6 +10,6 @@ presubmits:
         path_strategy: "explicit"
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-1.11
+      - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-1.11
         command:
         - ./hack/verify-gofmt.sh

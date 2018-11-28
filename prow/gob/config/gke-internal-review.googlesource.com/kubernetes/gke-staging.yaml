@@ -27,7 +27,7 @@ periodics:
       command:
       - runner.sh
       - /workspace/scenarios/kubernetes_e2e.py
-      image: gcr.io/k8s-testimages/kubekins-e2e:v20181105-66d3bcb98-master
+      image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
 
 - decorate: true
   decoration_config:
@@ -56,7 +56,7 @@ periodics:
       command:
       - runner.sh
       - /workspace/scenarios/kubernetes_e2e.py
-      image: gcr.io/k8s-testimages/kubekins-e2e:v20181105-66d3bcb98-master
+      image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
 
 - decorate: true
   decoration_config:
@@ -86,7 +86,7 @@ periodics:
       command:
       - runner.sh
       - /workspace/scenarios/kubernetes_e2e.py
-      image: gcr.io/k8s-testimages/kubekins-e2e:v20181105-66d3bcb98-master
+      image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
 
 - decorate: true
   decoration_config:
@@ -115,7 +115,7 @@ periodics:
       command:
       - runner.sh
       - /workspace/scenarios/kubernetes_e2e.py
-      image: gcr.io/k8s-testimages/kubekins-e2e:v20181105-66d3bcb98-master
+      image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
 
 - decorate: true
   decoration_config:
@@ -145,7 +145,7 @@ periodics:
       command:
       - runner.sh
       - /workspace/scenarios/kubernetes_e2e.py
-      image: gcr.io/k8s-testimages/kubekins-e2e:v20181105-66d3bcb98-master
+      image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
 
 - decorate: true
   decoration_config:
@@ -174,4 +174,4 @@ periodics:
       command:
       - runner.sh
       - /workspace/scenarios/kubernetes_e2e.py
-      image: gcr.io/k8s-testimages/kubekins-e2e:v20181105-66d3bcb98-master
+      image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master

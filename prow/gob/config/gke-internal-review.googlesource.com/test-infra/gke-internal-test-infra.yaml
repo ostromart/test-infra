@@ -12,6 +12,6 @@ presubmits:
       path_alias: k8s.io/test-infra
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20181024-be2f242dd-master
+      - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
         command:
         - ./prow/hack/verify-config.sh

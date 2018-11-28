@@ -4,6 +4,8 @@ presubmits:
     always_run: true
     decorate: true
     path_alias: gke-internal.googlesource.com/cluster-lifecycle/cluster-operators
+    labels:
+      prow.k8s.io/gerrit-report-label: "Verified"
     spec:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
@@ -14,6 +16,7 @@ presubmits:
     decorate: true
     labels:
       preset-service-account: "true"
+      prow.k8s.io/gerrit-report-label: "Verified"
     path_alias: gke-internal.googlesource.com/cluster-lifecycle/cluster-operators
     spec:
       containers:

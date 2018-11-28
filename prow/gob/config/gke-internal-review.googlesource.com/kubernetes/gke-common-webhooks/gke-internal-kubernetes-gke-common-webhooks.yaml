@@ -6,6 +6,7 @@ presubmits:
     path_alias: k8s.io/gke-common-webhooks
     labels:
       preset-service-account: "true"
+      prow.k8s.io/gerrit-report-label: "Verified"
     spec:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master

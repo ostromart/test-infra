@@ -15,6 +15,7 @@ presubmits:
     labels:
       preset-service-account: "true"
       preset-dind-enabled: "true"
+      prow.k8s.io/gerrit-report-label: "Verified"
     spec:
       containers:
       - image: gcr.io/k8s-testimages/bootstrap:v20180918-02b56f8a8
@@ -42,6 +43,7 @@ presubmits:
       path_alias: k8s.io/test-infra
     labels:
       preset-bazel-scratch-dir: "true"
+      prow.k8s.io/gerrit-report-label: "Verified"
     spec:
       containers:
       - image: gcr.io/gke-test-infra/kubekins-e2e:v20181126-d113e47-master
@@ -66,6 +68,7 @@ presubmits:
     labels:
       preset-service-account: "true"
       preset-dind-enabled: "true"
+      prow.k8s.io/gerrit-report-label: "Verified"
     spec:
       containers:
       - image: gcr.io/k8s-testimages/bootstrap:v20180918-02b56f8a8

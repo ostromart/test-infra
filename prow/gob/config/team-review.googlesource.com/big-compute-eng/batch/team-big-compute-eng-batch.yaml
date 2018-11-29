@@ -54,6 +54,8 @@ periodics:
        - --scenario=execute
        - --
        - /workspace/team.googlesource.com/big-compute-eng/batch/prow/RunEndToEndTestsOnGke.sh
+       securityContext:
+         privileged: true
        resources:
           requests:
             cpu: 6

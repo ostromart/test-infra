@@ -38,6 +38,28 @@ periodics:
             memory: "16Gi"
 
  - interval: 2h
+   name: ci-bigcomputeeng-batch-e2e-gke-autoscaling-tests
+   agent: kubernetes
+   labels:
+     preset-service-account: "true"
+     preset-k8s-ssh: "true"
+   spec:
+     containers:
+     - image: gcr.io/kubebatchtest/prowcontainers/prowcontainer:final
+       imagePullPolicy: Always
+       args:
+       - --clean
+       - --repo=team.googlesource.com/big-compute-eng/batch
+       - --upload=gs://gob-prow/logs
+       - --scenario=execute
+       - --
+       - /workspace/team.googlesource.com/big-compute-eng/batch/prow/RunEndToEndTestsOnGke.sh
+       resources:
+          requests:
+            cpu: 6
+            memory: "16Gi"
+
+ - interval: 24h
    agent: kubernetes
    name: ci-bigcomputeeng-batch-e2e-gce-tests
    labels:

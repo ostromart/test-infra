@@ -1,5 +1,4 @@
 periodics:
- # managed certs in gke jobs
  - interval: 30m
    name: ci-managed-certs-gke-image-build
    agent: kubernetes
@@ -60,3 +59,142 @@ periodics:
        # docker-in-docker needs privileged mode
        securityContext:
          privileged: true
+
+ - interval: 2h
+   name: ci-managed-certs-gke-e2e-gke-1-11
+   agent: kubernetes
+   labels:
+     preset-service-account: "true"
+     preset-k8s-ssh: "true"
+     preset-dind-enabled: "true"
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20181122-a5bf59311-master
+       args:
+       - --clean
+       - --repo=gke-internal.googlesource.com/managed-certs-gke
+       - --root=/go/src
+       - --timeout=270
+       - --scenario=kubernetes_e2e
+       - --upload=gs://gob-prow/logs
+       - -- # stop bootstrap flags
+       - --check-leaked-resources
+       - --cluster=
+       - --deployment=gke
+       - --extract=gke-latest-1.11
+       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+       - --gcp-node-image=gci
+       - --gcp-zone=us-central1-f
+       - --gke-create-command=container clusters create --quiet --scopes=compute-rw --enable-kubernetes-alpha
+       - --gke-environment=test
+       - --provider=gke
+       - --test=false
+       - --test-cmd=../hack/e2e.sh
+       - --env=PLATFORM=GKE
+       - --env=DNS_ZONE=gke-1-11-managedcertsgke
+       - --env=CRD_VALIDATION_ENABLED=false
+       - --timeout=4h
+       # docker-in-docker needs privileged mode
+       securityContext:
+         privileged: true
+
+ - interval: 2h
+   name: ci-managed-certs-gke-e2e-gke-1-12
+   agent: kubernetes
+   labels:
+     preset-service-account: "true"
+     preset-k8s-ssh: "true"
+     preset-dind-enabled: "true"
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20181122-a5bf59311-master
+       args:
+       - --clean
+       - --repo=gke-internal.googlesource.com/managed-certs-gke
+       - --root=/go/src
+       - --timeout=270
+       - --scenario=kubernetes_e2e
+       - --upload=gs://gob-prow/logs
+       - -- # stop bootstrap flags
+       - --check-leaked-resources
+       - --cluster=
+       - --deployment=gke
+       - --extract=gke-latest-1.12
+       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+       - --gcp-node-image=gci
+       - --gcp-zone=us-central1-f
+       - --gke-create-command=container clusters create --quiet --scopes=compute-rw --enable-kubernetes-alpha
+       - --gke-environment=test
+       - --provider=gke
+       - --test=false
+       - --test-cmd=../hack/e2e.sh
+       - --env=PLATFORM=GKE
+       - --env=DNS_ZONE=gke-1-12-managedcertsgke
+       - --timeout=4h
+       # docker-in-docker needs privileged mode
+       securityContext:
+         privileged: true
+
+# - interval: 2h
+#   name: ci-managed-certs-gke-e2e-gcp-1-11
+#   agent: kubernetes
+#   labels:
+#     preset-service-account: "true"
+#     preset-k8s-ssh: "true"
+#     preset-dind-enabled: "true"
+#   spec:
+#     containers:
+#     - image: gcr.io/k8s-testimages/kubekins-e2e:v20181122-a5bf59311-master
+#       args:
+#       - --clean
+#       - --repo=gke-internal.googlesource.com/managed-certs-gke
+#       - --root=/go/src
+#       - --timeout=270
+#       - --scenario=kubernetes_e2e
+#       - --upload=gs://gob-prow/logs
+#       - -- # stop bootstrap flags
+#       - --check-leaked-resources
+#       - --extract=v1.11.3
+#       - --gcp-project=managed-certs-gke-gcp-1-11
+#       - --gcp-zone=us-central1-f
+#       - --provider=gce
+#       - --test=false
+#       - --test-cmd=../hack/e2e.sh
+#       - --env=PLATFORM=GCP
+#       - --env=DNS_ZONE=gcp-1-11-managedcertsgke
+#       - --timeout=4h
+#       # docker-in-docker needs privileged mode
+#       securityContext:
+#         privileged: true
+#
+# - interval: 2h
+#   name: ci-managed-certs-gke-e2e-gcp-1-12
+#   agent: kubernetes
+#   labels:
+#     preset-service-account: "true"
+#     preset-k8s-ssh: "true"
+#     preset-dind-enabled: "true"
+#   spec:
+#     containers:
+#     - image: gcr.io/k8s-testimages/kubekins-e2e:v20181122-a5bf59311-master
+#       args:
+#       - --clean
+#       - --repo=gke-internal.googlesource.com/managed-certs-gke
+#       - --root=/go/src
+#       - --timeout=270
+#       - --scenario=kubernetes_e2e
+#       - --upload=gs://gob-prow/logs
+#       - -- # stop bootstrap flags
+#       - --check-leaked-resources
+#       - --extract=v1.12.3
+#       - --gcp-project=managed-certs-gke-gcp-1-12
+#       - --gcp-zone=us-central1-f
+#       - --provider=gce
+#       - --test=false
+#       - --test-cmd=../hack/e2e.sh
+#       - --env=PLATFORM=GCP
+#       - --env=DNS_ZONE=gcp-1-12-managedcertsgke
+#       - --timeout=4h
+#       # docker-in-docker needs privileged mode
+#       securityContext:
+#         privileged: true

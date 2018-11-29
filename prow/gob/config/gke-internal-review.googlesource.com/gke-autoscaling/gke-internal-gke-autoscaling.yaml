@@ -462,6 +462,7 @@ periodics:
        - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
        - --gcp-node-image=gci
        - --gcp-region=us-central1
+       - --gke-create-command=beta container clusters create --enable-autoprovisioning --max-cpu=64 --max-memory=1000
        - --gke-node-locations=us-central1-f,us-central1-a,us-central1-b
        - --gke-shape={"default":{"Nodes":1,"MachineType":"n1-standard-2"}}
        - --gke-single-zone-node-instance-group=false

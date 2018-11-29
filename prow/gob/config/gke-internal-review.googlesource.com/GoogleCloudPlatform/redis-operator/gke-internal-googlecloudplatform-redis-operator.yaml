@@ -2,11 +2,7 @@ presubmits:
   https://gke-internal-review.googlesource.com/GoogleCloudPlatform/redis-operator:
   # TODO(krzyzacy) : migrate kubetest jobs to podutils
   - name: redis-operator-e2e
-    agent: kubernetes
-    context: redis-operator-e2e
     always_run: true
-    rerun_command: "/test redis-operator-e2e"
-    trigger: "(?m)^/test (all|redis-operator-e2e),?(\\s+|$)"
     labels:
       preset-k8s-ssh: "true"
       preset-service-account: "true"

@@ -1,7 +1,6 @@
 periodics:
  - interval: 30m
    name: ci-managed-certs-gke-image-build
-   agent: kubernetes
    labels:
      preset-service-account: "true"
      preset-dind-enabled: "true"
@@ -26,7 +25,6 @@ periodics:
 
  - interval: 2h
    name: ci-managed-certs-gke-e2e
-   agent: kubernetes
    labels:
      preset-service-account: "true"
      preset-k8s-ssh: "true"
@@ -62,7 +60,6 @@ periodics:
 
  - interval: 2h
    name: ci-managed-certs-gke-e2e-gke-1-11
-   agent: kubernetes
    labels:
      preset-service-account: "true"
      preset-k8s-ssh: "true"
@@ -100,7 +97,6 @@ periodics:
 
  - interval: 2h
    name: ci-managed-certs-gke-e2e-gke-1-12
-   agent: kubernetes
    labels:
      preset-service-account: "true"
      preset-k8s-ssh: "true"
@@ -137,7 +133,6 @@ periodics:
 
 # - interval: 2h
 #   name: ci-managed-certs-gke-e2e-gcp-1-11
-#   agent: kubernetes
 #   labels:
 #     preset-service-account: "true"
 #     preset-k8s-ssh: "true"
@@ -169,7 +164,6 @@ periodics:
 #
 # - interval: 2h
 #   name: ci-managed-certs-gke-e2e-gcp-1-12
-#   agent: kubernetes
 #   labels:
 #     preset-service-account: "true"
 #     preset-k8s-ssh: "true"

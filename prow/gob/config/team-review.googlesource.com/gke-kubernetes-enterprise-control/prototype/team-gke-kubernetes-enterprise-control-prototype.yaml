@@ -23,7 +23,6 @@ periodics:
  # Using prime numbers as intervals so that runs would spread out.
  - interval: 13m
    name: nomos-prober
-   agent: kubernetes
    decorate: true
    labels:
      preset-dind-enabled: "true"
@@ -62,7 +61,6 @@ periodics:
  # "master" branch, reinstalling the contents of the cluster in the process.
  - interval: 19m
    name: nomos-ci
-   agent: kubernetes
    labels:
      preset-service-account: "true"
      preset-dind-enabled: "true"
@@ -105,7 +103,6 @@ periodics:
 # that passes the build.
  - interval: 24h
    name: nomos-release
-   agent: kubernetes
    labels:
      preset-service-account: "true"
      preset-dind-enabled: "true"
@@ -151,7 +148,6 @@ periodics:
 # and large the same.
  - interval: 23m
    name: nomos-ci-gke-110
-   agent: kubernetes
    labels:
      preset-service-account: "true"
      preset-dind-enabled: "true"
@@ -195,7 +191,6 @@ periodics:
 # and large the same.
  - interval: 23m
    name: nomos-ci-gke-197-a
-   agent: kubernetes
    labels:
      preset-service-account: "true"
      preset-dind-enabled: "true"
@@ -235,7 +230,6 @@ periodics:
 # and large the same.
  - interval: 23m
    name: nomos-ci-gke-110-a
-   agent: kubernetes
    labels:
      preset-service-account: "true"
      preset-dind-enabled: "true"

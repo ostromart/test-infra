@@ -32,7 +32,6 @@ presubmits:
 periodics:
  - interval: 1h
    name: periodic-cnrm-build
-   agent: kubernetes
    labels:
      preset-service-account: "true"
    spec:
@@ -49,7 +48,6 @@ periodics:
 
  - interval: 1h
    name: periodic-cnrm-test
-   agent: kubernetes
    labels:
      preset-service-account: "true"
      preset-k8s-ssh: "true"

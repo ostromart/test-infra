@@ -5,7 +5,7 @@ presubmits:
     decorate: true
     path_alias: gke-internal.googlesource.com/syllogi/cluster-management
     labels:
-      prow.k8s.io/gerrit-report-label: "Verified"
+      prow.k8s.io/gerrit-report-label: "Code-Review"
     decoration_config:
       gcs_configuration:
         bucket: "syllogi-gob-prow"
@@ -28,7 +28,7 @@ presubmits:
     path_alias: gke-internal.googlesource.com/syllogi/cluster-management
     labels:
       preset-dind-enabled: "true"
-      prow.k8s.io/gerrit-report-label: "Verified"
+      prow.k8s.io/gerrit-report-label: "Code-Review"
     spec:
       containers:
       - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-1.11
@@ -47,7 +47,7 @@ presubmits:
     decorate: true
     path_alias: gke-internal.googlesource.com/syllogi/cluster-management
     labels:
-      prow.k8s.io/gerrit-report-label: "Verified"
+      prow.k8s.io/gerrit-report-label: "Code-Review"
     decoration_config:
       gcs_configuration:
         bucket: "syllogi-gob-prow"
@@ -63,7 +63,7 @@ presubmits:
     path_alias: gke-internal.googlesource.com/syllogi/cluster-management
     labels:
       preset-bazel-remote-cache-enabled: "true"
-      prow.k8s.io/gerrit-report-label: "Verified"
+      prow.k8s.io/gerrit-report-label: "Code-Review"
     decoration_config:
       gcs_configuration:
         bucket: "syllogi-gob-prow"
@@ -83,7 +83,7 @@ presubmits:
     labels:
       preset-service-account: "true"
       preset-dind-enabled: "true"
-      prow.k8s.io/gerrit-report-label: "Verified"
+      prow.k8s.io/gerrit-report-label: "Code-Review"
     decoration_config:
       gcs_configuration:
         bucket: "syllogi-gob-prow"
@@ -106,7 +106,7 @@ presubmits:
     decorate: true
     path_alias: gke-internal.googlesource.com/syllogi/cluster-management
     labels:
-      prow.k8s.io/gerrit-report-label: "Verified"
+      prow.k8s.io/gerrit-report-label: "Code-Review"
     decoration_config:
       gcs_configuration:
         bucket: "syllogi-gob-prow"
@@ -121,7 +121,7 @@ presubmits:
     decorate: true
     path_alias: gke-internal.googlesource.com/syllogi/cluster-management
     labels:
-      prow.k8s.io/gerrit-report-label: "Verified"
+      prow.k8s.io/gerrit-report-label: "Code-Review"
     decoration_config:
       gcs_configuration:
         bucket: "syllogi-gob-prow"
@@ -140,7 +140,7 @@ presubmits:
     path_alias: gke-internal.googlesource.com/syllogi/cluster-management
     labels:
       preset-dind-enabled: "true"
-      prow.k8s.io/gerrit-report-label: "Verified"
+      prow.k8s.io/gerrit-report-label: "Code-Review"
     decoration_config:
       gcs_configuration:
         bucket: "syllogi-gob-prow"
@@ -163,7 +163,7 @@ presubmits:
     decorate: true
     path_alias: gke-internal.googlesource.com/syllogi/cluster-management
     labels:
-      prow.k8s.io/gerrit-report-label: "Verified"
+      prow.k8s.io/gerrit-report-label: "Code-Review"
     decoration_config:
       gcs_configuration:
         bucket: "syllogi-gob-prow"
@@ -178,7 +178,7 @@ presubmits:
     decorate: true
     path_alias: gke-internal.googlesource.com/syllogi/cluster-management
     labels:
-      prow.k8s.io/gerrit-report-label: "Verified"
+      prow.k8s.io/gerrit-report-label: "Code-Review"
     decoration_config:
       gcs_configuration:
         bucket: "syllogi-gob-prow"

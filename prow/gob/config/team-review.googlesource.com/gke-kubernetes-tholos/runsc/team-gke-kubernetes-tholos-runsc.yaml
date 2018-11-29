@@ -198,7 +198,7 @@ periodics:
        - --env=NON_MASQUERADE_CIDR=0.0.0.0/0
        - --env=KUBELET_TEST_ARGS=--runtime-cgroups=/system.slice/containerd.service
        - --extract=release/stable-1.11
-       - --gcp-project=gke-internal-project
+       - --gcp-project-type=gke-internal-project
        - --gcp-node-image=gci
        - --image-family=cos-xemu
        - --image-project=runsc-test-image

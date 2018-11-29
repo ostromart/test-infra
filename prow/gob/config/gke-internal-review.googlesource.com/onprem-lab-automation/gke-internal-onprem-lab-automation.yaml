@@ -4,6 +4,8 @@ presubmits:
     decorate: true
     always_run: true
     path_alias: gke-internal.googlesource.com/onprem-lab-automation
+    labels:
+      prow.k8s.io/gerrit-report-label: "Verified"
     spec:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20181024-be2f242dd-master

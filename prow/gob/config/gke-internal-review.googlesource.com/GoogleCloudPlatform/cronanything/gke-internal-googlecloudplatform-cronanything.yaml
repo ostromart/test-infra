@@ -4,6 +4,8 @@ presubmits:
     always_run: true
     decorate: true
     path_alias: k8s.io/cronanything
+    labels:
+      prow.k8s.io/gerrit-report-label: "Verified"
     spec:
       containers:
       - image: gcr.io/k8s-testimages/kubekins-e2e:v20180924-8e8468033-master
@@ -17,6 +19,7 @@ presubmits:
       preset-k8s-ssh: "true"
       preset-service-account: "true"
       preset-dind-enabled: "true"
+      prow.k8s.io/gerrit-report-label: "Verified"
     extra_refs:
     - org: kubernetes
       repo: test-infra

@@ -4,6 +4,8 @@ presubmits:
     always_run: true
     decorate: true
     path_alias: gke-internal.googlesource.com/syllogi/logmon
+    labels:
+      prow.k8s.io/gerrit-report-label: "Verified"
     decoration_config:
       gcs_configuration:
         bucket: "syllogi-gob-prow"

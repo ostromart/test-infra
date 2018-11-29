@@ -173,24 +173,7 @@ presubmits:
       - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
         command:
         - ./bundle/scripts/ci-test.sh
-  - name: pull-syllogi-local-e2e-testing
-    always_run: true
-    decorate: true
-    path_alias: gke-internal.googlesource.com/syllogi/cluster-management
-    labels:
-      prow.k8s.io/gerrit-report-label: "Code-Review"
-    decoration_config:
-      gcs_configuration:
-        bucket: "syllogi-gob-prow"
-        path_strategy: "explicit"
-    spec:
-      containers:
-      - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
-        command:
-        - bash
-        args:
-        - -c
-        - "echo 'Did you test your changes e2e in the vSphere lab to ensure cluster creation is not broken? If not kindly do so by following instructions @  https://gke-internal.googlesource.com/syllogi/cluster-management/+/master/test-infra#running-cluster-conformance-tests-against-a-syllogi-cluster. Once your e2e testing passes then flip the Verified label to +1' && exit 1"
+
 periodics:
  - interval: 1h
    name: periodic-syllogi-cluster-api-build

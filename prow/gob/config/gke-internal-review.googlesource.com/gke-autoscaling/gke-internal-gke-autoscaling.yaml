@@ -7,7 +7,7 @@ periodics:
      preset-service-account: "true"
    spec:
     containers:
-    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+    - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
       args:
       - --clean
       - --repo=gke-internal.googlesource.com/gke-autoscaling
@@ -24,7 +24,7 @@ periodics:
      preset-service-account: "true"
    spec:
     containers:
-    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+    - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
       args:
       - --clean
       - --repo=gke-internal.googlesource.com/gke-autoscaling
@@ -41,7 +41,7 @@ periodics:
      preset-service-account: "true"
    spec:
     containers:
-    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+    - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
       args:
       - --clean
       - --repo=gke-internal.googlesource.com/gke-autoscaling
@@ -58,7 +58,7 @@ periodics:
      preset-service-account: "true"
    spec:
     containers:
-    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+    - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
       args:
       - --clean
       - --repo=gke-internal.googlesource.com/gke-autoscaling
@@ -75,7 +75,7 @@ periodics:
      preset-service-account: "true"
    spec:
     containers:
-    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+    - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
       args:
       - --clean
       - --repo=gke-internal.googlesource.com/gke-autoscaling
@@ -92,7 +92,7 @@ periodics:
      preset-service-account: "true"
    spec:
     containers:
-    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+    - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
       args:
       - --clean
       - --repo=gke-internal.googlesource.com/gke-autoscaling
@@ -109,7 +109,7 @@ periodics:
      preset-service-account: "true"
    spec:
     containers:
-    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+    - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
       args:
       - --clean
       - --repo=gke-internal.googlesource.com/gke-autoscaling
@@ -126,7 +126,7 @@ periodics:
      preset-service-account: "true"
    spec:
     containers:
-    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+    - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
       args:
       - --clean
       - --repo=gke-internal.googlesource.com/gke-autoscaling
@@ -143,7 +143,7 @@ periodics:
      preset-service-account: "true"
    spec:
     containers:
-    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+    - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
       args:
       - --clean
       - --repo=gke-internal.googlesource.com/gke-autoscaling
@@ -160,7 +160,7 @@ periodics:
      preset-service-account: "true"
    spec:
     containers:
-    - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+    - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
       args:
       - --clean
       - --repo=gke-internal.googlesource.com/gke-autoscaling
@@ -179,7 +179,7 @@ periodics:
      preset-dind-enabled: "true"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
        args:
        - --clean
        - --repo=gke-internal.googlesource.com/GoogleCloudPlatform/k8s-stackdriver=fast-autoscaling
@@ -203,7 +203,7 @@ periodics:
      preset-service-account: "true"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
        args:
        - --timeout=320
        - --repo=gke-internal.googlesource.com/GoogleCloudPlatform/k8s-stackdriver=fast-autoscaling
@@ -236,7 +236,7 @@ periodics:
      preset-dind-enabled: "true"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
        args:
        - --clean
        - --repo=gke-internal.googlesource.com/gke-autoscaling
@@ -261,7 +261,7 @@ periodics:
      preset-dind-enabled: "true"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
        args:
        - --clean
        - --repo=gke-internal.googlesource.com/gke-autoscaling=cluster-autoscaler-release-1.3
@@ -286,7 +286,7 @@ periodics:
      preset-service-account: "true"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
        args:
        - --timeout=440
        - --repo=gke-internal.googlesource.com/gke-autoscaling=master
@@ -317,7 +317,7 @@ periodics:
      preset-service-account: "true"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
        args:
        - --timeout=150
        - --repo=gke-internal.googlesource.com/gke-autoscaling=master
@@ -350,7 +350,7 @@ periodics:
      preset-service-account: "true"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
        args:
        - --timeout=320
        - --repo=gke-internal.googlesource.com/gke-autoscaling=master
@@ -381,7 +381,7 @@ periodics:
      preset-service-account: "true"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
        args:
        - --timeout=320
        - --repo=gke-internal.googlesource.com/gke-autoscaling=master
@@ -413,7 +413,7 @@ periodics:
      preset-service-account: "true"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
        args:
        - --timeout=320
        - --repo=gke-internal.googlesource.com/gke-autoscaling=master
@@ -447,7 +447,7 @@ periodics:
      preset-service-account: "true"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
        args:
        - --timeout=320
        - --repo=gke-internal.googlesource.com/gke-autoscaling=master
@@ -482,7 +482,7 @@ periodics:
      preset-service-account: "true"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
        args:
        - --timeout=440
        - --repo=gke-internal.googlesource.com/gke-autoscaling=master
@@ -513,7 +513,7 @@ periodics:
      preset-service-account: "true"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
        args:
        - --timeout=150
        - --repo=gke-internal.googlesource.com/gke-autoscaling=master
@@ -546,7 +546,7 @@ periodics:
      preset-service-account: "true"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
        args:
        - --timeout=320
        - --repo=gke-internal.googlesource.com/gke-autoscaling=master
@@ -577,7 +577,7 @@ periodics:
      preset-service-account: "true"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
        args:
        - --timeout=320
        - --repo=gke-internal.googlesource.com/gke-autoscaling=master
@@ -609,7 +609,7 @@ periodics:
      preset-vpa-alpha: "true"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
        args:
        - --timeout=80
        - --repo=k8s.io/autoscaler=master
@@ -642,7 +642,7 @@ periodics:
      preset-vpa-alpha: "true"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
        args:
        - --timeout=80
        - --repo=k8s.io/autoscaler=master
@@ -675,7 +675,7 @@ periodics:
      preset-vpa-alpha: "true"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
        args:
        - --timeout=80
        - --repo=k8s.io/autoscaler=master
@@ -708,7 +708,7 @@ periodics:
      preset-vpa-alpha: "true"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
        args:
        - --timeout=80
        - --repo=k8s.io/autoscaler=master
@@ -741,7 +741,7 @@ periodics:
      preset-vpa-alpha: "true"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
        args:
        - --timeout=80
        - --repo=k8s.io/autoscaler=master
@@ -774,7 +774,7 @@ periodics:
      preset-vpa-alpha: "true"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
        args:
        - --timeout=80
        - --repo=k8s.io/autoscaler=master
@@ -807,7 +807,7 @@ periodics:
      preset-vpa-alpha: "true"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
        args:
        - --timeout=80
        - --repo=k8s.io/autoscaler=master
@@ -840,7 +840,7 @@ periodics:
      preset-vpa-alpha: "true"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
        args:
        - --timeout=80
        - --repo=k8s.io/autoscaler=master
@@ -873,7 +873,7 @@ periodics:
      preset-vpa-alpha: "true"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
        args:
        - --timeout=80
        - --repo=gke-internal.googlesource.com/gke-autoscaling=master
@@ -906,7 +906,7 @@ periodics:
      preset-vpa-alpha: "true"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
        args:
        - --timeout=80
        - --repo=gke-internal.googlesource.com/gke-autoscaling=master
@@ -940,7 +940,7 @@ periodics:
      preset-vpa-alpha: "true"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
        args:
        - --timeout=80
        - --repo=gke-internal.googlesource.com/gke-autoscaling=master
@@ -973,7 +973,7 @@ periodics:
      preset-vpa-alpha: "true"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
        args:
        - --timeout=80
        - --repo=gke-internal.googlesource.com/gke-autoscaling=master
@@ -1006,7 +1006,7 @@ periodics:
      preset-vpa-alpha: "true"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
        args:
        - --timeout=80
        - --repo=gke-internal.googlesource.com/gke-autoscaling=master
@@ -1039,7 +1039,7 @@ periodics:
      preset-vpa-alpha: "true"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
        args:
        - --timeout=80
        - --repo=gke-internal.googlesource.com/gke-autoscaling=master
@@ -1074,7 +1074,7 @@ periodics:
      preset-k8s-ssh: "true"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
        args:
        - --timeout=600
        - --bare

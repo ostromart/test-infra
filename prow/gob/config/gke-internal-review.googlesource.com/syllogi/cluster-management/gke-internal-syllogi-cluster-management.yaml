@@ -12,7 +12,7 @@ presubmits:
         path_strategy: "explicit"
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-1.11
+      - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-1.11
         command:
         - ./cluster-api/scripts/ci-build.sh
       resources:
@@ -31,7 +31,7 @@ presubmits:
       prow.k8s.io/gerrit-report-label: "Verified"
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-1.11
+      - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-1.11
         command:
         - runner.sh
         args:
@@ -54,7 +54,7 @@ presubmits:
         path_strategy: "explicit"
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20181024-be2f242dd-master
+      - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
         command:
         - ./cluster-api/scripts/ci-test.sh
   - name: pull-gkectl-build
@@ -70,7 +70,7 @@ presubmits:
         path_strategy: "explicit"
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-1.11
+      - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-1.11
         command:
         - ./gkectl/scripts/ci-build.sh
       resources:
@@ -90,7 +90,7 @@ presubmits:
         path_strategy: "explicit"
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-1.11
+      - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-1.11
         command:
         - runner.sh
         args:
@@ -113,7 +113,7 @@ presubmits:
         path_strategy: "explicit"
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20181024-be2f242dd-master
+      - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
         command:
         - ./gkectl/scripts/ci-test.sh
   - name: pull-syllogi-bundle-build
@@ -128,7 +128,7 @@ presubmits:
         path_strategy: "explicit"
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-1.11
+      - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-1.11
         command:
         - ./bundle/scripts/ci-build.sh
       resources:
@@ -147,7 +147,7 @@ presubmits:
         path_strategy: "explicit"
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-1.11
+      - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-1.11
         command:
         - runner.sh
         args:
@@ -170,7 +170,7 @@ presubmits:
         path_strategy: "explicit"
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20181024-be2f242dd-master
+      - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
         command:
         - ./bundle/scripts/ci-test.sh
   - name: pull-syllogi-local-e2e-testing
@@ -185,7 +185,7 @@ presubmits:
         path_strategy: "explicit"
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20181024-be2f242dd-master
+      - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
         command:
         - bash
         args:
@@ -199,7 +199,7 @@ periodics:
      preset-service-account: "true"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-1.11
+     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-1.11
        args:
        - --clean
        - --repo=gke-internal.googlesource.com/syllogi/cluster-management
@@ -220,7 +220,7 @@ periodics:
      preset-k8s-ssh: "true"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20181024-be2f242dd-master
+     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
        args:
        - --clean
        - --repo=gke-internal.googlesource.com/syllogi/cluster-management
@@ -238,7 +238,7 @@ periodics:
      preset-bazel-remote-cache-enabled: "true"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-1.11
+     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-1.11
        args:
        - --clean
        - --repo=gke-internal.googlesource.com/syllogi/cluster-management
@@ -259,7 +259,7 @@ periodics:
      preset-k8s-ssh: "true"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20181024-be2f242dd-master
+     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
        args:
        - --clean
        - --repo=gke-internal.googlesource.com/syllogi/cluster-management
@@ -276,7 +276,7 @@ periodics:
      preset-service-account: "true"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-1.11
+     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-1.11
        args:
        - --clean
        - --repo=gke-internal.googlesource.com/syllogi/cluster-management
@@ -297,7 +297,7 @@ periodics:
      preset-k8s-ssh: "true"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20181024-be2f242dd-master
+     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
        args:
        - --clean
        - --repo=gke-internal.googlesource.com/syllogi/cluster-management
@@ -327,7 +327,7 @@ periodics:
        path_strategy: "explicit"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-1.11
+     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-1.11
        command:
        - ./cluster-api/scripts/ci-build.sh
        resources:
@@ -354,7 +354,7 @@ periodics:
        path_strategy: "explicit"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-1.11
+     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-1.11
        command:
        - ./cluster-api/scripts/ci-test.sh
 
@@ -378,7 +378,7 @@ periodics:
        path_strategy: "explicit"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-1.11
+     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-1.11
        command:
        - ./syllogi-cli/scripts/ci-build.sh
        resources:
@@ -405,6 +405,6 @@ periodics:
        path_strategy: "explicit"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-1.11
+     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-1.11
        command:
        - ./syllogi-cli/scripts/ci-test.sh

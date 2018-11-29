@@ -8,7 +8,7 @@ presubmits:
       prow.k8s.io/gerrit-report-label: "Verified"
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+      - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
         command:
         - ./scripts/ci-test.sh
   - name: pull-cluster-lifecycle-cluster-operators-smoketest
@@ -20,7 +20,7 @@ presubmits:
     path_alias: gke-internal.googlesource.com/cluster-lifecycle/cluster-operators
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+      - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
         command:
         - runner.sh
         args:

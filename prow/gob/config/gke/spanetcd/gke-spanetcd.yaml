@@ -1,6 +1,5 @@
 periodics:
  - interval: 30m
-   agent: kubernetes
    name: ci-kubernetes-e2e-gke-spanetcd
    labels:
      preset-service-account: "true"

@@ -22,7 +22,6 @@ presubmits:
 periodics:
  - interval: 2h
    name: periodic-gcp-pd-csi-driver-k8s-integration-latest
-   agent: kubernetes
    decorate: true
    labels:
      preset-service-account: "true"
@@ -51,7 +50,6 @@ periodics:
          privileged: true
  - interval: 4h
    name: periodic-gcp-pd-csi-driver-k8s-integration-staging
-   agent: kubernetes
    decorate: true
    labels:
      preset-service-account: "true"

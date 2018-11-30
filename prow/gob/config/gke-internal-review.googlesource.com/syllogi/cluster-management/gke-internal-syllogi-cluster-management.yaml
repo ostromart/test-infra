@@ -177,7 +177,6 @@ presubmits:
 periodics:
  - interval: 1h
    name: periodic-syllogi-cluster-api-build
-   agent: kubernetes
    labels:
      preset-service-account: "true"
    spec:
@@ -197,7 +196,6 @@ periodics:
 
  - interval: 1h
    name: periodic-syllogi-cluster-api-unittest
-   agent: kubernetes
    labels:
      preset-service-account: "true"
      preset-k8s-ssh: "true"
@@ -215,7 +213,6 @@ periodics:
 
  - interval: 1h
    name: periodic-gkectl-build
-   agent: kubernetes
    labels:
      preset-service-account: "true"
      preset-bazel-remote-cache-enabled: "true"
@@ -236,7 +233,6 @@ periodics:
 
  - interval: 1h
    name: periodic-gkectl-unittest
-   agent: kubernetes
    labels:
      preset-service-account: "true"
      preset-k8s-ssh: "true"
@@ -254,7 +250,6 @@ periodics:
 
  - interval: 1h
    name: periodic-syllogi-bundle-build
-   agent: kubernetes
    labels:
      preset-service-account: "true"
    spec:
@@ -274,7 +269,6 @@ periodics:
 
  - interval: 1h
    name: periodic-syllogi-bundle-unittest
-   agent: kubernetes
    labels:
      preset-service-account: "true"
      preset-k8s-ssh: "true"
@@ -295,7 +289,6 @@ periodics:
    name: periodic-syllogi-cluster-api-build-eap2.0
    always_run: true
    decorate: true
-   agent: kubernetes
    labels:
      preset-service-account: "true"
    extra_refs:
@@ -321,7 +314,6 @@ periodics:
    name: periodic-syllogi-cluster-api-unittest-eap2.0
    always_run: true
    decorate: true
-   agent: kubernetes
    labels:
      preset-service-account: "true"
      preset-k8s-ssh: "true"
@@ -345,7 +337,6 @@ periodics:
    name: periodic-gkectl-build-eap2.0
    always_run: true
    decorate: true
-   agent: kubernetes
    labels:
      preset-service-account: "true"
      preset-bazel-remote-cache-enabled: "true"
@@ -372,7 +363,6 @@ periodics:
    name: periodic-gkectl-unittest-eap2.0
    always_run: true
    decorate: true
-   agent: kubernetes
    labels:
      preset-service-account: "true"
      preset-bazel-remote-cache-enabled: "true"

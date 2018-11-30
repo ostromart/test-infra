@@ -17,7 +17,6 @@ presubmits:
 periodics:
  - interval: 1h
    name: ci-bigcomputeeng-batch-acceptance-tests
-   agent: kubernetes
    labels:
      preset-service-account: "true"
      preset-k8s-ssh: "true"
@@ -39,7 +38,6 @@ periodics:
 
  - interval: 2h
    name: ci-bigcomputeeng-batch-e2e-gke-autoscaling-tests
-   agent: kubernetes
    labels:
      preset-service-account: "true"
      preset-k8s-ssh: "true"
@@ -62,7 +60,6 @@ periodics:
             memory: "16Gi"
 
  - interval: 24h
-   agent: kubernetes
    name: ci-bigcomputeeng-batch-e2e-gce-tests
    labels:
      preset-service-account: "true"

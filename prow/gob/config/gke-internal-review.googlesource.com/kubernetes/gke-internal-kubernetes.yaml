@@ -95,7 +95,6 @@ presubmits:
 periodics:
  - interval: 1h
    name: ci-kubernetes-bazel-test
-   agent: kubernetes
    labels:
      preset-service-account: "true"
      preset-bazel-scratch-dir: "true"
@@ -124,7 +123,6 @@ periodics:
            memory: "6Gi"
  - interval: 30m
    name: ci-kubernetes-build
-   agent: kubernetes
    labels:
      preset-service-account: "true"
      preset-dind-enabled: "true"
@@ -152,7 +150,6 @@ periodics:
            memory: "8Gi"
  - interval: 1h
    name: ci-kubernetes-integration
-   agent: kubernetes
    labels:
      preset-service-account: "true"
      preset-dind-enabled: "true"
@@ -176,7 +173,6 @@ periodics:
          requests:
            cpu: 3
  - interval: 1h
-   agent: kubernetes
    name: ci-kubernetes-e2e-gob-gke
    labels:
      preset-service-account: "true"

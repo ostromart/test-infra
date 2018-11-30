@@ -15,3 +15,22 @@ presubmits:
       - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
         command:
         - ./prow/hack/verify-config.sh
+
+postsubmits:
+  https://gke-internal-review.googlesource.com/test-infra:
+  - name: update-gob-prow-job-config
+    decorate: true
+    run_if_changed: '^prow/gob/config.*$'
+    labels:
+      preset-service-account: "true"
+      prow.k8s.io/gerrit-report-label: "Update-GoB-Config" # invalid label for now
+    spec:
+      containers:
+      - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
+        command:
+        - runner.sh
+        args:
+        - make
+        - -C
+        - prow/gob
+        - update-config

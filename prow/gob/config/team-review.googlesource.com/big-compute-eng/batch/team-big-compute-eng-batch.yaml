@@ -59,7 +59,7 @@ periodics:
             cpu: 6
             memory: "16Gi"
 
- - interval: 24h
+ - interval: 8h
    name: ci-bigcomputeeng-batch-e2e-gce-tests
    labels:
      preset-service-account: "true"

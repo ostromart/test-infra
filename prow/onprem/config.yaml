@@ -1,0 +1,135 @@
+plank:
+  job_url_template: 'https://gubernator-internal.googleplex.com/build/{{with .Spec.Refs}}{{if eq .Repo "syllogi/cluster-management"}}syllogi-gob-prow{{else if eq .Repo "alphabetcloud/galu"}}galu-gob-prow{{else}}gob-prow{{end}}{{else}}gob-prow{{end}}/{{if or (eq .Spec.Type "presubmit") (eq .Spec.Type "batch")}}pr-logs/pull{{with .Spec.Refs}}/{{if eq .Org "https://gke-internal-review.googlesource.com"}}gke-internal.googlesource.com{{else if eq .Org "https://team-review.googlesource.com"}}team.googlesource.com{{else}}{{.Org}}{{end}}_{{.Repo}}{{end}}{{else}}logs{{end}}{{if eq .Spec.Type "presubmit"}}/{{with index .Spec.Refs.Pulls 0}}{{.Number}}{{end}}{{else if eq .Spec.Type "batch"}}/batch{{end}}/{{.Spec.Job}}/{{.Status.BuildID}}/'
+  report_template: '[Full PR test history](https://gubernator-internal.googleplex.com/pr/{{if eq .Spec.Refs.Org "kubernetes"}}{{if eq .Spec.Refs.Repo "kubernetes"}}{{else}}{{.Spec.Refs.Repo}}/{{end}}{{else}}{{.Spec.Refs.Org}}_{{.Spec.Refs.Repo}}/{{end}}{{with index .Spec.Refs.Pulls 0}}{{.Number}}{{end}}). [Your PR dashboard](https://gubernator-internal.googleplex.com/pr/{{with index .Spec.Refs.Pulls 0}}{{.Author}}{{end}}).'
+  job_url_prefix: https://gubernator-internal.googleplex.com/build/
+  pod_pending_timeout: 60m
+  default_decoration_config:
+    timeout: 7200000000000 # 2h
+    grace_period: 15000000000 # 15s
+    utility_images:
+      clonerefs: gcr.io/k8s-prow/clonerefs:v20181019-08e9d55c9
+      initupload: gcr.io/k8s-prow/initupload:v20181019-08e9d55c9
+      entrypoint: gcr.io/k8s-prow/entrypoint:v20181019-08e9d55c9
+      sidecar: gcr.io/k8s-prow/sidecar:v20181019-08e9d55c9
+    gcs_configuration:
+      bucket: "gob-prow"
+      path_strategy: "explicit"
+    gcs_credentials_secret: "service-account"
+    cookiefile_secret: http-cookiefile/cookies
+
+sinker:
+  resync_period: 1m
+  max_prowjob_age: 48h
+  max_pod_age: 30m
+
+prowjob_namespace: default
+pod_namespace: test-pods
+log_level: info
+presets:
+- labels:
+    preset-service-account: "true"
+  env:
+  - name: GOOGLE_APPLICATION_CREDENTIALS
+    value: /etc/service-account/service-account.json
+  - name: E2E_GOOGLE_APPLICATION_CREDENTIALS
+    value: /etc/service-account/service-account.json
+  volumes:
+  - name: service
+    secret:
+      secretName: service-account
+  volumeMounts:
+  - name: service
+    mountPath: /etc/service-account
+    readOnly: true
+- labels:
+    preset-k8s-ssh: "true"
+  env:
+  - name: USER
+    value: prow
+  - name: JENKINS_GCE_SSH_PRIVATE_KEY_FILE
+    value: /etc/ssh-key-secret/ssh-private
+  - name: JENKINS_GCE_SSH_PUBLIC_KEY_FILE
+    value: /etc/ssh-key-secret/ssh-public
+  volumes:
+  - name: ssh
+    secret:
+      defaultMode: 0400
+      secretName: ssh-key-secret
+  volumeMounts:
+  - name: ssh
+    mountPath: /etc/ssh-key-secret
+    readOnly: true
+- labels:
+    preset-syllogi-setup: "true"
+  env:
+  - name: USER
+    value: ubuntu
+  - name: ONPREM
+    value: "true"
+  - name: GCS_BUCKET
+    value: syllogi-ci-vsphere
+  - name: TEST_REGISTRY_SERVER
+    value: 35.185.8.100
+  - name: SYLLOGI_SSH_PRIVATE_KEY_FILE
+    value: /etc/syllogi-ssh-key-secret/vsphere_tmp
+  - name: SYLLOGI_SSH_PUBLIC_KEY_FILE
+    value: /etc/syllogi-ssh-key-secret/vsphere_tmp.pub
+  - name: GOVC_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: syllogi-govc-secret
+        key: password
+  - name: TEST_REGISTRY_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: syllogi-testregistry-secret
+        key: password
+  - name: BIGIP_PASSWORD
+    valueFrom:
+      secretKeyRef:
+        name: syllogi-bigip-secret
+        key: password
+  volumes:
+  - name: syllogi-ssh
+    secret:
+      defaultMode: 0400
+      secretName: syllogi-ssh-key-secret
+  volumeMounts:
+  - name: syllogi-ssh
+    mountPath: /etc/syllogi-ssh-key-secret
+    readOnly: true
+# storage / caching presets
+- labels:
+    preset-bazel-scratch-dir: "true"
+  env:
+  - name: TEST_TMPDIR
+    value: /bazel-scratch/.cache/bazel
+  volumes:
+  - name: bazel-scratch
+    emptyDir: {}
+  volumeMounts:
+  - name: bazel-scratch
+    mountPath: /bazel-scratch/.cache
+- labels:
+    preset-bazel-remote-cache-enabled: "true"
+  env:
+  - name: BAZEL_REMOTE_CACHE_ENABLED
+    value: "true"
+# docker-in-docker (with images/bootstrap) preset
+# NOTE: using this also requires using that image,
+# ensuring you run your test under either the ENTRYPOINT or:
+# /usr/local/bin/runner my-test-command --foo --bar
+# AND setting the following on your PodSpec:
+# securityContext:
+#   privileged: true
+- labels:
+    preset-dind-enabled: "true"
+  env:
+  - name: DOCKER_IN_DOCKER_ENABLED
+    value: "true"
+  volumes:
+  - name: docker-graph
+    emptyDir: {}
+  volumeMounts:
+  - name: docker-graph
+    mountPath: /docker-graph

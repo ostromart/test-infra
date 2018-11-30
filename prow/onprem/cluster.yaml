@@ -1,0 +1,478 @@
+# This file contains Kubernetes YAML files for the most important prow
+# components. Don't edit resources in this file. Instead, pull them out into
+# their own files.
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: plugins
+data:
+  plugins.yaml: ""
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  name: prowjobs.prow.k8s.io
+spec:
+  group: prow.k8s.io
+  version: v1
+  names:
+    kind: ProwJob
+    singular: prowjob
+    plural: prowjobs
+  scope: Namespaced
+  validation:
+    openAPIV3Schema:
+      properties:
+        spec:
+          properties:
+            max_concurrency:
+              type: integer
+              minimum: 0
+            type:
+              type: string
+              enum:
+              - "presubmit"
+              - "postsubmit"
+              - "periodic"
+              - "batch"
+        status:
+          properties:
+            state:
+              type: string
+              enum:
+              - "triggered"
+              - "pending"
+              - "success"
+              - "failure"
+              - "aborted"
+              - "error"
+          anyOf:
+          - not:
+              properties:
+                state:
+                  type: string
+                  enum:
+                  - "success"
+                  - "failure"
+                  - "error"
+                  - "aborted"
+          - required:
+            - completionTime
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: plank
+  labels:
+    app: plank
+spec:
+  replicas: 1 # Do not scale up.
+  template:
+    metadata:
+      labels:
+        app: plank
+    spec:
+      containers:
+      - name: plank
+        image: gcr.io/k8s-prow/plank:v20181025-4852d342a
+        args:
+        - --dry-run=false
+        - --github-token-path=
+        - --skip-report=true
+        - --job-config-path=/etc/job-config
+        volumeMounts:
+        - name: config
+          mountPath: /etc/config
+          readOnly: true
+        - name: job-config
+          mountPath: /etc/job-config
+          readOnly: true
+      volumes:
+      - name: config
+        configMap:
+          name: config
+      - name: job-config
+        configMap:
+          name: job-config
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: sinker
+  labels:
+    app: sinker
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: sinker
+    spec:
+      containers:
+      - name: sinker
+        image: gcr.io/k8s-prow/sinker:v20181025-4852d342a
+        args:
+        - --job-config-path=/etc/job-config
+        volumeMounts:
+        - name: config
+          mountPath: /etc/config
+          readOnly: true
+        - name: job-config
+          mountPath: /etc/job-config
+          readOnly: true
+      volumes:
+      - name: config
+        configMap:
+          name: config
+      - name: job-config
+        configMap:
+          name: job-config
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: deck
+  labels:
+    app: deck
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        app: deck
+    spec:
+      terminationGracePeriodSeconds: 30
+      containers:
+      - name: deck
+        image: gcr.io/k8s-prow/deck:v20181102-d503bdb
+        ports:
+        - name: http
+          containerPort: 8080
+        args:
+        - --job-config-path=/etc/job-config
+        - --spyglass
+        - --gcs-credentials-file=/etc/gcs-credentials/service-account.json
+        volumeMounts:
+        - name: config
+          mountPath: /etc/config
+          readOnly: true
+        - name: job-config
+          mountPath: /etc/job-config
+          readOnly: true
+        - name: gcs-credentials
+          mountPath: /etc/gcs-credentials
+          readOnly: true
+      volumes:
+      - name: config
+        configMap:
+          name: config
+      - name: job-config
+        configMap:
+          name: job-config
+      - name: gcs-credentials
+        secret:
+          secretName: service-account
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: deck
+spec:
+  selector:
+    app: deck
+  ports:
+  - port: 80
+    targetPort: 8080
+  type: NodePort
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: horologium
+  labels:
+    app: horologium
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: horologium
+    spec:
+      terminationGracePeriodSeconds: 30
+      containers:
+      - name: horologium
+        image: gcr.io/k8s-prow/horologium:v20181025-4852d342a
+        args:
+        - --job-config-path=/etc/job-config
+        volumeMounts:
+        - name: config
+          mountPath: /etc/config
+          readOnly: true
+        - name: job-config
+          mountPath: /etc/job-config
+          readOnly: true
+      volumes:
+      - name: config
+        configMap:
+          name: config
+      - name: job-config
+        configMap:
+          name: job-config
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: ing
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /*
+        backend:
+          serviceName: deck
+          servicePort: 80
+      - path: /hook
+        backend:
+          serviceName: hook
+          servicePort: 8888
+---
+# start gerrit
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  labels:
+    app: gerrit
+  name: gerrit-storage
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  # volumeName: added automatically after volume creation
+  # See https://cloud.google.com/kubernetes-engine/docs/concepts/persistent-volumes
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gerrit
+  labels:
+    app: gerrit
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gerrit
+  template:
+    metadata:
+      labels:
+        app: gerrit
+    spec:
+      terminationGracePeriodSeconds: 30
+      containers:
+      - name: gerrit
+        image: gcr.io/k8s-prow/gerrit:v20181025-4852d342a
+        args:
+        - --config-path=/etc/config/config.yaml
+        - --job-config-path=/etc/job-config
+        - --cookiefile=/etc/cookies/cookies
+        - --gerrit-projects=https://gke-internal-review.googlesource.com=syllogi/cluster-management,syllogi/logmon,cluster-lifecycle/cluster-operators
+        - --last-sync-fallback=/store/gerrit
+        volumeMounts:
+        - name: config
+          mountPath: /etc/config
+          readOnly: true
+        - name: job-config
+          mountPath: /etc/job-config
+          readOnly: true
+        - name: gerrit-volume
+          mountPath: /store
+        - name: cookies
+          mountPath: /etc/cookies
+          readOnly: true
+      volumes:
+      - name: config
+        configMap:
+          name: config
+      - name: job-config
+        configMap:
+          name: job-config
+      - name: cookies
+        secret:
+          defaultMode: 420
+          secretName: http-cookiefile
+      - name: gerrit-volume
+        persistentVolumeClaim:
+          claimName: gerrit-storage
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: crier
+  labels:
+    app: crier
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: crier
+    spec:
+      terminationGracePeriodSeconds: 30
+      containers:
+      - name: crier
+        image: gcr.io/k8s-prow/crier:v20181026-892a0faeb
+        args:
+        - --gerrit-workers=1
+        - --cookiefile=/etc/cookies/cookies
+        - --gerrit-projects=https://gke-internal-review.googlesource.com=syllogi/cluster-management,syllogi/logmon,cluster-lifecycle/cluster-operators
+        volumeMounts:
+        - name: cookies
+          mountPath: /etc/cookies
+          readOnly: true
+      volumes:
+      - name: cookies
+        secret:
+          defaultMode: 420
+          secretName: http-cookiefile
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name:  grandmatriarch
+  namespace: test-pods
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: grandmatriarch
+  namespace: test-pods
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - secrets
+  verbs:
+  - create
+  - replace
+---
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: grandmatriarch
+  namespace: test-pods
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: grandmatriarch
+subjects:
+- kind: ServiceAccount
+  name: grandmatriarch
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grandmatriarch
+  namespace: test-pods
+  labels:
+    app: grandmatriarch-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grandmatriarch-test
+  template:
+    metadata:
+      labels:
+        app: grandmatriarch-test
+    spec:
+      serviceAccountName: grandmatriarch
+      containers:
+      - name: bakery
+        image: gcr.io/k8s-prow/grandmatriarch:v20181025-4852d342a
+        args:
+        - /etc/robot/service-account.json
+        - http-cookiefile
+        volumeMounts:
+        - mountPath: /etc/robot
+          name: robot
+          readOnly: true
+      volumes:
+      - name: robot
+        secret:
+          defaultMode: 420
+          secretName: service-account
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name:  grandmatriarch
+  namespace: default
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: grandmatriarch
+  namespace: default
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - secrets
+  verbs:
+  - create
+  - replace
+---
+
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: grandmatriarch
+  namespace: default
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: grandmatriarch
+subjects:
+- kind: ServiceAccount
+  name: grandmatriarch
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grandmatriarch
+  namespace: default
+  labels:
+    app: grandmatriarch-default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grandmatriarch-default
+  template:
+    metadata:
+      labels:
+        app: grandmatriarch-default
+    spec:
+      serviceAccountName: grandmatriarch
+      containers:
+      - name: bakery
+        image: gcr.io/k8s-prow/grandmatriarch:v20181025-4852d342a
+        args:
+        - /etc/robot/service-account.json
+        - http-cookiefile
+        volumeMounts:
+        - mountPath: /etc/robot
+          name: robot
+          readOnly: true
+      volumes:
+      - name: robot
+        secret:
+          defaultMode: 420
+          secretName: service-account

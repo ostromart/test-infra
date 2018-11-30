@@ -23,6 +23,7 @@ ALL_K8S=master experimental 1.13 1.12 1.11 1.10 1.9
 K8S ?= master
 # TODO(jgrafton): update to 1.11.2b4 when available
 GO_VERSION ?= 1.11b4
+BAZEL = 0.18.0
 GO_URL_BASE ?= https://storage.googleapis.com/go-boringcrypto
 
 FULL_IMG=$(IMG):$(TAG)-$(K8S)
@@ -30,22 +31,28 @@ FULL_IMG=$(IMG):$(TAG)-$(K8S)
 ifeq ($(K8S), experimental)
 	# TODO(jgrafton): update to 1.11.2b4 when available
 	GO_VERSION = 1.11b4
+	BAZEL = 0.20.0
 endif
 ifeq ($(K8S), 1.13)
 	# TODO(jgrafton): update to 1.11.2b4 when available
 	GO_VERSION = 1.11b4
+	BAZEL = 0.18.0
 endif
 ifeq ($(K8S), 1.12)
 	GO_VERSION = 1.10.4b4
+	BAZEL = 0.16.1
 endif
 ifeq ($(K8S), 1.11)
 	GO_VERSION = 1.10.3b4
+	BAZEL = 0.14.0
 endif
 ifeq ($(K8S), 1.10)
 	GO_VERSION = 1.9.3b4
+	BAZEL = 0.14.0
 endif
 ifeq ($(K8S), 1.9)
 	GO_VERSION = 1.9.3b4
+	BAZEL = 0.14.0
 	# No longer being built upstream
 	BASE_TAG = v20181031-56c4485dc
 endif
@@ -58,11 +65,12 @@ sub-build-%:
 all-build: $(addprefix sub-build-,$(ALL_K8S))
 
 build:
-	@echo Building with go:$(GO_VERSION)
+	@echo Building with go:$(GO_VERSION) bazel:$(BAZEL)
 	docker build --build-arg BASEIMAGE=$(BASE_IMG):$(BASE_TAG)-$(K8S) \
 		--build-arg GO_URL_BASE=$(GO_URL_BASE) \
 		--build-arg GO_VERSION=$(GO_VERSION) \
 		--build-arg IMAGE=$(FULL_IMG) \
+		--build-arg BAZEL_VERSION_ARG=$(BAZEL) \
 		-t $(FULL_IMG) .
 	docker tag $(FULL_IMG) $(IMG):latest-$(K8S)
 	@echo Built $(FULL_IMG) and tagged with latest-$(K8S)

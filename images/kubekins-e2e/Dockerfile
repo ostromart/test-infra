@@ -32,3 +32,9 @@ RUN apt-get update && apt-get install -y \
 # Update the image name.
 ARG IMAGE
 ENV IMAGE=${IMAGE}
+
+# install bazel
+ARG BAZEL_VERSION_ARG
+ENV BAZEL_VERSION=${BAZEL_VERSION_ARG}
+COPY ./install-bazel.sh /
+RUN bash /install-bazel.sh

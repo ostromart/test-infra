@@ -109,9 +109,10 @@ def main():
         "\n!!    ARE YOU SURE YOU WANT TO DO THIS? IF SO, ENTER 'YES'.    !! "
     ) + '\n' + '!'*65 + '\n\n: '
     if args.wet:
-        if raw_input(prompt) != "YES":
-            print("you did not enter 'YES'")
-            sys.exit(-1)
+        if 'GOOGLE_APPLICATION_CREDENTIALS' not in os.environ:
+            if raw_input(prompt) != "YES":
+                print("you did not enter 'YES'")
+                sys.exit(-1)
 
     # first prow config
     recreate_prow_config(args.wet, args.prow_configmap, args.prow_config_path)

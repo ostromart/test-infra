@@ -1,0 +1,44 @@
+presubmits:
+  https://gke-internal-review.googlesource.com/GoogleCloudPlatform/kalm:
+  - name: kalm-test
+    always_run: true
+    decorate: true
+    path_alias: gke-internal.googlesource.com/GoogleCloudPlatform/kalm
+    labels:
+      prow.k8s.io/gerrit-report-label: "Verified"
+    spec:
+      containers:
+      - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
+        command:
+        - ./hack/test-prow.sh
+  - name: kalm-e2e
+    always_run: true
+    decorate: true
+    path_alias: gke-internal.googlesource.com/GoogleCloudPlatform/kalm
+    labels:
+      preset-k8s-ssh: "true"
+      preset-service-account: "true"
+      preset-dind-enabled: "true"
+      prow.k8s.io/gerrit-report-label: "Verified"
+    spec:
+      containers:
+      - command:
+        - runner.sh
+        - /workspace/scenarios/kubernetes_e2e.py
+        args:
+        - --check-leaked-resources
+        - --cluster=gke-kalm-cluster
+        - --deployment=gke
+        - --extract=gke-latest
+        - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+        - --gcp-node-image=gci
+        - --gcp-zone=us-central1-f
+        - --gke-environment=test
+        - --gke-shape={"default":{"Nodes":2,"MachineType":"n1-standard-2"}}
+        - --provider=gke
+        - --test=false
+        - --test-cmd=../hack/e2e-prow.sh
+        - --timeout=1h
+        image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
+        securityContext:
+          privileged: true

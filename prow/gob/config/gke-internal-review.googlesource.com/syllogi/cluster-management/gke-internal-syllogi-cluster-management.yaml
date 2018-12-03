@@ -128,7 +128,7 @@ presubmits:
         path_strategy: "explicit"
     spec:
       containers:
-      - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-1.11
+      - image: gcr.io/gke-test-infra/kubekins-e2e:v20181130-791ed70-experimental
         command:
         - ./bundle/scripts/ci-build.sh
       resources:

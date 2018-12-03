@@ -651,7 +651,7 @@ periodics:
      - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
        args:
        - --timeout=80
-       - --repo=k8s.io/autoscaler=master
+       - --repo=gke-internal.googlesource.com/gke-autoscaling=master
        - --root=/go/src
        - --upload=gs://gob-prow/logs
        - --scenario=kubernetes_e2e
@@ -683,7 +683,7 @@ periodics:
      - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
        args:
        - --timeout=80
-       - --repo=k8s.io/autoscaler=master
+       - --repo=gke-internal.googlesource.com/gke-autoscaling=master
        - --root=/go/src
        - --upload=gs://gob-prow/logs
        - --scenario=kubernetes_e2e

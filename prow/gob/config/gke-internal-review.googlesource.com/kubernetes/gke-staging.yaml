@@ -204,8 +204,7 @@ periodics:
       - --gcp-project-type=gke-internal-project
       - --gcp-zone=us-central1-f
       - --gke-command-group=beta
-      # TODO(senlu): switch to --istio-config=auth=MTLS_PERMISSIVE once that's rolled out
-      - --gke-create-command=container clusters create --quiet --num-nodes=4 --no-enable-legacy-authorization --addons=Istio --istio-config=auth=NONE
+      - --gke-create-command=container clusters create --quiet --num-nodes=4 --no-enable-legacy-authorization --addons=Istio --istio-config=auth=MTLS_PERMISSIVE
       - --gke-environment=test
       - --provider=gke
       - --test=false
@@ -213,7 +212,7 @@ periodics:
       - --test-cmd-args=-C .. e2e_bookinfo_envoyv2_v1alpha3 E2E_ARGS="--skip_setup --namespace=istio-system"
       - --test-cmd-name=istio-addon
       - --timeout=80m
-    command:
-    - runner.sh
-    - /workspace/scenarios/kubernetes_e2e.py
-    image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
+      command:
+      - runner.sh
+      - /workspace/scenarios/kubernetes_e2e.py
+      image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master

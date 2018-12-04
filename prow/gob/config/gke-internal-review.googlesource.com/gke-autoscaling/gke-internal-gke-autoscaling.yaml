@@ -670,7 +670,7 @@ periodics:
        - --gke-environment=test
        - --provider=gke
        - --test=false
-       - --test-cmd=../vertical-pod-autoscaler/hack/run-e2e-tests.sh
+       - --test-cmd=../test/vertical-pod-autoscaler/e2e/hack/run-e2e.sh
        - --test-cmd-args=recommender
        - --timeout=60m
  - interval: 2h
@@ -702,7 +702,7 @@ periodics:
        - --gke-environment=test
        - --provider=gke
        - --test=false
-       - --test-cmd=../vertical-pod-autoscaler/hack/run-e2e-tests.sh
+       - --test-cmd=../test/vertical-pod-autoscaler/e2e/hack/run-e2e.sh
        - --test-cmd-args=recommender
        - --timeout=60m
  - interval: 2h

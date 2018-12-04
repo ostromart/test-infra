@@ -198,6 +198,7 @@ periodics:
       - --env=CLOUDSDK_CONTAINER_USE_V1_API=false
       - --env=HUB=docker.io/istio
       - --env=TAG=1.0.3
+      - --env=E2E_ARGS="--skip_setup --namespace=istio-system"
       - --extract=gke-latest-1.11
       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
       - --gcp-node-image=gci
@@ -209,7 +210,9 @@ periodics:
       - --provider=gke
       - --test=false
       - --test-cmd=make
-      - --test-cmd-args=-C .. e2e_bookinfo_envoyv2_v1alpha3 E2E_ARGS="--skip_setup --namespace=istio-system"
+      - --test-cmd-args=-C
+      - --test-cmd-args=..
+      - --test-cmd-args=e2e_bookinfo_envoyv2_v1alpha3
       - --test-cmd-name=istio-addon
       - --timeout=80m
       command:

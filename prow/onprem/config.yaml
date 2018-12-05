@@ -79,6 +79,21 @@ presets:
       secretKeyRef:
         name: syllogi-govc-secret
         key: password
+  - name: OIDC_GOOGLE_SECRET
+    valueFrom:
+      secretKeyRef:
+        name: syllogi-oidc-google-secret
+        key: password
+  - name: OIDC_GOOGLE_REFRESH_TOKEN
+    valueFrom:
+      secretKeyRef:
+        name: syllogi-oidc-google-refresh-token-secret
+        key: password
+  - name: OIDC_GOOGLE_ID_TOKEN
+    valueFrom:
+      secretKeyRef:
+        name: syllogi-oidc-google-id-token-secret
+        key: password
   - name: TEST_REGISTRY_PASSWORD
     valueFrom:
       secretKeyRef:

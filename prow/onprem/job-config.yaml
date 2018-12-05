@@ -44,3 +44,25 @@ periodics:
        imagePullPolicy: Always
        command:
        - gkectl/scripts/ci-ipam-privatereg.sh
+ - interval: 3h
+   name: periodic-syllogi-cli-oidc-onprem
+   labels:
+     preset-service-account: "true"
+     preset-syllogi-setup: "true"
+   decorate: true
+   extra_refs:
+   - org: gke-internal.googlesource.com/syllogi
+     repo: cluster-management
+     base_ref: master
+     path_alias: gke-internal.googlesource.com/syllogi/cluster-management
+     clone_uri: https://gke-internal.googlesource.com/syllogi/cluster-management
+   decoration_config:
+     gcs_configuration:
+       bucket: "syllogi-gob-prow"
+       path_strategy: "explicit"
+   spec:
+     containers:
+     - image: gcr.io/syllogi-ci/syllogi-testing:experimental
+       imagePullPolicy: Always
+       command:
+       - gkectl/scripts/ci-oidc.sh

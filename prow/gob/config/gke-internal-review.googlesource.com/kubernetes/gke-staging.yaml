@@ -198,6 +198,7 @@ periodics:
       - --env=CLOUDSDK_CONTAINER_USE_V1_API=false
       - --env=HUB=docker.io/istio
       - --env=TAG=1.0.3
+      - --env=ISTIO_OUT=/workspace
       - --extract=gke-latest-1.11
       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
       - --gcp-node-image=gci

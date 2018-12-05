@@ -212,7 +212,7 @@ periodics:
       - --test-cmd-args=-C
       - --test-cmd-args=..
       - --test-cmd-args=e2e_bookinfo_envoyv2_v1alpha3
-      - --test-cmd-args=E2E_ARGS="--skip_setup --namespace=istio-system"
+      - --test-cmd-args=E2E_ARGS=--skip_setup --namespace=istio-system
       - --test-cmd-name=istio-addon
       - --timeout=80m
       command:

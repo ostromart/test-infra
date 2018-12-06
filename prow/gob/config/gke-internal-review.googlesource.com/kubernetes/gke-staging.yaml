@@ -192,7 +192,7 @@ periodics:
   spec:
     containers:
     - args:
-      - --cluster=
+      - --cluster=istio-e2e
       - --deployment=gke
       - --env=CLOUDSDK_CONTAINER_USE_V1_API=false
       - --env=HUB=docker.io/istio
@@ -210,7 +210,7 @@ periodics:
       - --test=false
       - --test-cmd=bash
       - --test-cmd-args=-c
-      - --test-cmd-args=sleep 300 && export JUNIT_E2E_XML="${ARTIFACTS}/junit.xml" && make -C .. with_junit_report TARGET=e2e_bookinfo_envoyv2_v1alpha3 E2E_ARGS='--skip_setup --namespace=istio-system --test.run=Test[^DbRoutingMysql]'
+      - --test-cmd-args=sleep 300 && export JUNIT_E2E_XML="${ARTIFACTS}/junit.xml" && make -C .. with_junit_report TARGET=e2e_bookinfo_envoyv2_v1alpha3 E2E_ARGS='--skip_setup --namespace=istio-system --test.run=Test[^DbRoutingMysql]' && gcloud beta container clusters update istio-e2e --project=$PROJECT --zone=$ZONE --update-addons=Istio=DISABLED 
       - --test-cmd-name=istio-addon
       - --timeout=80m
       command:

@@ -1,6 +1,7 @@
 PROJECT ?= syllogi-ci
 IMAGE ?= syllogi-testing
 TAG ?= experimental
+JOB_NAMESPACE ?= test-pods
 
 .PHONY: update-config
 update-config: get-cluster-credentials
@@ -28,3 +29,11 @@ update-image:
 	gcloud auth configure-docker
 	docker tag $(IMAGE):$(TAG) gcr.io/$(PROJECT)/$(IMAGE):$(TAG)
 	docker push gcr.io/$(PROJECT)/$(IMAGE):$(TAG)
+
+.PHONY: update-boskos
+update-boskos: get-cluster-credentials
+	kubectl apply -f boskos/boskos.yaml
+
+.PHONY: update-boskos-config
+update-boskos-config: get-cluster-credentials
+	kubectl create configmap resources --from-file=config=boskos/resources.yaml --dry-run -o yaml | kubectl --namespace="$(JOB_NAMESPACE)" replace configmap resources -f -

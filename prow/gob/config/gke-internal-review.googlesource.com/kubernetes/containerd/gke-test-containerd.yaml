@@ -1,0 +1,66 @@
+presets:
+- labels:
+    preset-cos-containerd-env: "true"
+  env:
+  - name: LOG_DUMP_SYSTEMD_SERVICES
+    value: "containerd containerd-installation"
+
+periodics:
+- decorate: true
+  decoration_config:
+    timeout: 6000000000000 # 100 minutes
+  interval: 30m
+  labels:
+    preset-service-account: "true"
+    preset-k8s-ssh: "true"
+    preset-cos-containerd-env: "true"
+  name: ci-kubernetes-e2e-gke-staging-stable-cos-containerd-parallel
+  spec:
+    containers:
+    - args:
+      - --check-leaked-resources
+      - --check-version-skew=false
+      - --cluster=
+      - --deployment=gke
+      - --extract=gke-latest-1.12
+      - --gcp-cloud-sdk=gs://cloud-sdk-testing/rc
+      - --gcp-node-image=cos_containerd
+      - --gcp-zone=us-central1-f
+      - --ginkgo-parallel
+      - --gke-environment=staging
+      - --provider=gke
+      - --test_args=--ginkgo.skip=\[Slow\]|\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\] --minStartupPods=8
+      - --timeout=80m
+      command:
+      - runner.sh
+      - /workspace/scenarios/kubernetes_e2e.py
+      image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
+
+- decorate: true
+  decoration_config:
+    timeout: 37200000000000 # 620 minutes
+  interval: 30m
+  labels:
+    preset-service-account: "true"
+    preset-k8s-ssh: "true"
+    preset-cos-containerd-env: "true"
+  name: ci-kubernetes-e2e-gke-staging-stable-cos-containerd-serial
+  spec:
+    containers:
+    - args:
+      - --check-leaked-resources
+      - --check-version-skew=false
+      - --cluster=
+      - --deployment=gke
+      - --extract=gke-latest-1.12
+      - --gcp-cloud-sdk=gs://cloud-sdk-testing/rc
+      - --gcp-node-image=cos_containerd
+      - --gcp-zone=us-central1-f
+      - --gke-environment=staging
+      - --provider=gke
+      - --test_args=--ginkgo.focus=\[Slow\]|\[Serial\]|\[Disruptive\] --ginkgo.skip=\[Flaky\]|\[Feature:.+\] --minStartupPods=8
+      - --timeout=600m
+      command:
+      - runner.sh
+      - /workspace/scenarios/kubernetes_e2e.py
+      image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master

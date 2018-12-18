@@ -26,17 +26,20 @@ periodics:
    labels:
      preset-service-account: "true"
      preset-dind-enabled: "true"
+   decorate: true
+   decoration_config:
+     timeout: 3600000000000 # 60 minutes
+   extra_refs:
+   - org: team.googlesource.com/gke-kubernetes-enterprise-control
+     repo: prototype
+     base_ref: master
+     clone_uri: https://team.googlesource.com/gke-kubernetes-enterprise-control/prototype
    spec:
-     activeDeadlineSeconds: 7200 # 2 hours. these tests take a long time.
      containers:
      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+       command:
+       - runner.sh
        args:
-       - --clean
-       - --timeout=300
-       - --repo=team.googlesource.com/gke-kubernetes-enterprise-control/prototype=master
-       - --scenario=execute
-       - --upload=gs://gob-prow/logs
-       - --
        - make
        - ci-test-e2e
        env:
@@ -68,17 +71,20 @@ periodics:
    labels:
      preset-service-account: "true"
      preset-dind-enabled: "true"
+   decorate: true
+   decoration_config:
+     timeout: 3600000000000 # 60 minutes
+   extra_refs:
+   - org: team.googlesource.com/gke-kubernetes-enterprise-control
+     repo: prototype
+     base_ref: master
+     clone_uri: https://team.googlesource.com/gke-kubernetes-enterprise-control/prototype
    spec:
-     activeDeadlineSeconds: 7200  # 2 hours
      containers:
      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+       command:
+       - runner.sh
        args:
-       - --clean
-       - --timeout=300
-       - --repo=team.googlesource.com/gke-kubernetes-enterprise-control/prototype=master
-       - --scenario=execute
-       - --upload=gs://gob-prow/logs
-       - --
        - make
        - --
        - --makefile=Makefile.release
@@ -113,17 +119,20 @@ periodics:
    labels:
      preset-service-account: "true"
      preset-dind-enabled: "true"
+   decorate: true
+   decoration_config:
+     timeout: 3600000000000 # 60 minutes
+   extra_refs:
+   - org: team.googlesource.com/gke-kubernetes-enterprise-control
+     repo: prototype
+     base_ref: master
+     clone_uri: https://team.googlesource.com/gke-kubernetes-enterprise-control/prototype
    spec:
-     activeDeadlineSeconds: 7200 # 2 hours. these tests take a long time.
      containers:
      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+       command:
+       - runner.sh
        args:
-       - --clean
-       - --timeout=300
-       - --repo=team.googlesource.com/gke-kubernetes-enterprise-control/prototype=master
-       - --scenario=execute
-       - --upload=gs://gob-prow/logs
-       - --
        - make
        - ci-test-e2e
        env:
@@ -156,17 +165,20 @@ periodics:
    labels:
      preset-service-account: "true"
      preset-dind-enabled: "true"
+   decorate: true
+   decoration_config:
+     timeout: 3600000000000 # 60 minutes
+   extra_refs:
+   - org: team.googlesource.com/gke-kubernetes-enterprise-control
+     repo: prototype
+     base_ref: master
+     clone_uri: https://team.googlesource.com/gke-kubernetes-enterprise-control/prototype
    spec:
-     activeDeadlineSeconds: 7200 # 2 hours. these tests take a long time.
      containers:
      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+       command:
+       - runner.sh
        args:
-       - --clean
-       - --timeout=300
-       - --repo=team.googlesource.com/gke-kubernetes-enterprise-control/prototype=master
-       - --scenario=execute
-       - --upload=gs://gob-prow/logs
-       - --
        - make
        - ci-test-e2e
        env:
@@ -199,17 +211,20 @@ periodics:
    labels:
      preset-service-account: "true"
      preset-dind-enabled: "true"
+   decorate: true
+   decoration_config:
+     timeout: 3600000000000 # 60 minutes
+   extra_refs:
+   - org: team.googlesource.com/gke-kubernetes-enterprise-control
+     repo: prototype
+     base_ref: master
+     clone_uri: https://team.googlesource.com/gke-kubernetes-enterprise-control/prototype
    spec:
-     activeDeadlineSeconds: 7200
      containers:
      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+       command:
+       - runner.sh
        args:
-       - --clean
-       - --timeout=300
-       - --repo=team.googlesource.com/gke-kubernetes-enterprise-control/prototype=master
-       - --scenario=execute
-       - --upload=gs://gob-prow/logs
-       - --
        - make
        - ci-test-e2e
        env:
@@ -238,17 +253,20 @@ periodics:
    labels:
      preset-service-account: "true"
      preset-dind-enabled: "true"
+   decorate: true
+   decoration_config:
+     timeout: 3600000000000 # 60 minutes
+   extra_refs:
+   - org: team.googlesource.com/gke-kubernetes-enterprise-control
+     repo: prototype
+     base_ref: master
+     clone_uri: https://team.googlesource.com/gke-kubernetes-enterprise-control/prototype
    spec:
-     activeDeadlineSeconds: 7200
      containers:
      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+       command:
+       - runner.sh
        args:
-       - --clean
-       - --timeout=300
-       - --repo=team.googlesource.com/gke-kubernetes-enterprise-control/prototype=master
-       - --scenario=execute
-       - --upload=gs://gob-prow/logs
-       - --
        - make
        - ci-test-e2e
        env:

@@ -767,7 +767,7 @@ periodics:
        - --gcp-zone=us-central1-f
        - --ginkgo-parallel=1
        - --gke-command-group=beta
-       - --gke-create-command=container clusters create --enable-vertical-pod-autoscaling
+       - --gke-create-command=container clusters create --enable-vertical-pod-autoscaling --enable-stackdriver-kubernetes
        - --gke-environment=test
        - --provider=gke
        - --test=false
@@ -799,7 +799,7 @@ periodics:
        - --gcp-zone=us-central1-f
        - --ginkgo-parallel=1
        - --gke-command-group=beta
-       - --gke-create-command=container clusters create --enable-vertical-pod-autoscaling
+       - --gke-create-command=container clusters create --enable-vertical-pod-autoscaling --enable-stackdriver-kubernetes
        - --gke-environment=test
        - --provider=gke
        - --test=false

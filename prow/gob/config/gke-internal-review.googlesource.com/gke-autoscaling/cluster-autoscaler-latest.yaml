@@ -1,0 +1,228 @@
+#############################################################################################################################
+# test latest k8s with CA built from HEAD of ke-internal.googlesource.com/gke-autoscaling/master
+#############################################################################################################################
+
+periodics:
+- interval: 2h
+  name: ci-autoscaling-ca-e2e
+  labels:
+    preset-k8s-ssh: "true"
+    preset-service-account: "true"
+  spec:
+    containers:
+    - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
+      args:
+      - --timeout=440
+      - --repo=gke-internal.googlesource.com/gke-autoscaling=master
+      - --root=/go/src
+      - --upload=gs://gob-prow/logs
+      - --scenario=kubernetes_e2e
+      - --
+      - --check-leaked-resources
+      - --cluster=gke-autoscaling-cluster
+      - --deployment=gke
+      - --extract=gs://kubernetes-release-gke-internal/ci/latest-autoscaling.txt
+      - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+      - --gcp-node-image=gci
+      - --gcp-zone=us-central1-f
+      - --ginkgo-parallel=1
+      - --gke-environment=test
+      - --provider=gke
+      - --test=false
+      - --test-cmd=../test/cluster-autoscaler/e2e/hack/run-e2e.sh
+      - --test-cmd-args=--ginkgo.focus=\[Feature:ClusterSizeAutoscalingScaleUp\]|\[Feature:ClusterSizeAutoscalingScaleDown\]
+      - --timeout=7h
+
+- interval: 2h
+  name: ci-autoscaling-ca-gpu-e2e
+  labels:
+    preset-k8s-ssh: "true"
+    preset-service-account: "true"
+  spec:
+    containers:
+    - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
+      args:
+      - --timeout=150
+      - --repo=gke-internal.googlesource.com/gke-autoscaling=master
+      - --root=/go/src
+      - --upload=gs://gob-prow/logs
+      - --scenario=kubernetes_e2e
+      - --
+      - --check-leaked-resources
+      - --cluster=gke-autoscaling-cluster
+      - --deployment=gke
+      - --extract=gs://kubernetes-release-gke-internal/ci/latest-autoscaling.txt
+      - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+      - --gcp-node-image=gci
+      - --gcp-zone=us-west1-b
+      - --gcp-project-type=gpu-project
+      - --ginkgo-parallel=1
+      - --gke-environment=test
+      - --provider=gke
+      - --test=false
+      - --env=TESTED_GPU_TYPE=nvidia-tesla-k80
+      - --test-cmd=../test/cluster-autoscaler/e2e/hack/run-e2e.sh
+      - --test-cmd-args=--ginkgo.focus=\[Feature:ClusterSizeAutoscalingGpu\]
+      - --timeout=2h
+
+- interval: 2h
+  name: ci-autoscaling-nap-e2e
+  labels:
+    preset-k8s-ssh: "true"
+    preset-service-account: "true"
+  spec:
+    containers:
+    - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
+      args:
+      - --timeout=320
+      - --repo=gke-internal.googlesource.com/gke-autoscaling=master
+      - --root=/go/src
+      - --upload=gs://gob-prow/logs
+      - --scenario=kubernetes_e2e
+      - --
+      - --check-leaked-resources
+      - --cluster=gke-autoscaling-cluster
+      - --deployment=gke
+      - --extract=gs://kubernetes-release-gke-internal/ci/latest-autoscaling.txt
+      - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+      - --gcp-node-image=gci
+      - --gcp-zone=us-central1-f
+      - --ginkgo-parallel=1
+      - --gke-environment=test
+      - --provider=gke
+      - --test=false
+      - --test-cmd=../test/cluster-autoscaler/e2e/hack/run-e2e.sh
+      - --test-cmd-args=--ginkgo.focus=\[Feature:NodeAutoProvisioning\]
+      - --timeout=5h
+
+- interval: 2h
+  name: ci-autoscaling-nap-gpu-e2e
+  labels:
+    preset-k8s-ssh: "true"
+    preset-service-account: "true"
+  spec:
+    containers:
+    - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
+      args:
+      - --timeout=320
+      - --repo=gke-internal.googlesource.com/gke-autoscaling=master
+      - --root=/go/src
+      - --upload=gs://gob-prow/logs
+      - --scenario=kubernetes_e2e
+      - --
+      - --check-leaked-resources
+      - --cluster=gke-autoscaling-cluster
+      - --deployment=gke
+      - --extract=gs://kubernetes-release-gke-internal/ci/latest-autoscaling.txt
+      - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+      - --gcp-node-image=gci
+      - --gcp-zone=us-west1-b
+      - --gcp-project-type=gpu-project
+      - --ginkgo-parallel=1
+      - --gke-environment=test
+      - --provider=gke
+      - --test=false
+      - --test-cmd=../test/cluster-autoscaler/e2e/hack/run-e2e.sh
+      - --test-cmd-args=--ginkgo.focus=\[Feature:NodeAutoProvisioningWithGPU\]
+      - --timeout=5h
+
+- interval: 4h
+  name: ci-autoscaling-nap-multizonal-e2e
+  labels:
+    preset-k8s-ssh: "true"
+    preset-service-account: "true"
+  spec:
+    containers:
+    - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
+      args:
+      - --timeout=320
+      - --repo=gke-internal.googlesource.com/gke-autoscaling=master
+      - --root=/go/src
+      - --upload=gs://gob-prow/logs
+      - --scenario=kubernetes_e2e
+      - --
+      - --check-leaked-resources
+      - --cluster=gke-autoscaling-cluster
+      - --deployment=gke
+      - --extract=gs://kubernetes-release-gke-internal/ci/latest-autoscaling.txt
+      - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+      - --gcp-node-image=gci
+      - --gcp-zone=us-central1-f
+      - --gke-node-locations=us-central1-f,us-central1-a,us-central1-b
+      - --gke-shape={"default":{"Nodes":1,"MachineType":"n1-standard-2"}}
+      - --gke-single-zone-node-instance-group=false
+      - --ginkgo-parallel=1
+      - --gke-environment=test
+      - --provider=gke
+      - --test=false
+      - --test-cmd=../test/cluster-autoscaler/e2e/hack/run-e2e.sh
+      - --test-cmd-args=--ginkgo.focus=\[Feature:NodeAutoProvisioningMultizonal\]
+      - --timeout=5h
+
+- interval: 4h
+  name: ci-autoscaling-nap-gpu-multizonal-e2e
+  labels:
+    preset-k8s-ssh: "true"
+    preset-service-account: "true"
+  spec:
+    containers:
+    - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
+      args:
+      - --timeout=320
+      - --repo=gke-internal.googlesource.com/gke-autoscaling=master
+      - --root=/go/src
+      - --upload=gs://gob-prow/logs
+      - --scenario=kubernetes_e2e
+      - --
+      - --check-leaked-resources
+      - --cluster=gke-autoscaling-cluster
+      - --deployment=gke
+      - --extract=gs://kubernetes-release-gke-internal/ci/latest-autoscaling.txt
+      - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+      - --gcp-node-image=gci
+      - --gcp-project-type=gpu-project
+      - --gcp-zone=us-east1-c
+      - --gke-node-locations=us-east1-c,us-east1-d
+      - --gke-shape={"default":{"Nodes":1,"MachineType":"n1-standard-2"}}
+      - --gke-single-zone-node-instance-group=false
+      - --ginkgo-parallel=1
+      - --gke-environment=test
+      - --provider=gke
+      - --test=false
+      - --test-cmd=../test/cluster-autoscaler/e2e/hack/run-e2e.sh
+      - --test-cmd-args=--ginkgo.focus=\[Feature:NodeAutoProvisioningWithGpuMultizonal\]
+      - --timeout=5h
+
+- interval: 4h
+  name: ci-autoscaling-nap-regional-e2e
+  labels:
+    preset-k8s-ssh: "true"
+    preset-service-account: "true"
+  spec:
+    containers:
+    - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
+      args:
+      - --timeout=320
+      - --repo=gke-internal.googlesource.com/gke-autoscaling=master
+      - --root=/go/src
+      - --upload=gs://gob-prow/logs
+      - --scenario=kubernetes_e2e
+      - --
+      - --check-leaked-resources
+      - --cluster=gke-autoscaling-cluster
+      - --deployment=gke
+      - --extract=gs://kubernetes-release-gke-internal/ci/latest-autoscaling.txt
+      - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+      - --gcp-node-image=gci
+      - --gcp-region=us-central1
+      - --gke-create-command=beta container clusters create --enable-autoprovisioning --max-cpu=64 --max-memory=1000
+      - --gke-node-locations=us-central1-f,us-central1-a,us-central1-b
+      - --gke-shape={"default":{"Nodes":1,"MachineType":"n1-standard-2"}}
+      - --gke-single-zone-node-instance-group=false
+      - --ginkgo-parallel=1
+      - --gke-environment=test
+      - --provider=gke
+      - --test=false
+      - --test-cmd=../test/cluster-autoscaler/e2e/hack/run-e2e.sh
+      - --test-cmd-args=--ginkgo.focus=\[Feature:NodeAutoProvisioningMultizonal\]
+      - --timeout=5h

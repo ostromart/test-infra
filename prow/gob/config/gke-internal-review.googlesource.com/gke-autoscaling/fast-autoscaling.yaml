@@ -1,0 +1,219 @@
+#############################################################################################################################
+# fast autoscaling tests
+#############################################################################################################################
+
+periodics:
+- interval: 60m
+  name: periodic_fast_autoscaling_test_dev
+  labels:
+    preset-k8s-ssh: "true"
+    preset-service-account: "true"
+  spec:
+    containers:
+    - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
+      args:
+      - --clean
+      - --repo=gke-internal.googlesource.com/gke-autoscaling
+      - --timeout=60
+      - --scenario=execute
+      - --upload=gs://gob-prow/logs
+      - -- # end bootstrap args, scenario args below
+      - /workspace/gke-internal.googlesource.com/gke-autoscaling/test/fast-scaling-tests/prow/test_dev.sh
+- interval: 60m
+  name: periodic_fast_autoscaling_test_prod_small
+  labels:
+    preset-k8s-ssh: "true"
+    preset-service-account: "true"
+  spec:
+    containers:
+    - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
+      args:
+      - --clean
+      - --repo=gke-internal.googlesource.com/gke-autoscaling
+      - --timeout=60
+      - --scenario=execute
+      - --upload=gs://gob-prow/logs
+      - -- # end bootstrap args, scenario args below
+      - /workspace/gke-internal.googlesource.com/gke-autoscaling/test/fast-scaling-tests/prow/test_prod_small.sh
+- interval: 6h
+  name: periodic_fast_autoscaling_test_prod_large
+  labels:
+    preset-k8s-ssh: "true"
+    preset-service-account: "true"
+  spec:
+    containers:
+    - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
+      args:
+      - --clean
+      - --repo=gke-internal.googlesource.com/gke-autoscaling
+      - --timeout=180
+      - --scenario=execute
+      - --upload=gs://gob-prow/logs
+      - -- # end bootstrap args, scenario args below
+      - /workspace/gke-internal.googlesource.com/gke-autoscaling/test/fast-scaling-tests/prow/test_prod_large.sh
+- interval: 60m
+  name: periodic_fast_autoscaling_test_prod_hermes_small
+  labels:
+    preset-k8s-ssh: "true"
+    preset-service-account: "true"
+  spec:
+    containers:
+    - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
+      args:
+      - --clean
+      - --repo=gke-internal.googlesource.com/gke-autoscaling
+      - --timeout=60
+      - --scenario=execute
+      - --upload=gs://gob-prow/logs
+      - -- # end bootstrap args, scenario args below
+      - /workspace/gke-internal.googlesource.com/gke-autoscaling/test/fast-scaling-tests/prow/test_prod_hermes_small.sh
+- interval: 6h
+  name: periodic_fast_autoscaling_test_prod_hermes_large
+  labels:
+    preset-k8s-ssh: "true"
+    preset-service-account: "true"
+  spec:
+    containers:
+    - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
+      args:
+      - --clean
+      - --repo=gke-internal.googlesource.com/gke-autoscaling
+      - --timeout=180
+      - --scenario=execute
+      - --upload=gs://gob-prow/logs
+      - -- # end bootstrap args, scenario args below
+      - /workspace/gke-internal.googlesource.com/gke-autoscaling/test/fast-scaling-tests/prow/test_prod_hermes_large.sh
+- interval: 60m
+  name: periodic_fast_autoscaling_test_experimental_small
+  labels:
+    preset-k8s-ssh: "true"
+    preset-service-account: "true"
+  spec:
+    containers:
+    - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
+      args:
+      - --clean
+      - --repo=gke-internal.googlesource.com/gke-autoscaling
+      - --timeout=60
+      - --scenario=execute
+      - --upload=gs://gob-prow/logs
+      - -- # end bootstrap args, scenario args below
+      - /workspace/gke-internal.googlesource.com/gke-autoscaling/test/fast-scaling-tests/prow/test_experimental_small.sh
+- interval: 6h
+  name: periodic_fast_autoscaling_test_experimental_large
+  labels:
+    preset-k8s-ssh: "true"
+    preset-service-account: "true"
+  spec:
+    containers:
+    - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
+      args:
+      - --clean
+      - --repo=gke-internal.googlesource.com/gke-autoscaling
+      - --timeout=180
+      - --scenario=execute
+      - --upload=gs://gob-prow/logs
+      - -- # end bootstrap args, scenario args below
+      - /workspace/gke-internal.googlesource.com/gke-autoscaling/test/fast-scaling-tests/prow/test_experimental_large.sh
+- interval: 60m
+  name: periodic_fast_autoscaling_test_experimental_ssd_small
+  labels:
+    preset-k8s-ssh: "true"
+    preset-service-account: "true"
+  spec:
+    containers:
+    - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
+      args:
+      - --clean
+      - --repo=gke-internal.googlesource.com/gke-autoscaling
+      - --timeout=60
+      - --scenario=execute
+      - --upload=gs://gob-prow/logs
+      - -- # end bootstrap args, scenario args below
+      - /workspace/gke-internal.googlesource.com/gke-autoscaling/test/fast-scaling-tests/prow/test_experimental_ssd_small.sh
+- interval: 6h
+  name: periodic_fast_autoscaling_test_experimental_ssd_large
+  labels:
+    preset-k8s-ssh: "true"
+    preset-service-account: "true"
+  spec:
+    containers:
+    - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
+      args:
+      - --clean
+      - --repo=gke-internal.googlesource.com/gke-autoscaling
+      - --timeout=180
+      - --scenario=execute
+      - --upload=gs://gob-prow/logs
+      - -- # end bootstrap args, scenario args below
+      - /workspace/gke-internal.googlesource.com/gke-autoscaling/test/fast-scaling-tests/prow/test_experimental_ssd_large.sh
+- interval: 30m
+  name: periodic_fast_autoscaling_generate_metrics_file
+  labels:
+    preset-k8s-ssh: "true"
+    preset-service-account: "true"
+  spec:
+    containers:
+    - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
+      args:
+      - --clean
+      - --repo=gke-internal.googlesource.com/gke-autoscaling
+      - --timeout=20
+      - --scenario=execute
+      - --upload=gs://gob-prow/logs
+      - -- # end bootstrap args, scenario args below
+      - /workspace/gke-internal.googlesource.com/gke-autoscaling/test/fast-scaling-tests/generate_metrics_file.sh
+
+# gke fast autoscaling agent jobs
+- interval: 30m
+  name: ci-fast-autoscaling-agent-image-build
+  labels:
+    preset-service-account: "true"
+    preset-dind-enabled: "true"
+  spec:
+    containers:
+    - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
+      args:
+      - --clean
+      - --repo=gke-internal.googlesource.com/GoogleCloudPlatform/k8s-stackdriver=fast-autoscaling
+      - --root=/go/src
+      - --timeout=30
+      - --scenario=execute
+      - --upload=gs://gob-prow/logs
+      - -- # stop bootstrap flags
+      - --env=TAG=ci_latest
+      - --env=REGISTRY=gcr.io/gke-autoscaling-gcr
+      - ./hack/release-ci.sh
+      # docker-in-docker needs privileged mode
+      securityContext:
+        privileged: true
+
+- interval: 2h
+  name: ci-fast-autoscaling-agent-e2e
+  labels:
+    preset-k8s-ssh: "true"
+    preset-service-account: "true"
+  spec:
+    containers:
+    - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
+      args:
+      - --timeout=320
+      - --repo=gke-internal.googlesource.com/GoogleCloudPlatform/k8s-stackdriver=fast-autoscaling
+      - --root=/go/src
+      - --upload=gs://gob-prow/logs
+      - --scenario=kubernetes_e2e
+      - --
+      - --check-leaked-resources
+      - --cluster=gke-autoscaling-cluster
+      - --deployment=gke
+      - --extract=gs://kubernetes-release-gke-internal/ci/latest-autoscaling.txt
+      - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+      - --gcp-node-image=gci
+      - --gcp-zone=us-central1-f
+      - --ginkgo-parallel=1
+      - --gke-environment=test
+      - --provider=gke
+      - --test=false
+      - --test-cmd=../test/fast-autoscaling-agent/run-e2e.sh
+      - --test-cmd-args=--ginkgo.focus=\[Feature:FastAutoscalingAgent\]
+      - --timeout=5h

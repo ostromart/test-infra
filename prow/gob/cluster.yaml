@@ -75,7 +75,7 @@ spec:
     spec:
       containers:
       - name: plank
-        image: gcr.io/k8s-prow/plank:v20181130-0587c47
+        image: gcr.io/k8s-prow/plank:v20181218-8eb6f41
         args:
         - --dry-run=false
         - --github-token-path=
@@ -111,7 +111,7 @@ spec:
     spec:
       containers:
       - name: sinker
-        image: gcr.io/k8s-prow/sinker:v20181130-0587c47
+        image: gcr.io/k8s-prow/sinker:v20181218-8eb6f41
         args:
         - --job-config-path=/etc/job-config
         volumeMounts:
@@ -150,7 +150,7 @@ spec:
       terminationGracePeriodSeconds: 30
       containers:
       - name: deck
-        image: gcr.io/k8s-prow/deck:v20181130-0587c47
+        image: gcr.io/k8s-prow/deck:v20181218-8eb6f41
         ports:
         - name: http
           containerPort: 8080
@@ -207,7 +207,7 @@ spec:
       terminationGracePeriodSeconds: 30
       containers:
       - name: horologium
-        image: gcr.io/k8s-prow/horologium:v20181130-0587c47
+        image: gcr.io/k8s-prow/horologium:v20181218-8eb6f41
         args:
         - --job-config-path=/etc/job-config
         volumeMounts:
@@ -281,7 +281,7 @@ spec:
       terminationGracePeriodSeconds: 30
       containers:
       - name: gerrit
-        image: gcr.io/k8s-prow/gerrit:v20181130-0587c47
+        image: gcr.io/k8s-prow/gerrit:v20181218-8eb6f41
         args:
         - --config-path=/etc/config/config.yaml
         - --job-config-path=/etc/job-config
@@ -335,7 +335,7 @@ spec:
       terminationGracePeriodSeconds: 30
       containers:
       - name: crier
-        image: gcr.io/k8s-prow/crier:v20181130-0587c47
+        image: gcr.io/k8s-prow/crier:v20181218-8eb6f41
         args:
         - --gerrit-workers=1
         - --pubsub-workers=1

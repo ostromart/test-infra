@@ -203,48 +203,6 @@ periodics:
        secret:
          secretName: nomos-prober-runner-gcp-client-key
 
-# Tests go/nomos against an alpha GKE 1.9.7 cluster.
-# See "nomos-ci" job above for all relevant comments.  The jobs should be by
-# and large the same.
- - interval: 23m
-   name: nomos-ci-gke-197-a
-   labels:
-     preset-service-account: "true"
-     preset-dind-enabled: "true"
-   decorate: true
-   decoration_config:
-     timeout: 3600000000000 # 60 minutes
-   extra_refs:
-   - org: team.googlesource.com/gke-kubernetes-enterprise-control
-     repo: prototype
-     base_ref: master
-     clone_uri: https://team.googlesource.com/gke-kubernetes-enterprise-control/prototype
-   spec:
-     containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
-       command:
-       - runner.sh
-       args:
-       - make
-       - ci-test-e2e
-       env:
-       - name: USER
-         value: "nomos-ci-gke-197-a"
-       - name: UID
-         value: "10333"
-       - name: GID
-         value: "10333"
-       securityContext:
-         privileged: true
-       volumeMounts:
-       - name: prober-cred
-         mountPath: /etc/prober-gcp-service-account
-         readOnly: true
-     volumes:
-     - name: prober-cred
-       secret:
-         secretName: nomos-prober-runner-gcp-client-key
-
 # Tests go/nomos against an alpha GKE 1.11.x cluster.
 # See "nomos-ci" job above for all relevant comments.  The jobs should be by
 # and large the same.

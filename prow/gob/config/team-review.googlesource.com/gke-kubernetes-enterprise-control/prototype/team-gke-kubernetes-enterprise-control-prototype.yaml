@@ -71,6 +71,49 @@ periodics:
    labels:
      preset-service-account: "true"
      preset-dind-enabled: "true"
+   spec:
+     activeDeadlineSeconds: 7200  # 2 hours
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+       args:
+       - --clean
+       - --timeout=300
+       - --repo=team.googlesource.com/gke-kubernetes-enterprise-control/prototype=master
+       - --scenario=execute
+       - --upload=gs://gob-prow/logs
+       - --
+       - make
+       - --
+       - --makefile=Makefile.release
+       - autorelease
+       env:
+       # The ambient UNIX user name as would be defined inside a shell.
+       - name: USER
+         value: "nomos-release"
+       # The ambient UNIX numeric user id as would be defined inside a shell.
+       - name: UID
+         value: "10333"
+       # The ambient UNIX numeric group id as would be defined inside a shell.
+       - name: GID
+         value: "10333"
+       # docker-in-docker needs privileged mode
+       securityContext:
+         privileged: true
+       volumeMounts:
+       - name: prober-cred
+         mountPath: /etc/prober-gcp-service-account
+         readOnly: true
+     volumes:
+     - name: prober-cred
+       secret:
+         secretName: nomos-prober-runner-gcp-client-key
+
+# Canary version of release job on podutil (can be triggered manually)
+ - interval: 24h
+   name: nomos-release-canary
+   labels:
+     preset-service-account: "true"
+     preset-dind-enabled: "true"
    decorate: true
    decoration_config:
      timeout: 3600000000000 # 60 minutes
@@ -86,9 +129,8 @@ periodics:
        - runner.sh
        args:
        - make
-       - --
        - --makefile=Makefile.release
-       - autorelease
+       - autorelease-local
        env:
        # The ambient UNIX user name as would be defined inside a shell.
        - name: USER

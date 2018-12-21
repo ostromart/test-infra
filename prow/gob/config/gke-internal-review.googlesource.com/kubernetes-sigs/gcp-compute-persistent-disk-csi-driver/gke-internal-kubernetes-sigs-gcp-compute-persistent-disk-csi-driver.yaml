@@ -9,7 +9,7 @@ presubmits:
       preset-dind-enabled: "true"
     spec:
       containers:
-      - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-1.11
+      - image: gcr.io/gke-test-infra/kubekins-e2e:v20181221-f9eff05-1.11
         command:
         - runner.sh
         args:
@@ -34,7 +34,7 @@ periodics:
      clone_uri: https://gke-internal.googlesource.com/kubernetes-sigs/gcp-compute-persistent-disk-csi-driver
    spec:
      containers:
-     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-1.11
+     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181221-f9eff05-1.11
        command:
        - runner.sh
        args:
@@ -62,7 +62,7 @@ periodics:
      clone_uri: https://gke-internal.googlesource.com/kubernetes-sigs/gcp-compute-persistent-disk-csi-driver
    spec:
      containers:
-     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-1.11
+     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181221-f9eff05-1.11
        command:
        - runner.sh
        args:

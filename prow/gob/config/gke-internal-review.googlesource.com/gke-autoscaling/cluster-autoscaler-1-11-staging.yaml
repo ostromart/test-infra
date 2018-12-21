@@ -193,4 +193,36 @@ periodics:
       - --test-cmd-args=--ginkgo.focus=\[Feature:NodeAutoProvisioningMultizonal\]
       - --timeout=5h
 
-
+- interval: 4h
+  name: ci-autoscaling-nap-gpu-multizonal-e2e-1-11-staging
+  labels:
+    preset-k8s-ssh: "true"
+    preset-service-account: "true"
+  spec:
+    containers:
+    - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
+      args:
+      - --timeout=320
+      - --repo=gke-internal.googlesource.com/gke-autoscaling=master
+      - --root=/go/src
+      - --upload=gs://gob-prow/logs
+      - --scenario=kubernetes_e2e
+      - --
+      - --check-leaked-resources
+      - --cluster=gke-autoscaling-cluster
+      - --deployment=gke
+      - --extract=gke-latest-1.11
+      - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+      - --gcp-node-image=gci
+      - --gcp-project-type=gpu-project
+      - --gcp-zone=us-central1-c
+      - --gke-node-locations=us-central1-c,us-central1-f
+      - --gke-shape={"default":{"Nodes":1,"MachineType":"n1-standard-2"}}
+      - --gke-single-zone-node-instance-group=false
+      - --ginkgo-parallel=1
+      - --gke-environment=staging
+      - --provider=gke
+      - --test=false
+      - --test-cmd=../test/cluster-autoscaler/e2e/hack/run-e2e.sh
+      - --test-cmd-args=--ginkgo.focus=\[Feature:NodeAutoProvisioningWithGpuMultizonal\]
+      - --timeout=5h

@@ -13,7 +13,7 @@
 # limitations under the License.
 
 BASE_IMG = gcr.io/k8s-testimages/kubekins-e2e
-BASE_TAG ?= v20181122-a5bf59311
+BASE_TAG ?= v20181218-134e718ec
 
 IMG = gcr.io/gke-test-infra/kubekins-e2e
 TAG := $(shell date +v%Y%m%d)-$(shell git describe --tags --always --dirty)
@@ -21,29 +21,26 @@ TAG := $(shell date +v%Y%m%d)-$(shell git describe --tags --always --dirty)
 ALL_K8S=master experimental 1.13 1.12 1.11 1.10 1.9
 
 K8S ?= master
-# TODO(jgrafton): update to 1.11.2b4 when available
-GO_VERSION ?= 1.11b4
-BAZEL = 0.18.0
+GO_VERSION ?= 1.11.4b4
+BAZEL = 0.18.1
 GO_URL_BASE ?= https://storage.googleapis.com/go-boringcrypto
 
 FULL_IMG=$(IMG):$(TAG)-$(K8S)
 
 ifeq ($(K8S), experimental)
-	# TODO(jgrafton): update to 1.11.2b4 when available
-	GO_VERSION = 1.11b4
+	GO_VERSION = 1.11.4b4
 	BAZEL = 0.20.0
 endif
 ifeq ($(K8S), 1.13)
-	# TODO(jgrafton): update to 1.11.2b4 when available
-	GO_VERSION = 1.11b4
-	BAZEL = 0.18.0
+	GO_VERSION = 1.11.4b4
+	BAZEL = 0.18.1
 endif
 ifeq ($(K8S), 1.12)
-	GO_VERSION = 1.10.4b4
-	BAZEL = 0.16.1
+	GO_VERSION = 1.10.7b4
+	BAZEL = 0.18.1
 endif
 ifeq ($(K8S), 1.11)
-	GO_VERSION = 1.10.3b4
+	GO_VERSION = 1.10.7b4
 	BAZEL = 0.14.0
 endif
 ifeq ($(K8S), 1.10)

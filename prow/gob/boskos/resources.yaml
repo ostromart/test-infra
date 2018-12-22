@@ -10,6 +10,16 @@ resources:
   - prow-gob-boskos-08
   - prow-gob-boskos-09
   - prow-gob-boskos-10
+  - prow-gob-boskos-11
+  - prow-gob-boskos-12
+  - prow-gob-boskos-13
+  - prow-gob-boskos-14
+  - prow-gob-boskos-15
+  - prow-gob-boskos-16
+  - prow-gob-boskos-17
+  - prow-gob-boskos-18
+  - prow-gob-boskos-19
+  - prow-gob-boskos-20
   state: dirty
   type: gke-project
 - names:
@@ -45,6 +55,12 @@ resources:
   - prow-gob-gpu-boskos-02
   - prow-gob-gpu-boskos-03
   - prow-gob-gpu-boskos-04
+  - prow-gob-gpu-boskos-05
+  - prow-gob-gpu-boskos-06
+  - prow-gob-gpu-boskos-07
+  - prow-gob-gpu-boskos-08
+  - prow-gob-gpu-boskos-09
+  - prow-gob-gpu-boskos-10
   state: dirty
   type: gpu-project
 - names:

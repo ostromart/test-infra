@@ -3,8 +3,8 @@
 #############################################################################################################################
 
 periodics:
-- interval: 30m
-  name: ci-autoscaling-image-build
+- interval: 2h
+  name: ci-autoscaling-build-images-latest
   labels:
     preset-service-account: "true"
     preset-dind-enabled: "true"
@@ -19,15 +19,13 @@ periodics:
       - --scenario=execute
       - --upload=gs://gob-prow/logs
       - -- # stop bootstrap flags
-      - --env=TAG=ci_latest
-      - --env=REGISTRY=gcr.io/gke-autoscaling-gcr
-      - ./hack/release-ci.sh
+      - ./hack/e2e/build-autoscaling-ci-images-latest
       # docker-in-docker needs privileged mode
       securityContext:
         privileged: true
 
-- interval: 30m
-  name: ci-autoscaling-image-build-1-3
+- interval: 2h
+  name: ci-autoscaling-build-images-1-11
   labels:
     preset-service-account: "true"
     preset-dind-enabled: "true"
@@ -36,19 +34,16 @@ periodics:
     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
       args:
       - --clean
-      - --repo=gke-internal.googlesource.com/gke-autoscaling=cluster-autoscaler-release-1.3
+      - --repo=gke-internal.googlesource.com/gke-autoscaling
       - --root=/go/src
       - --timeout=30
       - --scenario=execute
       - --upload=gs://gob-prow/logs
       - -- # stop bootstrap flags
-      - --env=TAG=ci_latest_1_3
-      - --env=REGISTRY=gcr.io/gke-autoscaling-gcr
-      - ./cluster-autoscaler/hack/release-ci.sh
+      - ./hack/e2e/build-autoscaling-ci-images-1.11
       # docker-in-docker needs privileged mode
       securityContext:
         privileged: true
-
 
 
 

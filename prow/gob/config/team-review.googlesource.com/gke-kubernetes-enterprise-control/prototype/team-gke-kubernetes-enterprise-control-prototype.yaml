@@ -122,7 +122,7 @@ periodics:
    - org: team.googlesource.com/gke-kubernetes-enterprise-control
      repo: cluster-operators
      base_ref: master
-     clone_uri: https://gke-internal.googlesource.com/cluster-lifecycle
+     clone_uri: https://gke-internal.googlesource.com/cluster-lifecycle/cluster-operators
    spec:
      containers:
      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master

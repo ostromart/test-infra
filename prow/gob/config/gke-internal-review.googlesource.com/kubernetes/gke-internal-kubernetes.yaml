@@ -46,7 +46,7 @@ presubmits:
       prow.k8s.io/gerrit-report-label: "Verified"
     spec:
       containers:
-      - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
+      - image: gcr.io/gke-test-infra/kubekins-e2e:v20181221-f9eff05-master
         command:
         - runner.sh
         - ../../../k8s.io/test-infra/scenarios/kubernetes_bazel.py
@@ -100,7 +100,7 @@ periodics:
      preset-bazel-scratch-dir: "true"
    spec:
      containers:
-     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
+     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181221-f9eff05-master
        args:
        - --clean
        - --job=$(JOB_NAME)
@@ -197,4 +197,4 @@ periodics:
        - --provider=gke
        - --test_args=--ginkgo.skip=\[Slow\]|\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\] --minStartupPods=8
        - --timeout=50m
-       image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
+       image: gcr.io/gke-test-infra/kubekins-e2e:v20181221-f9eff05-master

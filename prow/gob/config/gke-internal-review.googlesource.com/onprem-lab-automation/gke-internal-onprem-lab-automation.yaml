@@ -8,7 +8,7 @@ presubmits:
       prow.k8s.io/gerrit-report-label: "Verified"
     spec:
       containers:
-      - image: gcr.io/gke-test-infra/kubekins-e2e:v20181127-ae09170-master
+      - image: gcr.io/gke-test-infra/kubekins-e2e:v20181221-f9eff05-master
         command:
         - make
         args:

@@ -1194,6 +1194,7 @@ periodics:
                   gke-e2e-guitar-accelerators-3,
                   gke-e2e-guitar-accelerators-4,
                   gke-e2e-guitar-accelerators-5,
+                  gke-e2e-guitar-accelerators-6,
                   gke-e2e-jenkins-oneoff,
                   gke-e2e-pull-config,
                   gke-e2e-regional-createdelete,

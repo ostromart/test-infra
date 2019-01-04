@@ -125,7 +125,7 @@ periodics:
      clone_uri: https://gke-internal.googlesource.com/cluster-lifecycle/cluster-operators
    spec:
      containers:
-     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181221-f9eff05-master
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
        command:
        - runner.sh
        args:
@@ -137,6 +137,53 @@ periodics:
        # The ambient UNIX user name as would be defined inside a shell.
        - name: USER
          value: "nomos-operator-release"
+       # The ambient UNIX numeric user id as would be defined inside a shell.
+       - name: UID
+         value: "10333"
+       # The ambient UNIX numeric group id as would be defined inside a shell.
+       - name: GID
+         value: "10333"
+       # docker-in-docker needs privileged mode
+       securityContext:
+         privileged: true
+       volumeMounts:
+       - name: prober-cred
+         mountPath: /etc/prober-gcp-service-account
+         readOnly: true
+     volumes:
+     - name: prober-cred
+       secret:
+         secretName: nomos-prober-runner-gcp-client-key
+
+# Runs a release process that builds go/nomos releases based off of latest HEAD
+# that passes the build.
+ - interval: 20m
+   name: nomos-operator-release-staging
+   labels:
+     preset-service-account: "true"
+     preset-dind-enabled: "true"
+   decorate: true
+   decoration_config:
+     timeout: 1200000000000 # 20 minutes
+   extra_refs:
+   - org: team.googlesource.com/gke-kubernetes-enterprise-control
+     repo: cluster-operators
+     base_ref: master
+     clone_uri: https://gke-internal.googlesource.com/cluster-lifecycle/cluster-operators
+   spec:
+     containers:
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+       command:
+       - runner.sh
+       args:
+       - make
+       - -C
+       - nomos-operator
+       - create-release-package
+       env:
+       # The ambient UNIX user name as would be defined inside a shell.
+       - name: USER
+         value: "nomos-operator-release-staging"
        # The ambient UNIX numeric user id as would be defined inside a shell.
        - name: UID
          value: "10333"

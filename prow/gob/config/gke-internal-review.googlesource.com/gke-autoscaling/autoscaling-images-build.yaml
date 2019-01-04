@@ -1,5 +1,5 @@
 #############################################################################################################################
-# build images of cluster-autoscaler which are then used for tests
+# build images of autoscaling components which are then used for tests
 #############################################################################################################################
 
 periodics:
@@ -43,6 +43,28 @@ periodics:
       - --upload=gs://gob-prow/logs
       - -- # stop bootstrap flags
       - ./hack/e2e/build-autoscaling-ci-images-1.11
+      # docker-in-docker needs privileged mode
+      securityContext:
+        privileged: true
+
+- interval: 2h
+  name: ci-autoscaling-build-images-1-12
+  labels:
+    preset-service-account: "true"
+    preset-dind-enabled: "true"
+  spec:
+    containers:
+    - image: gcr.io/gke-test-infra/kubekins-e2e:v20181221-f9eff05-master
+      args:
+      - --timeout=60
+      - --clean
+      - --repo=gke-internal.googlesource.com/gke-autoscaling
+      - --root=/go/src
+      - --timeout=30
+      - --scenario=execute
+      - --upload=gs://gob-prow/logs
+      - -- # stop bootstrap flags
+      - ./hack/e2e/build-autoscaling-ci-images-1.12
       # docker-in-docker needs privileged mode
       securityContext:
         privileged: true

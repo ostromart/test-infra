@@ -12,6 +12,7 @@ periodics:
      path_alias: gke-internal.googlesource.com/syllogi/cluster-management
      clone_uri: https://gke-internal.googlesource.com/syllogi/cluster-management
    decoration_config:
+     timeout: 10800000000000 #3h
      gcs_configuration:
        bucket: "syllogi-gob-prow"
        path_strategy: "explicit"
@@ -35,6 +36,7 @@ periodics:
      path_alias: gke-internal.googlesource.com/syllogi/cluster-management
      clone_uri: https://gke-internal.googlesource.com/syllogi/cluster-management
    decoration_config:
+     timeout: 10800000000000 #3h
      gcs_configuration:
        bucket: "syllogi-gob-prow"
        path_strategy: "explicit"

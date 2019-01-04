@@ -1,5 +1,5 @@
 #############################################################################################################################
-# test latest 1.11 k8s with CA built from HEAD of ke-internal.googlesource.com/gke-autoscaling/cluster-autoscaler-release-1.3
+# test latest 1.11 k8s with CA built from HEAD of gke-internal.googlesource.com/gke-autoscaling/cluster-autoscaler-release-1.3
 #############################################################################################################################
 
 periodics:

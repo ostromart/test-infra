@@ -215,7 +215,7 @@ periodics:
       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
       - --gcp-node-image=gci
       - --gcp-project-type=gpu-project
-      - --gcp-zone=us-central1-c
+      - --gcp-zone=us-central1-f
       - --gke-node-locations=us-central1-c,us-central1-f
       - --gke-shape={"default":{"Nodes":1,"MachineType":"n1-standard-2"}}
       - --gke-single-zone-node-instance-group=false

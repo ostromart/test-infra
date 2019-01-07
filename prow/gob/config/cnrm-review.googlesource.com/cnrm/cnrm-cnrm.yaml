@@ -28,6 +28,10 @@ presubmits:
         env:
         - name: GOOGLE_APPLICATION_CREDENTIALS
           value: /var/secrets/google/service-account.json
+        resources:
+          requests:
+            cpu: 4
+            memory: "8Gi"
 
 periodics:
  - interval: 1h
@@ -62,6 +66,10 @@ periodics:
        - --scenario=execute
        - --
        - /go/src/cnrm.googlesource.com/cnrm/scripts/ci-test.sh
+       resources:
+         requests:
+           cpu: 4
+           memory: "8Gi"
 
  - cron: "0,30 * * * *"
    name: periodic-cnrm-release

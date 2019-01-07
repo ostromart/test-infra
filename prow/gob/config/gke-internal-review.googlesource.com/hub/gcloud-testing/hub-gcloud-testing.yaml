@@ -1,0 +1,36 @@
+periodics:
+- decorate: true
+  decoration_config:
+    timeout: 3600000000000 # 60 minutes
+  interval: 1h
+  extra_refs:
+  - org: gke-internal.googlesource.com/hub
+    repo: gcloud-testing
+    base_ref: master
+    path_alias: gke-internal.googlesource.com/hub/gcloud-testing
+    clone_uri: https://gke-internal.googlesource.com/hub/gcloud-testing
+  labels:
+    preset-service-account: "true"
+    preset-k8s-ssh: "true"
+  name: ci-hub-gcloud-workflow-testing
+  spec:
+    containers:
+    - args:
+      - --check-leaked-resources
+      - --check-version-skew=false
+      - --cluster=
+      - --deployment=gke
+      - --extract=gke
+      - --gcp-node-image=gci
+      - --gcp-project=gkehub-test-gcloud-staging
+      - --gcp-zone=us-central1-f
+      - --gke-environment=staging
+      - --provider=gke
+      - --test=false
+      - --test-cmd=./test.sh
+      - --test-cmd-name=hub-gcloud-workflow-testing
+      - --timeout=55m
+      command:
+      - runner.sh
+      - /workspace/scenarios/kubernetes_e2e.py
+      image: gcr.io/gke-test-infra/kubekins-e2e:v20181221-f9eff05-master

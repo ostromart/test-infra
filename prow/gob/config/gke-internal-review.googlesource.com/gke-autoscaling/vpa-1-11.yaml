@@ -1,10 +1,9 @@
 #######################################################################################################
 # test latest k8s 1.11 with VPA built from HEAD of gke-internal.googlesource.com/gke-autoscaling/master
 #######################################################################################################
-# TODO(bskiba): Have VPA built from HEAD of gke-internal.googlesource.com/gke-autoscaling/vertical-pod-autoscaler-0.3
 
 periodics:
-- interval: 2h
+- interval: 3h
   name: ci-autoscaling-vpa-full-e2e-1-11
   labels:
     preset-k8s-ssh: "true"
@@ -13,7 +12,7 @@ periodics:
     containers:
     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181221-f9eff05-master
       args:
-      - --timeout=80
+      - --timeout=120
       - --repo=k8s.io/autoscaler=master
       - --root=/go/src
       - --upload=gs://gob-prow/logs
@@ -35,9 +34,9 @@ periodics:
       - --test=false
       - --test-cmd=../vertical-pod-autoscaler/hack/run-e2e-tests.sh
       - --test-cmd-args=full-vpa
-      - --timeout=60m
+      - --timeout=90m
 
-- interval: 3h
+- interval: 4h
   name: ci-autoscaling-vpa-recommender-e2e-1-11
   labels:
     preset-k8s-ssh: "true"
@@ -46,7 +45,7 @@ periodics:
     containers:
     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181221-f9eff05-master
       args:
-      - --timeout=120
+      - --timeout=150
       - --repo=gke-internal.googlesource.com/gke-autoscaling=master
       - --root=/go/src
       - --upload=gs://gob-prow/logs
@@ -68,9 +67,9 @@ periodics:
       - --test=false
       - --test-cmd=../test/vertical-pod-autoscaler/e2e/hack/run-e2e.sh
       - --test-cmd-args=recommender
-      - --timeout=90m
+      - --timeout=120m
 
-- interval: 2h
+- interval: 3h
   name: ci-autoscaling-vpa-updater-e2e-1-11
   labels:
     preset-k8s-ssh: "true"
@@ -79,7 +78,7 @@ periodics:
     containers:
     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181221-f9eff05-master
       args:
-      - --timeout=80
+      - --timeout=120
       - --repo=k8s.io/autoscaler=master
       - --root=/go/src
       - --upload=gs://gob-prow/logs
@@ -101,9 +100,9 @@ periodics:
       - --test=false
       - --test-cmd=../vertical-pod-autoscaler/hack/run-e2e-tests.sh
       - --test-cmd-args=updater
-      - --timeout=60m
+      - --timeout=90m
 
-- interval: 2h
+- interval: 3h
   name: ci-autoscaling-vpa-admission-controller-e2e-1-11
   labels:
     preset-k8s-ssh: "true"
@@ -112,7 +111,7 @@ periodics:
     containers:
     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181221-f9eff05-master
       args:
-      - --timeout=80
+      - --timeout=120
       - --repo=k8s.io/autoscaler=master
       - --root=/go/src
       - --upload=gs://gob-prow/logs
@@ -134,9 +133,9 @@ periodics:
       - --test=false
       - --test-cmd=../vertical-pod-autoscaler/hack/run-e2e-tests.sh
       - --test-cmd-args=admission-controller
-      - --timeout=60m
+      - --timeout=90m
 
-- interval: 2h
+- interval: 4h
   name: ci-autoscaling-vpa-actuation-e2e-1-11
   labels:
     preset-k8s-ssh: "true"
@@ -145,7 +144,7 @@ periodics:
     containers:
     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181221-f9eff05-master
       args:
-      - --timeout=80
+      - --timeout=150
       - --repo=gke-internal.googlesource.com/gke-autoscaling=master
       - --root=/go/src
       - --upload=gs://gob-prow/logs
@@ -167,9 +166,9 @@ periodics:
       - --test=false
       - --test-cmd=../test/vertical-pod-autoscaler/e2e/hack/run-e2e.sh
       - --test-cmd-args=actuation
-      - --timeout=60m
+      - --timeout=120m
 
-- interval: 2h
+- interval: 4h
   name: ci-autoscaling-vpa-actuation-ca-e2e-1-11
   labels:
     preset-k8s-ssh: "true"
@@ -178,7 +177,7 @@ periodics:
     containers:
     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181221-f9eff05-master
       args:
-      - --timeout=80
+      - --timeout=150
       - --repo=gke-internal.googlesource.com/gke-autoscaling=master
       - --root=/go/src
       - --upload=gs://gob-prow/logs
@@ -200,9 +199,9 @@ periodics:
       - --test=false
       - --test-cmd=../test/vertical-pod-autoscaler/e2e/hack/run-e2e.sh
       - --test-cmd-args=actuation-ca
-      - --timeout=60m
+      - --timeout=120m
 
-- interval: 2h
+- interval: 4h
   name: ci-autoscaling-vpa-actuation-nap-e2e-1-11
   labels:
     preset-k8s-ssh: "true"
@@ -211,7 +210,7 @@ periodics:
     containers:
     - image: gcr.io/gke-test-infra/kubekins-e2e:v20181221-f9eff05-master
       args:
-      - --timeout=80
+      - --timeout=150
       - --repo=gke-internal.googlesource.com/gke-autoscaling=master
       - --root=/go/src
       - --upload=gs://gob-prow/logs
@@ -233,4 +232,4 @@ periodics:
       - --test=false
       - --test-cmd=../test/vertical-pod-autoscaler/e2e/hack/run-e2e.sh
       - --test-cmd-args=actuation-nap
-      - --timeout=60m
+      - --timeout=120m

@@ -1,10 +1,10 @@
 #############################################################################################################################
-# test latest k8s 1.11 available on staging env with bundled CA
+# test latest k8s 1.12 available on staging env with bundled CA
 #############################################################################################################################
 
 periodics:
 - interval: 24h
-  name: ci-autoscaling-ca-e2e-1-11-staging
+  name: ci-autoscaling-ca-e2e-1-12-staging
   labels:
     preset-k8s-ssh: "true"
     preset-service-account: "true"
@@ -21,7 +21,7 @@ periodics:
       - --check-leaked-resources
       - --cluster=gke-autoscaling-cluster
       - --deployment=gke
-      - --extract=gke-latest-1.11
+      - --extract=gke-latest-1.12
       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
       - --gcp-node-image=gci
       - --gcp-zone=us-central1-f
@@ -34,7 +34,7 @@ periodics:
       - --timeout=7h
 
 - interval: 24h
-  name: ci-autoscaling-ca-gpu-e2e-1-11-staging
+  name: ci-autoscaling-ca-gpu-e2e-1-12-staging
   labels:
     preset-k8s-ssh: "true"
     preset-service-account: "true"
@@ -51,7 +51,7 @@ periodics:
       - --check-leaked-resources
       - --cluster=gke-autoscaling-cluster
       - --deployment=gke
-      - --extract=gke-latest-1.11
+      - --extract=gke-latest-1.12
       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
       - --gcp-node-image=gci
       - --gcp-zone=us-west1-b
@@ -66,7 +66,7 @@ periodics:
       - --timeout=2h
 
 - interval: 24h
-  name: ci-autoscaling-nap-e2e-1-11-staging
+  name: ci-autoscaling-nap-e2e-1-12-staging
   labels:
     preset-k8s-ssh: "true"
     preset-service-account: "true"
@@ -83,7 +83,7 @@ periodics:
       - --check-leaked-resources
       - --cluster=gke-autoscaling-cluster
       - --deployment=gke
-      - --extract=gke-latest-1.11
+      - --extract=gke-latest-1.12
       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
       - --gcp-node-image=gci
       - --gcp-zone=us-central1-f
@@ -96,7 +96,7 @@ periodics:
       - --timeout=5h
 
 - interval: 24h
-  name: ci-autoscaling-nap-gpu-e2e-1-11-staging
+  name: ci-autoscaling-nap-gpu-e2e-1-12-staging
   labels:
     preset-k8s-ssh: "true"
     preset-service-account: "true"
@@ -113,7 +113,7 @@ periodics:
       - --check-leaked-resources
       - --cluster=gke-autoscaling-cluster
       - --deployment=gke
-      - --extract=gke-latest-1.11
+      - --extract=gke-latest-1.12
       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
       - --gcp-node-image=gci
       - --gcp-zone=us-west1-b
@@ -127,7 +127,7 @@ periodics:
       - --timeout=5h
 
 - interval: 24h
-  name: ci-autoscaling-nap-multizonal-e2e-1-11-staging
+  name: ci-autoscaling-nap-multizonal-e2e-1-12-staging
   labels:
     preset-k8s-ssh: "true"
     preset-service-account: "true"
@@ -144,7 +144,7 @@ periodics:
       - --check-leaked-resources
       - --cluster=gke-autoscaling-cluster
       - --deployment=gke
-      - --extract=gke-latest-1.11
+      - --extract=gke-latest-1.12
       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
       - --gcp-node-image=gci
       - --gcp-zone=us-central1-f
@@ -160,7 +160,7 @@ periodics:
       - --timeout=5h
 
 - interval: 24h
-  name: ci-autoscaling-nap-regional-e2e-1-11-staging
+  name: ci-autoscaling-nap-regional-e2e-1-12-staging
   labels:
     preset-k8s-ssh: "true"
     preset-service-account: "true"
@@ -177,7 +177,7 @@ periodics:
       - --check-leaked-resources
       - --cluster=gke-autoscaling-cluster
       - --deployment=gke
-      - --extract=gke-latest-1.11
+      - --extract=gke-latest-1.12
       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
       - --gcp-node-image=gci
       - --gcp-region=us-central1
@@ -194,7 +194,7 @@ periodics:
       - --timeout=5h
 
 - interval: 24h
-  name: ci-autoscaling-nap-gpu-multizonal-e2e-1-11-staging
+  name: ci-autoscaling-nap-gpu-multizonal-e2e-1-12-staging
   labels:
     preset-k8s-ssh: "true"
     preset-service-account: "true"
@@ -211,7 +211,7 @@ periodics:
       - --check-leaked-resources
       - --cluster=gke-autoscaling-cluster
       - --deployment=gke
-      - --extract=gke-latest-1.11
+      - --extract=gke-latest-1.12
       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
       - --gcp-node-image=gci
       - --gcp-project-type=gpu-project

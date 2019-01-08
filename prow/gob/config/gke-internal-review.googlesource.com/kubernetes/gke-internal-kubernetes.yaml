@@ -36,6 +36,8 @@ presubmits:
   - name: pull-gob-kubernetes-unit
     always_run: true
     decorate: true
+    branches:
+    - ^master$
     extra_refs:
     - org: kubernetes
       repo: test-infra
@@ -63,31 +65,231 @@ presubmits:
         resources:
           requests:
             memory: "6Gi"
-  - name: pull-gob-kubernetes-integration
+  - name: pull-gob-kubernetes-unit
     always_run: true
     decorate: true
+    branches:
+    - ^release-1\.13
     extra_refs:
     - org: kubernetes
       repo: test-infra
       base_ref: master
       path_alias: k8s.io/test-infra
     labels:
+      preset-bazel-scratch-dir: "true"
+      prow.k8s.io/gerrit-report-label: "Verified"
+    spec:
+      containers:
+      - image: gcr.io/gke-test-infra/kubekins-e2e:v20181221-f9eff05-1.13
+        command:
+        - runner.sh
+        - ../../../k8s.io/test-infra/scenarios/kubernetes_bazel.py
+        args:
+        - --test=//... -//build/... -//vendor/...
+        - --manual-test=//hack:verify-all
+        - --test-args=--config=unit
+        - --test-args=--build_tag_filters=-e2e,-integration
+        - --test-args=--test_tag_filters=-e2e,-integration
+        - --test-args=--flaky_test_attempts=3
+        # seemingly needed for some unit tests?
+        securityContext:
+          privileged: true
+        resources:
+          requests:
+            memory: "6Gi"
+  - name: pull-gob-kubernetes-unit
+    always_run: true
+    decorate: true
+    branches:
+    - ^release-1\.12
+    extra_refs:
+    - org: kubernetes
+      repo: test-infra
+      base_ref: master
+      path_alias: k8s.io/test-infra
+    labels:
+      preset-bazel-scratch-dir: "true"
+      prow.k8s.io/gerrit-report-label: "Verified"
+    spec:
+      containers:
+      - image: gcr.io/gke-test-infra/kubekins-e2e:v20181221-f9eff05-1.12
+        command:
+        - runner.sh
+        - ../../../k8s.io/test-infra/scenarios/kubernetes_bazel.py
+        args:
+        - --test=//... -//build/... -//vendor/...
+        - --manual-test=//hack:verify-all
+        - --test-args=--config=unit
+        - --test-args=--build_tag_filters=-e2e,-integration
+        - --test-args=--test_tag_filters=-e2e,-integration
+        - --test-args=--flaky_test_attempts=3
+        # seemingly needed for some unit tests?
+        securityContext:
+          privileged: true
+        resources:
+          requests:
+            memory: "6Gi"
+  - name: pull-gob-kubernetes-unit
+    always_run: true
+    decorate: true
+    branches:
+    - ^release-1\.11
+    extra_refs:
+    - org: kubernetes
+      repo: test-infra
+      base_ref: master
+      path_alias: k8s.io/test-infra
+    labels:
+      preset-bazel-scratch-dir: "true"
+      prow.k8s.io/gerrit-report-label: "Verified"
+    spec:
+      containers:
+      - image: gcr.io/gke-test-infra/kubekins-e2e:v20181221-f9eff05-1.11
+        command:
+        - runner.sh
+        - ../../../k8s.io/test-infra/scenarios/kubernetes_bazel.py
+        args:
+        - --test=//... -//build/... -//vendor/...
+        - --manual-test=//hack:verify-all
+        - --test-args=--config=unit
+        - --test-args=--build_tag_filters=-e2e,-integration
+        - --test-args=--test_tag_filters=-e2e,-integration
+        - --test-args=--flaky_test_attempts=3
+        # seemingly needed for some unit tests?
+        securityContext:
+          privileged: true
+        resources:
+          requests:
+            memory: "6Gi"
+  - name: pull-gob-kubernetes-unit
+    always_run: true
+    decorate: true
+    branches:
+    - ^release-1\.10
+    extra_refs:
+    - org: kubernetes
+      repo: test-infra
+      base_ref: master
+      path_alias: k8s.io/test-infra
+    labels:
+      preset-bazel-scratch-dir: "true"
+      prow.k8s.io/gerrit-report-label: "Verified"
+    spec:
+      containers:
+      - image: gcr.io/gke-test-infra/kubekins-e2e:v20181221-f9eff05-1.10
+        command:
+        - runner.sh
+        - ../../../k8s.io/test-infra/scenarios/kubernetes_bazel.py
+        args:
+        - --test=//... -//build/... -//vendor/...
+        - --manual-test=//hack:verify-all
+        - --test-args=--config=unit
+        - --test-args=--build_tag_filters=-e2e,-integration
+        - --test-args=--test_tag_filters=-e2e,-integration
+        - --test-args=--flaky_test_attempts=3
+        # seemingly needed for some unit tests?
+        securityContext:
+          privileged: true
+        resources:
+          requests:
+            memory: "6Gi"
+  - name: pull-gob-kubernetes-integration
+    always_run: true
+    decorate: true
+    branches:
+    - ^master$
+    path_alias: k8s.io/kubernetes
+    labels:
       preset-service-account: "true"
       preset-dind-enabled: "true"
       prow.k8s.io/gerrit-report-label: "Verified"
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/bootstrap:v20180918-02b56f8a8
+      - image: gcr.io/gke-test-infra/kubekins-e2e:v20181221-f9eff05-master
         command:
         - runner.sh
-        - ../../../k8s.io/test-infra/scenarios/kubernetes_verify.py
         args:
-        - --branch=master
-        - --force
-        - --prow
-        # docker-in-docker needs privileged mode
-        securityContext:
-          privileged: true
+        - ./hack/jenkins/test-dockerized.sh
+        resources:
+          requests:
+            cpu: 3
+  - name: pull-gob-kubernetes-integration
+    always_run: true
+    decorate: true
+    branches:
+    - ^release-1\.13
+    path_alias: k8s.io/kubernetes
+    labels:
+      preset-service-account: "true"
+      preset-dind-enabled: "true"
+      prow.k8s.io/gerrit-report-label: "Verified"
+    spec:
+      containers:
+      - image: gcr.io/gke-test-infra/kubekins-e2e:v20181221-f9eff05-1.13
+        command:
+        - runner.sh
+        args:
+        - ./hack/jenkins/test-dockerized.sh
+        resources:
+          requests:
+            cpu: 3
+  - name: pull-gob-kubernetes-integration
+    always_run: true
+    decorate: true
+    branches:
+    - ^release-1\.12
+    path_alias: k8s.io/kubernetes
+    labels:
+      preset-service-account: "true"
+      preset-dind-enabled: "true"
+      prow.k8s.io/gerrit-report-label: "Verified"
+    spec:
+      containers:
+      - image: gcr.io/gke-test-infra/kubekins-e2e:v20181221-f9eff05-1.12
+        command:
+        - runner.sh
+        args:
+        - ./hack/jenkins/test-dockerized.sh
+        resources:
+          requests:
+            cpu: 3
+  - name: pull-gob-kubernetes-integration
+    always_run: true
+    decorate: true
+    branches:
+    - ^release-1\.11
+    path_alias: k8s.io/kubernetes
+    labels:
+      preset-service-account: "true"
+      preset-dind-enabled: "true"
+      prow.k8s.io/gerrit-report-label: "Verified"
+    spec:
+      containers:
+      - image: gcr.io/gke-test-infra/kubekins-e2e:v20181221-f9eff05-1.11
+        command:
+        - runner.sh
+        args:
+        - ./hack/jenkins/test-dockerized.sh
+        resources:
+          requests:
+            cpu: 3
+  - name: pull-gob-kubernetes-integration
+    always_run: true
+    decorate: true
+    branches:
+    - ^release-1\.10
+    path_alias: k8s.io/kubernetes
+    labels:
+      preset-service-account: "true"
+      preset-dind-enabled: "true"
+      prow.k8s.io/gerrit-report-label: "Verified"
+    spec:
+      containers:
+      - image: gcr.io/gke-test-infra/kubekins-e2e:v20181221-f9eff05-1.10
+        command:
+        - runner.sh
+        args:
+        - ./hack/jenkins/test-dockerized.sh
         resources:
           requests:
             cpu: 3

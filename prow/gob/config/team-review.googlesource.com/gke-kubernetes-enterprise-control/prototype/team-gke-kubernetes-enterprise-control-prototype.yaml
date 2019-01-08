@@ -197,10 +197,18 @@ periodics:
        - name: prober-cred
          mountPath: /etc/prober-gcp-service-account
          readOnly: true
+       - name: cookies
+         mountPath: /etc/cookies
+         readOnly: true
      volumes:
      - name: prober-cred
        secret:
          secretName: nomos-prober-runner-gcp-client-key
+     - name: cookies
+       secret:
+         defaultMode: 420
+         secretName: http-cookiefile
+
 
 # Canary version of release job on podutil (can be triggered manually)
  - interval: 24h

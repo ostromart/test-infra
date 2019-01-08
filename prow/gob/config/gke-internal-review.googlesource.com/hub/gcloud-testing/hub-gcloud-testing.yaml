@@ -27,7 +27,7 @@ periodics:
       - --gke-environment=staging
       - --provider=gke
       - --test=false
-      - --test-cmd=./test.sh
+      - --test-cmd=../test.sh
       - --test-cmd-name=hub-gcloud-workflow-testing
       - --timeout=55m
       command:

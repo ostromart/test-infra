@@ -84,7 +84,7 @@ periodics:
       - -- # end bootstrap args, scenario args below
       - /workspace/gke-internal.googlesource.com/gke-autoscaling/test/fast-scaling-tests/prow/test_prod_hermes_large.sh
 - interval: 60m
-  name: periodic_fast_autoscaling_test_experimental_small
+  name: periodic_fast_autoscaling_test_staging_small
   labels:
     preset-k8s-ssh: "true"
     preset-service-account: "true"
@@ -98,9 +98,9 @@ periodics:
       - --scenario=execute
       - --upload=gs://gob-prow/logs
       - -- # end bootstrap args, scenario args below
-      - /workspace/gke-internal.googlesource.com/gke-autoscaling/test/fast-scaling-tests/prow/test_experimental_small.sh
+      - /workspace/gke-internal.googlesource.com/gke-autoscaling/test/fast-scaling-tests/prow/test_staging_small.sh
 - interval: 6h
-  name: periodic_fast_autoscaling_test_experimental_large
+  name: periodic_fast_autoscaling_test_staging_large
   labels:
     preset-k8s-ssh: "true"
     preset-service-account: "true"
@@ -114,9 +114,9 @@ periodics:
       - --scenario=execute
       - --upload=gs://gob-prow/logs
       - -- # end bootstrap args, scenario args below
-      - /workspace/gke-internal.googlesource.com/gke-autoscaling/test/fast-scaling-tests/prow/test_experimental_large.sh
+      - /workspace/gke-internal.googlesource.com/gke-autoscaling/test/fast-scaling-tests/prow/test_staging_large.sh
 - interval: 60m
-  name: periodic_fast_autoscaling_test_experimental_ssd_small
+  name: periodic_fast_autoscaling_test_staging_ssd_small
   labels:
     preset-k8s-ssh: "true"
     preset-service-account: "true"
@@ -130,9 +130,9 @@ periodics:
       - --scenario=execute
       - --upload=gs://gob-prow/logs
       - -- # end bootstrap args, scenario args below
-      - /workspace/gke-internal.googlesource.com/gke-autoscaling/test/fast-scaling-tests/prow/test_experimental_ssd_small.sh
+      - /workspace/gke-internal.googlesource.com/gke-autoscaling/test/fast-scaling-tests/prow/test_staging_ssd_small.sh
 - interval: 6h
-  name: periodic_fast_autoscaling_test_experimental_ssd_large
+  name: periodic_fast_autoscaling_test_staging_ssd_large
   labels:
     preset-k8s-ssh: "true"
     preset-service-account: "true"
@@ -146,7 +146,7 @@ periodics:
       - --scenario=execute
       - --upload=gs://gob-prow/logs
       - -- # end bootstrap args, scenario args below
-      - /workspace/gke-internal.googlesource.com/gke-autoscaling/test/fast-scaling-tests/prow/test_experimental_ssd_large.sh
+      - /workspace/gke-internal.googlesource.com/gke-autoscaling/test/fast-scaling-tests/prow/test_staging_ssd_large.sh
 - interval: 30m
   name: periodic_fast_autoscaling_generate_metrics_file
   labels:

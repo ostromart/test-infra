@@ -72,6 +72,8 @@ presets:
     value: 35.185.8.100
   - name: SYLLOGI_SSH_PRIVATE_KEY_FILE
     value: /etc/syllogi-ssh-key-secret/vsphere_tmp
+  - name: UPLOAD_TEST_RESULTS
+    value: "true"
   - name: SYLLOGI_SSH_PUBLIC_KEY_FILE
     value: /etc/syllogi-ssh-key-secret/vsphere_tmp.pub
   - name: GOVC_PASSWORD

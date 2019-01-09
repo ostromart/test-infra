@@ -56,6 +56,26 @@ resources:
   - k8s-gci-boskos-18
   - k8s-gci-boskos-19
   - k8s-gci-boskos-20
+  - k8s-gci-boskos-21
+  - k8s-gci-boskos-22
+  - k8s-gci-boskos-23
+  - k8s-gci-boskos-24
+  - k8s-gci-boskos-25
+  - k8s-gci-boskos-26
+  - k8s-gci-boskos-27
+  - k8s-gci-boskos-28
+  - k8s-gci-boskos-29
+  - k8s-gci-boskos-30
+  - k8s-gci-boskos-31
+  - k8s-gci-boskos-32
+  - k8s-gci-boskos-33
+  - k8s-gci-boskos-34
+  - k8s-gci-boskos-35
+  - k8s-gci-boskos-36
+  - k8s-gci-boskos-37
+  - k8s-gci-boskos-38
+  - k8s-gci-boskos-39
+  - k8s-gci-boskos-40
   - kubekins-gce-gci-ci-1-4
   - kubekins-gce-gci-ci-serial-1-4
   - kubekins-gce-gci-ci-slow-1-4

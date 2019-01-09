@@ -19,7 +19,7 @@ periodics:
       - --scenario=kubernetes_e2e
       - --
       - --check-leaked-resources
-      - --cluster=e2e-1-11-vpa-full
+      - --cluster=full-1-11
       - --deployment=gke
       - --extract=gs://kubernetes-release-gke-internal/ci/latest-autoscaling-full-vpa-1-11.txt
       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
@@ -52,7 +52,7 @@ periodics:
       - --scenario=kubernetes_e2e
       - --
       - --check-leaked-resources
-      - --cluster=vpa-recommender-1-11
+      - --cluster=rec-1-11
       - --deployment=gke
       - --extract=gs://kubernetes-release-gke-internal/ci/latest-autoscaling-vpa-recommender-1-11.txt
       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
@@ -85,7 +85,7 @@ periodics:
       - --scenario=kubernetes_e2e
       - --
       - --check-leaked-resources
-      - --cluster=vpa-updater-1-11
+      - --cluster=update-1-11
       - --deployment=gke
       - --extract=gs://kubernetes-release-gke-internal/ci/latest-autoscaling-vpa-updater-1-11.txt
       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
@@ -118,7 +118,7 @@ periodics:
       - --scenario=kubernetes_e2e
       - --
       - --check-leaked-resources
-      - --cluster=vpa-admission-controller-1-11
+      - --cluster=adm-1-11
       - --deployment=gke
       - --extract=gs://kubernetes-release-gke-internal/ci/latest-autoscaling-vpa-admission-controller-1-11.txt
       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
@@ -151,7 +151,7 @@ periodics:
       - --scenario=kubernetes_e2e
       - --
       - --check-leaked-resources
-      - --cluster=vpa-actuation-1-11
+      - --cluster=act-1-11
       - --deployment=gke
       - --extract=gs://kubernetes-release-gke-internal/ci/latest-autoscaling-vpa-actuation-1-11.txt
       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
@@ -184,7 +184,7 @@ periodics:
       - --scenario=kubernetes_e2e
       - --
       - --check-leaked-resources
-      - --cluster=vpa-actuation-ca-1-11
+      - --cluster=ca-1-11
       - --deployment=gke
       - --extract=gs://kubernetes-release-gke-internal/ci/latest-autoscaling-vpa-actuation-1-11.txt
       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
@@ -217,7 +217,7 @@ periodics:
       - --scenario=kubernetes_e2e
       - --
       - --check-leaked-resources
-      - --cluster=vpa-actuation-nap-1-11
+      - --cluster=nap-1-11
       - --deployment=gke
       - --extract=gs://kubernetes-release-gke-internal/ci/latest-autoscaling-vpa-actuation-1-11.txt
       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging

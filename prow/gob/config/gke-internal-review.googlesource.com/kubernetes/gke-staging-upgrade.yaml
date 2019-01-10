@@ -91,7 +91,7 @@ periodics:
 
 - decorate: true
   decoration_config:
-    timeout: 55200000000000 # 920 minutes
+    timeout: 73200000000000 # 1220 minutes
   interval: 2h
   labels:
     preset-service-account: "true"
@@ -112,7 +112,7 @@ periodics:
       - --gke-environment=staging
       - --provider=gke
       - --test_args=--gce-multizone=true --gce-multimaster=true --ginkgo.skip=\[Flaky\]|\[Feature:.+\]|Initializers|Dashboard --kubectl-path=../../../../kubernetes_skew/cluster/kubectl.sh --minStartupPods=8
-      - --timeout=900m
+      - --timeout=1200m
       - --upgrade_args=--gce-multizone=true --gce-multimaster=true --ginkgo.focus=\[Feature:ClusterUpgrade\] --upgrade-target=gke-latest-1.11 --upgrade-image=gci
       command:
       - runner.sh
@@ -151,7 +151,7 @@ periodics:
 
 - decorate: true
   decoration_config:
-    timeout: 55200000000000 # 920 minutes
+    timeout: 73200000000000 # 1220 minutes
   interval: 2h
   labels:
     preset-service-account: "true"
@@ -172,7 +172,7 @@ periodics:
       - --gke-environment=staging
       - --provider=gke
       - --skew
-      - --timeout=900m
+      - --timeout=1200m
       - --upgrade_args=--ginkgo.focus=\[Feature:ClusterUpgrade\] --upgrade-target=gke-latest-1.12 --upgrade-image=gci
       command:
       - runner.sh
@@ -211,7 +211,7 @@ periodics:
 
 - decorate: true
   decoration_config:
-    timeout: 55200000000000 # 920 minutes
+    timeout: 73200000000000 # 1220 minutes
   interval: 2h
   labels:
     preset-service-account: "true"
@@ -232,7 +232,7 @@ periodics:
       - --gke-environment=staging
       - --provider=gke
       - --test_args=--gce-multizone=true --gce-multimaster=true --ginkgo.skip=\[Flaky\]|\[Feature:.+\]|Initializers|Dashboard --kubectl-path=../../../../kubernetes_skew/cluster/kubectl.sh --minStartupPods=8
-      - --timeout=900m
+      - --timeout=1200m
       - --upgrade_args=--gce-multizone=true --gce-multimaster=true --ginkgo.focus=\[Feature:ClusterUpgrade\] --upgrade-target=gke-latest-1.12 --upgrade-image=gci
       command:
       - runner.sh

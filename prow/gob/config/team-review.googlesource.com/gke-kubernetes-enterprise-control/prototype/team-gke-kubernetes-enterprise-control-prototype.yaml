@@ -172,7 +172,7 @@ periodics:
      clone_uri: https://gke-internal.googlesource.com/cluster-lifecycle/cluster-operators
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20190108-eadd44c98-master
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20181204-8fed8ae80-master
        command:
        - runner.sh
        args:

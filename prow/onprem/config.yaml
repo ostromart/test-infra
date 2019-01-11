@@ -69,7 +69,7 @@ presets:
   - name: GCS_BUCKET
     value: syllogi-ci-vsphere
   - name: TEST_REGISTRY_SERVER
-    value: 35.185.8.100
+    value: 35.230.51.173
   - name: SYLLOGI_SSH_PRIVATE_KEY_FILE
     value: /etc/syllogi-ssh-key-secret/vsphere_tmp
   - name: UPLOAD_TEST_RESULTS

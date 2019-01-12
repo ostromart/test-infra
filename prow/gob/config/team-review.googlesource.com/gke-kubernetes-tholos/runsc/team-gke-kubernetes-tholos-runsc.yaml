@@ -5,7 +5,7 @@ periodics:
      preset-service-account: "true"
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20181024-be2f242dd-master
+     - image: gcr.io/gke-gvisor/release:0.1
        args:
        - --repo=team.googlesource.com/gke-kubernetes-tholos/runsc-scripts=master
        - --root=/go/src

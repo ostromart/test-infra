@@ -2856,6 +2856,90 @@ periodics:
       - --timeout=300m
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 
+- interval: 2h
+  name: ci-kubernetes-e2e-gke-sysctl-default
+  labels:
+    preset-service-account: "true"
+    preset-k8s-ssh: "true"
+  spec:
+    containers:
+    - args:
+      - --timeout=70
+      - --bare
+      - --scenario=kubernetes_e2e
+      - --upload=gs://gob-prow/logs
+      - --
+      - --check-leaked-resources
+      - --cluster=sysctl
+      - --deployment=gke
+      - --provider=gke
+      - --gcp-node-image=gci
+      - --gcp-zone=us-central1-f
+      - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+      - --extract=gs://kubernetes-release-gke-internal/devel/v1.12.99-sysctl
+      - --gke-create-command=container clusters create --quiet --cluster-version=1.12.99-sysctl --num-nodes=1
+      - --gke-environment=test
+      - --ginkgo-parallel=30
+      - --test_args=--ginkgo.skip=\[Slow\]|\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\] --minStartupPods=8
+      - --timeout=50m
+      image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+
+- interval: 2h
+  name: ci-kubernetes-e2e-gke-sysctl-serial
+  labels:
+    preset-service-account: "true"
+    preset-k8s-ssh: "true"
+  spec:
+    containers:
+    - args:
+      - --timeout=520
+      - --bare
+      - --scenario=kubernetes_e2e
+      - --upload=gs://gob-prow/logs
+      - --
+      - --check-leaked-resources
+      - --cluster=sysctl
+      - --deployment=gke
+      - --provider=gke
+      - --gcp-node-image=gci
+      - --gcp-zone=us-central1-f
+      - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+      - --extract=gs://kubernetes-release-gke-internal/devel/v1.12.99-sysctl
+      - --gke-create-command=container clusters create --quiet --cluster-version=1.12.99-sysctl --num-nodes=1
+      - --gke-environment=test
+      - --ginkgo-parallel=30
+      - --test_args=--ginkgo.focus=\[Serial\]|\[Disruptive\] --ginkgo.skip=\[Flaky\]|\[Feature:.+\] --minStartupPods=8
+      - --timeout=500m
+      image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+
+- interval: 2h
+  name: ci-kubernetes-e2e-gke-sysctl-slow
+  labels:
+    preset-service-account: "true"
+    preset-k8s-ssh: "true"
+  spec:
+    containers:
+    - args:
+      - --timeout=170
+      - --bare
+      - --scenario=kubernetes_e2e
+      - --upload=gs://gob-prow/logs
+      - --
+      - --check-leaked-resources
+      - --cluster=sysctl
+      - --deployment=gke
+      - --provider=gke
+      - --gcp-node-image=gci
+      - --gcp-zone=us-central1-f
+      - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+      - --extract=gs://kubernetes-release-gke-internal/devel/v1.12.99-sysctl
+      - --gke-create-command=container clusters create --quiet --cluster-version=1.12.99-sysctl --num-nodes=1
+      - --gke-environment=test
+      - --ginkgo-parallel=30
+      - --test_args=--ginkgo.focus=\[Slow\] --ginkgo.skip=\[Serial\]|\[Disruptive\]|\[Flaky\]|\[Feature:.+\] --minStartupPods=8
+      - --timeout=150m
+      image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
+
 postsubmits:
   GoogleCloudPlatform/k8s-tpu-operator:
   - name: k8s-tpu-operator-image-push

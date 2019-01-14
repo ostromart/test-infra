@@ -287,7 +287,7 @@ spec:
         - --job-config-path=/etc/job-config
         - --cookiefile=/etc/cookies/cookies
         - --gerrit-projects=https://gke-internal-review.googlesource.com=test-infra,kubernetes,net/mci,syllogi/cluster-management,kubernetes/gke-common-webhooks,syllogi/logmon,GoogleCloudPlatform/redis-operator,GoogleCloudPlatform/k8s-stackdriver,cluster-lifecycle/cluster-operators,GoogleCloudPlatform/cronanything,kubernetes-sigs/gcp-compute-persistent-disk-csi-driver,onprem-lab-automation,GoogleCloudPlatform/kalm,cloud-run-dmc/serving
-        - --gerrit-projects=https://team-review.googlesource.com=alphabetcloud/galu,gke-kubernetes-enterprise-control/prototype,big-compute-eng/batch,cloud-kubernetes-gse-dev-team/serving
+        - --gerrit-projects=https://team-review.googlesource.com=alphabetcloud/galu,gke-kubernetes-enterprise-control/prototype,big-compute-eng/batch,cloud-kubernetes-gse-dev-team/serving,kunit/linux
         - --gerrit-projects=https://velostrata-internal-review.googlesource.com=fejta-demo,v2k-core,csi-loopback
         - --gerrit-projects=https://cnrm-review.googlesource.com=cnrm
         - --gerrit-projects=https://cloudesf-review.googlesource.com=gcpproxy
@@ -341,7 +341,7 @@ spec:
         - --pubsub-workers=1
         - --cookiefile=/etc/cookies/cookies
         - --gerrit-projects=https://gke-internal-review.googlesource.com=test-infra,kubernetes,net/mci,syllogi/cluster-management,kubernetes/gke-common-webhooks,syllogi/logmon,GoogleCloudPlatform/redis-operator,GoogleCloudPlatform/k8s-stackdriver,cluster-lifecycle/cluster-operators,GoogleCloudPlatform/cronanything,kubernetes-sigs/gcp-compute-persistent-disk-csi-driver,onprem-lab-automation,GoogleCloudPlatform/kalm,cloud-run-dmc/serving
-        - --gerrit-projects=https://team-review.googlesource.com=alphabetcloud/galu,gke-kubernetes-enterprise-control/prototype,big-compute-eng/batch,cloud-kubernetes-gse-dev-team/serving
+        - --gerrit-projects=https://team-review.googlesource.com=alphabetcloud/galu,gke-kubernetes-enterprise-control/prototype,big-compute-eng/batch,cloud-kubernetes-gse-dev-team/serving,kunit/linux
         - --gerrit-projects=https://velostrata-internal-review.googlesource.com=fejta-demo,v2k-core,csi-loopback
         - --gerrit-projects=https://cnrm-review.googlesource.com=cnrm
         - --gerrit-projects=https://cloudesf-review.googlesource.com=gcpproxy

@@ -1,6 +1,6 @@
 presubmits:
-  https://velostrata-internal-review.googlesource.com/velostrata-v2k:
-  - name: presubmit-velostrata-internal-velostrata-v2k-csi-build
+  https://velostrata-internal-review.googlesource.com/v2k-core:
+  - name: presubmit-velostrata-internal-v2k-core-build
     always_run: true
     # Enables pod-utils, which inject init and sidecar containers into your pod.
     # init - checks out your PR correctly
@@ -10,15 +10,15 @@ presubmits:
       containers:
       # Bring any image, such as this cloud builder image.
       # No changes necessary for minimal testgrid integration!
-      - image: eu.gcr.io/velos-auto-1/vls-builder-go:v0.2.5
+      - image: us.gcr.io/velos-auto-1/vls-builder-go:v0.2.5
         command:
         - ./csi/vlsdisk-csi-driver/build_local.sh
-  - name: presubmit-velostrata-internal-velostrata-v2k-csi-ut
+  - name: presubmit-velostrata-internal-v2k-core-ut
     decorate: true
     always_run: true
     spec:
       containers:
-      - image: eu.gcr.io/velos-auto-1/vls-builder-go:v0.2.5
+      - image: us.gcr.io/velos-auto-1/vls-builder-go:v0.2.5
         command:
         - ./csi/vlsdisk-csi-driver/test/run_unit_local.sh
         args:

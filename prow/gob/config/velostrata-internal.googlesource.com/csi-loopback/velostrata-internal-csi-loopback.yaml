@@ -1,0 +1,25 @@
+presubmits:
+  https://velostrata-internal-review.googlesource.com/csi-loopback:
+  - name: presubmit-velostrata-internal-csi-loopback-build
+    always_run: true
+    # Enables pod-utils, which inject init and sidecar containers into your pod.
+    # init - checks out your PR correctly
+    # sidecar - uploads your result to testgrid
+    decorate: true
+    spec: # This is a podspec, add any podspec fields below
+      containers:
+      # Bring any image, such as this cloud builder image.
+      # No changes necessary for minimal testgrid integration!
+      - image: us.gcr.io/velos-auto-1/vls-builder-go:v0.2.5
+        command:
+        - ./build_local.sh
+  - name: presubmit-velostrata-internal-csi-loopback-ut
+    decorate: true
+    always_run: true
+    spec:
+      containers:
+      - image: us.gcr.io/velos-auto-1/vls-builder-go:v0.2.5
+        command:
+        - ./test/run_unit_local.sh
+        args:
+        - --dep

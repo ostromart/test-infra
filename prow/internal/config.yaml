@@ -2868,7 +2868,7 @@ periodics:
       - --timeout=70
       - --bare
       - --scenario=kubernetes_e2e
-      - --upload=gs://gob-prow/logs
+      - --upload=gs://gke-prow/logs
       - --
       - --check-leaked-resources
       - --cluster=sysctl
@@ -2897,7 +2897,7 @@ periodics:
       - --timeout=520
       - --bare
       - --scenario=kubernetes_e2e
-      - --upload=gs://gob-prow/logs
+      - --upload=gs://gke-prow/logs
       - --
       - --check-leaked-resources
       - --cluster=sysctl
@@ -2926,7 +2926,7 @@ periodics:
       - --timeout=170
       - --bare
       - --scenario=kubernetes_e2e
-      - --upload=gs://gob-prow/logs
+      - --upload=gs://gke-prow/logs
       - --
       - --check-leaked-resources
       - --cluster=sysctl

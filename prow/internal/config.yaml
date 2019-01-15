@@ -6,12 +6,12 @@ plank:
     timeout: 7200000000000 # 2h
     grace_period: 15000000000 # 15s
     utility_images:
-      clonerefs: "gcr.io/k8s-prow/clonerefs@sha256:b62ba1f379ac19c5ec9ee7bcab14d3f0b3c31cea9cdd4bc491e98e2c5f346c07"
-      initupload: "gcr.io/k8s-prow/initupload@sha256:58f89f2aae68f7dc46aaf05c7e8204c4f26b53ec9ce30353d1c27ce44a60d121"
-      entrypoint: "gcr.io/k8s-prow/entrypoint:v20180512-0255926d1"
-      sidecar: "gcr.io/k8s-prow/sidecar@sha256:8807b2565f4d2699920542fcf890878824b1ede4198d7ff46bca53feb064ed44"
+      clonerefs: "gcr.io/k8s-prow/clonerefs:v20190114-e939941"
+      initupload: "gcr.io/k8s-prow/initupload:v20190114-e939941"
+      entrypoint: "gcr.io/k8s-prow/entrypoint:v20190114-e939941"
+      sidecar: "gcr.io/k8s-prow/sidecar:v20190114-e939941"
     gcs_configuration:
-      bucket: "knative-prow"
+      bucket: "gke-prow"
       path_strategy: "explicit"
     gcs_credentials_secret: "service-account"
 
@@ -23,7 +23,6 @@ tide:
   queries:
   - repos:
     - GoogleCloudPlatform/k8s-tpu-operator
-    - googleprivate/kubeflow
     labels:
     - lgtm
     - approved
@@ -110,11 +109,7 @@ presets:
 presubmits:
   GoogleCloudPlatform/k8s-tpu-operator:
   - name: pull-k8s-tpu-operator-unit
-    agent: kubernetes
-    context: pull-k8s-tpu-operator-unit
     always_run: true
-    rerun_command: /test pull-k8s-tpu-operator-unit
-    trigger: (?m)^/test (all|pull-k8s-tpu-operator-unit),?(\s+|$)
     labels:
       preset-service-account: "true"
     spec:
@@ -149,11 +144,7 @@ presubmits:
       - name: docker-graph
         emptyDir: {}
   - name: pull-k8s-tpu-operator-verify
-    agent: kubernetes
-    context: pull-k8s-tpu-operator-verify
     always_run: true
-    rerun_command: /test pull-k8s-tpu-operator-verify
-    trigger: (?m)^/test (all|pull-k8s-tpu-operator-verify),?(\s+|$)
     labels:
       preset-service-account: "true"
     spec:
@@ -188,388 +179,8 @@ presubmits:
       - name: docker-graph
         emptyDir: {}
 
-  googleprivate/ml:
-  - name: mlpipeline-build-image
-    agent: kubernetes
-    context: mlpipeline-build-image
-    always_run: true
-    skip_report: false
-    rerun_command: /test mlpipeline-build-image
-    trigger: (?m)^/test (all|mlpipeline-build-image),?(\s+|$)
-    labels:
-      preset-service-account: "true"
-    spec:
-      containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
-        args:
-        - --clean
-        - --repo=github.com/googleprivate/$(REPO_NAME)=$(PULL_REFS)
-        - --service-account=/etc/service-account/service-account.json
-        - --upload=gs://gke-prow/pr-logs
-        - --ssh=/etc/ssh-knative/ssh-knative
-        - --scenario=execute
-        - -- # end bootstrap args, scenario args below
-        - -- # end kubernetes_execute_bazel flags (consider following flags as text)
-        - ./test/presubmit-tests.sh
-        - "--workflow_file"
-        - "build_image.yaml"
-        volumeMounts:
-        - mountPath: /etc/ssh-knative
-          name: ssh-knative
-      volumes:
-      - name: ssh-knative
-        secret:
-          defaultMode: 0400
-          secretName: ssh-knative
-    run_after_success:
-    - name: mlpipeline-presubmit-e2e-test
-      agent: kubernetes
-      context: mlpipeline-presubmit-e2e-test
-      always_run: true
-      skip_report: false
-      rerun_command: /test mlpipeline-presubmit-e2e-test
-      trigger: (?m)^/test (all|mlpipeline-presubmit-e2e-test),?(\s+|$)
-      labels:
-        preset-service-account: "true"
-      spec:
-        containers:
-        - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
-          args:
-          - --clean
-          - --repo=github.com/googleprivate/$(REPO_NAME)=$(PULL_REFS)
-          - --service-account=/etc/service-account/service-account.json
-          - --upload=gs://gke-prow/pr-logs
-          - --ssh=/etc/ssh-knative/ssh-knative
-          - --scenario=execute
-          - -- # end bootstrap args, scenario args below
-          - -- # end kubernetes_execute_bazel flags (consider following flags as text)
-          - ./test/presubmit-tests.sh
-          - "--workflow_file"
-          - "e2e_test_gke.yaml"
-          - "--test_result_folder"
-          - "e2e_test"
-          volumeMounts:
-          - mountPath: /etc/ssh-knative
-            name: ssh-knative
-        volumes:
-        - name: ssh-knative
-          secret:
-            defaultMode: 0400
-            secretName: ssh-knative
-    - name: mlpipeline-presubmit-e2e-test-gce-minikube
-      agent: kubernetes
-      context: mlpipeline-presubmit-e2e-test-gce-minikube
-      always_run: true
-      skip_report: true
-      rerun_command: /test mlpipeline-presubmit-e2e-test-gce-minikube
-      trigger: (?m)^/test (all|mlpipeline-presubmit-e2e-test-gce-minikube),?(\s+|$)
-      labels:
-        preset-service-account: "true"
-      spec:
-        containers:
-        - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
-          args:
-          - --clean
-          - --repo=github.com/googleprivate/$(REPO_NAME)=$(PULL_REFS)
-          - --service-account=/etc/service-account/service-account.json
-          - --upload=gs://gke-prow/pr-logs
-          - --ssh=/etc/ssh-knative/ssh-knative
-          - --scenario=execute
-          - -- # end bootstrap args, scenario args below
-          - -- # end kubernetes_execute_bazel flags (consider following flags as text)
-          - ./test/presubmit-tests-gce-minikube.sh
-          - "--workflow_file"
-          - "e2e_test_gke.yaml"
-          - "--test_result_folder"
-          - "e2e_test"
-          volumeMounts:
-          - mountPath: /etc/ssh-knative
-            name: ssh-knative
-        volumes:
-        - name: ssh-knative
-          secret:
-            defaultMode: 0400
-            secretName: ssh-knative
-    - name: mlpipeline-presubmit-sample-test
-      agent: kubernetes
-      context: mlpipeline-presubmit-sample-test
-      always_run: true
-      skip_report: true
-      rerun_command: /test mlpipeline-presubmit-sample-test
-      trigger: (?m)^/test (all|mlpipeline-presubmit-sample-test),?(\s+|$)
-      labels:
-        preset-service-account: "true"
-      spec:
-        containers:
-        - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
-          args:
-          - --clean
-          - --repo=github.com/googleprivate/$(REPO_NAME)=$(PULL_REFS)
-          - --service-account=/etc/service-account/service-account.json
-          - --upload=gs://gke-prow/pr-logs
-          - --ssh=/etc/ssh-knative/ssh-knative
-          - --scenario=execute
-          - -- # end bootstrap args, scenario args below
-          - -- # end kubernetes_execute_bazel flags (consider following flags as text)
-          - ./test/presubmit-tests.sh
-          - "--workflow_file"
-          - "sample_test.yaml"
-          - "--test_result_folder"
-          - "sample_test"
-          volumeMounts:
-          - mountPath: /etc/ssh-knative
-            name: ssh-knative
-        volumes:
-        - name: ssh-knative
-          secret:
-            defaultMode: 0400
-            secretName: ssh-knative
-
-  - name: mlpipeline-presubmit-unit-test
-    agent: kubernetes
-    context: mlpipeline-presubmit-unit-test
-    always_run: true
-    skip_report: false
-    rerun_command: /test mlpipeline-presubmit-unit-test
-    trigger: (?m)^/test (all|mlpipeline-presubmit-unit-test),?(\s+|$)
-    labels:
-      preset-service-account: "true"
-    spec:
-      containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
-        args:
-        - --clean
-        - --repo=github.com/googleprivate/$(REPO_NAME)=$(PULL_REFS)
-        - --service-account=/etc/service-account/service-account.json
-        - --upload=gs://gke-prow/pr-logs
-        - --ssh=/etc/ssh-knative/ssh-knative
-        - --scenario=execute
-        - -- # end bootstrap args, scenario args below
-        - -- # end kubernetes_execute_bazel flags (consider following flags as text)
-        - ./test/presubmit-tests.sh
-        - "--workflow_file"
-        - "unit_test_gke.yaml"
-        - "--test_result_folder"
-        - "backend_unit_test"
-        volumeMounts:
-        - mountPath: /etc/ssh-knative
-          name: ssh-knative
-      volumes:
-      - name: ssh-knative
-        secret:
-          defaultMode: 0400
-          secretName: ssh-knative
-  - name: dummy
-    agent: kubernetes
-    context: dummy
-    run_if_changed: test/dummy.sh
-    skip_report: true
-    rerun_command: /test dummy
-    trigger: (?m)^/test (all|dummy),?(\s+|$)
-    labels:
-      preset-service-account: "true"
-    spec:
-      containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:latest-master
-        imagePullPolicy: Always
-        args:
-        - --clean
-        - --repo=github.com/googleprivate/$(REPO_NAME)=$(PULL_REFS)
-        - --service-account=/etc/service-account/service-account.json
-        - --upload=gs://gke-prow/pr-logs
-        - --ssh=/etc/ssh-knative/ssh-knative
-        - --scenario=execute
-        - -- # end bootstrap args, scenario args below
-        - -- # end kubernetes_execute_bazel flags (consider following flags as text)
-        - ./test/dummy.sh
-        volumeMounts:
-        - mountPath: /etc/ssh-knative
-          name: ssh-knative
-      volumes:
-      - name: ssh-knative
-        secret:
-          defaultMode: 0400
-          secretName: ssh-knative
-
-  # TODO(yangpa): pipeline project is currently transfering code from googleprivate/ml -> kubeflow/pipelines
-  # Once transfer is done and the project is public, I'll clean up entries from both projects and use
-  # public prow instead.
-  kubeflow/pipelines:
-  - name: mlpipeline-build-image
-    agent: kubernetes
-    context: mlpipeline-build-image
-    always_run: true
-    skip_report: false
-    rerun_command: /test mlpipeline-build-image
-    trigger: (?m)^/test (all|mlpipeline-build-image),?(\s+|$)
-    labels:
-      preset-service-account: "true"
-    spec:
-      containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
-        args:
-        - --clean
-        - --repo=github.com/kubeflow/$(REPO_NAME)=$(PULL_REFS)
-        - --service-account=/etc/service-account/service-account.json
-        - --upload=gs://gke-prow/pr-logs
-        - --ssh=/etc/ssh-knative/ssh-knative
-        - --scenario=execute
-        - -- # end bootstrap args, scenario args below
-        - -- # end kubernetes_execute_bazel flags (consider following flags as text)
-        - ./test/presubmit-tests.sh
-        - "--workflow_file"
-        - "build_image.yaml"
-        volumeMounts:
-        - mountPath: /etc/ssh-knative
-          name: ssh-knative
-      volumes:
-      - name: ssh-knative
-        secret:
-          defaultMode: 0400
-          secretName: ssh-knative
-    run_after_success:
-    - name: mlpipeline-presubmit-e2e-test
-      agent: kubernetes
-      context: mlpipeline-presubmit-e2e-test
-      always_run: true
-      skip_report: false
-      rerun_command: /test mlpipeline-presubmit-e2e-test
-      trigger: (?m)^/test (all|mlpipeline-presubmit-e2e-test),?(\s+|$)
-      labels:
-        preset-service-account: "true"
-      spec:
-        containers:
-        - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
-          args:
-          - --clean
-          - --repo=github.com/kubeflow/$(REPO_NAME)=$(PULL_REFS)
-          - --service-account=/etc/service-account/service-account.json
-          - --upload=gs://gke-prow/pr-logs
-          - --ssh=/etc/ssh-knative/ssh-knative
-          - --scenario=execute
-          - -- # end bootstrap args, scenario args below
-          - -- # end kubernetes_execute_bazel flags (consider following flags as text)
-          - ./test/presubmit-tests.sh
-          - "--workflow_file"
-          - "e2e_test_gke.yaml"
-          - "--test_result_folder"
-          - "e2e_test"
-          volumeMounts:
-          - mountPath: /etc/ssh-knative
-            name: ssh-knative
-        volumes:
-        - name: ssh-knative
-          secret:
-            defaultMode: 0400
-            secretName: ssh-knative
-    - name: mlpipeline-presubmit-e2e-test-gce-minikube
-      agent: kubernetes
-      context: mlpipeline-presubmit-e2e-test-gce-minikube
-      always_run: true
-      skip_report: true
-      rerun_command: /test mlpipeline-presubmit-e2e-test-gce-minikube
-      trigger: (?m)^/test (all|mlpipeline-presubmit-e2e-test-gce-minikube),?(\s+|$)
-      labels:
-        preset-service-account: "true"
-      spec:
-        containers:
-        - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
-          args:
-          - --clean
-          - --repo=github.com/kubeflow/$(REPO_NAME)=$(PULL_REFS)
-          - --service-account=/etc/service-account/service-account.json
-          - --upload=gs://gke-prow/pr-logs
-          - --ssh=/etc/ssh-knative/ssh-knative
-          - --scenario=execute
-          - -- # end bootstrap args, scenario args below
-          - -- # end kubernetes_execute_bazel flags (consider following flags as text)
-          - ./test/presubmit-tests-gce-minikube.sh
-          - "--workflow_file"
-          - "e2e_test_gke.yaml"
-          - "--test_result_folder"
-          - "e2e_test"
-          volumeMounts:
-          - mountPath: /etc/ssh-knative
-            name: ssh-knative
-        volumes:
-        - name: ssh-knative
-          secret:
-            defaultMode: 0400
-            secretName: ssh-knative
-    - name: mlpipeline-presubmit-sample-test
-      agent: kubernetes
-      context: mlpipeline-presubmit-sample-test
-      always_run: true
-      skip_report: true
-      rerun_command: /test mlpipeline-presubmit-sample-test
-      trigger: (?m)^/test (all|mlpipeline-presubmit-sample-test),?(\s+|$)
-      labels:
-        preset-service-account: "true"
-      spec:
-        containers:
-        - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
-          args:
-          - --clean
-          - --repo=github.com/kubeflow/$(REPO_NAME)=$(PULL_REFS)
-          - --service-account=/etc/service-account/service-account.json
-          - --upload=gs://gke-prow/pr-logs
-          - --ssh=/etc/ssh-knative/ssh-knative
-          - --scenario=execute
-          - -- # end bootstrap args, scenario args below
-          - -- # end kubernetes_execute_bazel flags (consider following flags as text)
-          - ./test/presubmit-tests.sh
-          - "--workflow_file"
-          - "sample_test.yaml"
-          - "--test_result_folder"
-          - "sample_test"
-          - "--timeout"
-          - "3600"
-          volumeMounts:
-          - mountPath: /etc/ssh-knative
-            name: ssh-knative
-        volumes:
-        - name: ssh-knative
-          secret:
-            defaultMode: 0400
-            secretName: ssh-knative
-  - name: mlpipeline-presubmit-unit-test
-    agent: kubernetes
-    context: mlpipeline-presubmit-unit-test
-    always_run: true
-    skip_report: false
-    rerun_command: /test mlpipeline-presubmit-unit-test
-    trigger: (?m)^/test (all|mlpipeline-presubmit-unit-test),?(\s+|$)
-    labels:
-      preset-service-account: "true"
-    spec:
-      containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
-        args:
-        - --clean
-        - --repo=github.com/kubeflow/$(REPO_NAME)=$(PULL_REFS)
-        - --service-account=/etc/service-account/service-account.json
-        - --upload=gs://gke-prow/pr-logs
-        - --ssh=/etc/ssh-knative/ssh-knative
-        - --scenario=execute
-        - -- # end bootstrap args, scenario args below
-        - -- # end kubernetes_execute_bazel flags (consider following flags as text)
-        - ./test/presubmit-tests.sh
-        - "--workflow_file"
-        - "unit_test_gke.yaml"
-        - "--test_result_folder"
-        - "backend_unit_test"
-        volumeMounts:
-        - mountPath: /etc/ssh-knative
-          name: ssh-knative
-      volumes:
-      - name: ssh-knative
-        secret:
-          defaultMode: 0400
-          secretName: ssh-knative
-
 periodics:
 - interval: 1h
-  agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-ci-master
   labels:
     preset-service-account: "true"
@@ -593,7 +204,6 @@ periodics:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 
 - interval: 2h
-  agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-ci-serial-master
   labels:
     preset-service-account: "true"
@@ -616,7 +226,6 @@ periodics:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 
 - interval: 2h
-  agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-ci-slow-master
   labels:
     preset-service-account: "true"
@@ -640,7 +249,6 @@ periodics:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 
 - interval: 2h
-  agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-ci-device-plugin-gpu-master
   labels:
     preset-service-account: "true"
@@ -664,7 +272,6 @@ periodics:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 
 - interval: 30m
-  agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-qa-m69
   labels:
     preset-service-account: "true"
@@ -688,7 +295,6 @@ periodics:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 
 - interval: 30m
-  agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-qa-m70
   labels:
     preset-service-account: "true"
@@ -712,7 +318,6 @@ periodics:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 
 - interval: 30m
-  agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-qa-m71
   labels:
     preset-service-account: "true"
@@ -736,7 +341,6 @@ periodics:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 
 - interval: 30m
-  agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-qa-m72
   labels:
     preset-service-account: "true"
@@ -760,7 +364,6 @@ periodics:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 
 - interval: 30m
-  agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-qa-master
   labels:
     preset-service-account: "true"
@@ -784,7 +387,6 @@ periodics:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 
 - interval: 30m
-  agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-shielded-qa-m69
   labels:
     preset-service-account: "true"
@@ -808,7 +410,6 @@ periodics:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 
 - interval: 30m
-  agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-shielded-qa-m70
   labels:
     preset-service-account: "true"
@@ -832,7 +433,6 @@ periodics:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 
 - interval: 30m
-  agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-shielded-qa-m71
   labels:
     preset-service-account: "true"
@@ -856,7 +456,6 @@ periodics:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 
 - interval: 30m
-  agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-shielded-qa-m72
   labels:
     preset-service-account: "true"
@@ -880,7 +479,6 @@ periodics:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 
 - interval: 30m
-  agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-shielded-qa-master
   labels:
     preset-service-account: "true"
@@ -904,7 +502,6 @@ periodics:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 
 - interval: 1h
-  agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-qa-serial-m69
   labels:
     preset-service-account: "true"
@@ -927,7 +524,6 @@ periodics:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 
 - interval: 1h
-  agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-qa-serial-m70
   labels:
     preset-service-account: "true"
@@ -950,7 +546,6 @@ periodics:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 
 - interval: 1h
-  agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-qa-serial-m71
   labels:
     preset-service-account: "true"
@@ -973,7 +568,6 @@ periodics:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 
 - interval: 1h
-  agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-qa-serial-m72
   labels:
     preset-service-account: "true"
@@ -996,7 +590,6 @@ periodics:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 
 - interval: 1h
-  agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-qa-serial-master
   labels:
     preset-service-account: "true"
@@ -1019,7 +612,6 @@ periodics:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 
 - interval: 1h
-  agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-shielded-qa-serial-m69
   labels:
     preset-service-account: "true"
@@ -1042,7 +634,6 @@ periodics:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 
 - interval: 1h
-  agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-shielded-qa-serial-m70
   labels:
     preset-service-account: "true"
@@ -1065,7 +656,6 @@ periodics:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 
 - interval: 1h
-  agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-shielded-qa-serial-m71
   labels:
     preset-service-account: "true"
@@ -1088,7 +678,6 @@ periodics:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 
 - interval: 1h
-  agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-shielded-qa-serial-m72
   labels:
     preset-service-account: "true"
@@ -1111,7 +700,6 @@ periodics:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 
 - interval: 1h
-  agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-shielded-qa-serial-master
   labels:
     preset-service-account: "true"
@@ -1134,7 +722,6 @@ periodics:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 
 - interval: 2h
-  agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-qa-slow-m69
   labels:
     preset-service-account: "true"
@@ -1158,7 +745,6 @@ periodics:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 
 - interval: 2h
-  agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-qa-slow-m70
   labels:
     preset-service-account: "true"
@@ -1182,7 +768,6 @@ periodics:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 
 - interval: 2h
-  agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-qa-slow-m71
   labels:
     preset-service-account: "true"
@@ -1206,7 +791,6 @@ periodics:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 
 - interval: 2h
-  agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-qa-slow-m72
   labels:
     preset-service-account: "true"
@@ -1230,7 +814,6 @@ periodics:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 
 - interval: 2h
-  agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-qa-slow-master
   labels:
     preset-service-account: "true"
@@ -1254,7 +837,6 @@ periodics:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 
 - interval: 2h
-  agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-shielded-qa-slow-m69
   labels:
     preset-service-account: "true"
@@ -1278,7 +860,6 @@ periodics:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 
 - interval: 2h
-  agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-shielded-qa-slow-m70
   labels:
     preset-service-account: "true"
@@ -1302,7 +883,6 @@ periodics:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 
 - interval: 2h
-  agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-shielded-qa-slow-m71
   labels:
     preset-service-account: "true"
@@ -1326,7 +906,6 @@ periodics:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 
 - interval: 2h
-  agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-shielded-qa-slow-m72
   labels:
     preset-service-account: "true"
@@ -1350,7 +929,6 @@ periodics:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 
 - interval: 2h
-  agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-shielded-qa-slow-master
   labels:
     preset-service-account: "true"
@@ -1376,7 +954,6 @@ periodics:
 
 # COS Docker validation tests.
 - interval: 1h
-  agent: kubernetes
   name: ci-kubernetes-e2e-cos-docker-validation
   labels:
     preset-service-account: "true"
@@ -1402,7 +979,6 @@ periodics:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 
 - interval: 1h
-  agent: kubernetes
   name: ci-kubernetes-e2e-cos-docker-validation-serial
   labels:
     preset-service-account: "true"
@@ -1427,7 +1003,6 @@ periodics:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 
 - interval: 1h
-  agent: kubernetes
   name: ci-kubernetes-e2e-cos-docker-validation-slow
   labels:
     preset-service-account: "true"
@@ -1453,7 +1028,6 @@ periodics:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 
 - interval: 24h
-  agent: kubernetes
   name: ci-kubernetes-soak-cos-docker-validation
   labels:
     preset-service-account: "true"
@@ -1482,7 +1056,6 @@ periodics:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 
 - interval: 6h
-  agent: kubernetes
   name: ci-gke-guitar-projects-janitor
   labels:
     preset-service-account: "true"
@@ -1561,7 +1134,6 @@ periodics:
 - tags:
   - generated   # AUTO-GENERATED by experiment/generate_tests.py - DO NOT EDIT!
   interval: 6h
-  agent: kubernetes
   labels:
     preset-service-account: 'true'
     preset-k8s-ssh: 'true'
@@ -1592,7 +1164,6 @@ periodics:
 - tags:
   - generated   # AUTO-GENERATED by experiment/generate_tests.py - DO NOT EDIT!
   interval: 6h
-  agent: kubernetes
   labels:
     preset-service-account: 'true'
     preset-k8s-ssh: 'true'
@@ -1624,7 +1195,6 @@ periodics:
 - tags:
   - generated   # AUTO-GENERATED by experiment/generate_tests.py - DO NOT EDIT!
   interval: 2h
-  agent: kubernetes
   labels:
     preset-service-account: 'true'
     preset-k8s-ssh: 'true'
@@ -1654,7 +1224,6 @@ periodics:
 - tags:
   - generated   # AUTO-GENERATED by experiment/generate_tests.py - DO NOT EDIT!
   interval: 6h
-  agent: kubernetes
   labels:
     preset-service-account: 'true'
     preset-k8s-ssh: 'true'
@@ -1683,7 +1252,6 @@ periodics:
 - tags:
   - generated   # AUTO-GENERATED by experiment/generate_tests.py - DO NOT EDIT!
   interval: 2h
-  agent: kubernetes
   labels:
     preset-service-account: 'true'
     preset-k8s-ssh: 'true'
@@ -1713,7 +1281,6 @@ periodics:
 - tags:
   - generated   # AUTO-GENERATED by experiment/generate_tests.py - DO NOT EDIT!
   interval: 6h
-  agent: kubernetes
   labels:
     preset-service-account: 'true'
     preset-k8s-ssh: 'true'
@@ -1742,7 +1309,6 @@ periodics:
 - tags:
   - generated   # AUTO-GENERATED by experiment/generate_tests.py - DO NOT EDIT!
   interval: 6h
-  agent: kubernetes
   labels:
     preset-service-account: 'true'
     preset-k8s-ssh: 'true'
@@ -1773,7 +1339,6 @@ periodics:
 - tags:
   - generated   # AUTO-GENERATED by experiment/generate_tests.py - DO NOT EDIT!
   interval: 6h
-  agent: kubernetes
   labels:
     preset-service-account: 'true'
     preset-k8s-ssh: 'true'
@@ -1804,7 +1369,6 @@ periodics:
 - tags:
   - generated   # AUTO-GENERATED by experiment/generate_tests.py - DO NOT EDIT!
   interval: 2h
-  agent: kubernetes
   labels:
     preset-service-account: 'true'
     preset-k8s-ssh: 'true'
@@ -1834,7 +1398,6 @@ periodics:
 - tags:
   - generated   # AUTO-GENERATED by experiment/generate_tests.py - DO NOT EDIT!
   interval: 4h
-  agent: kubernetes
   labels:
     preset-service-account: 'true'
     preset-k8s-ssh: 'true'
@@ -1866,7 +1429,6 @@ periodics:
 - tags:
   - generated   # AUTO-GENERATED by experiment/generate_tests.py - DO NOT EDIT!
   interval: 4h
-  agent: kubernetes
   labels:
     preset-service-account: 'true'
     preset-k8s-ssh: 'true'
@@ -1897,7 +1459,6 @@ periodics:
 - tags:
   - generated   # AUTO-GENERATED by experiment/generate_tests.py - DO NOT EDIT!
   interval: 4h
-  agent: kubernetes
   labels:
     preset-service-account: 'true'
     preset-k8s-ssh: 'true'
@@ -1929,7 +1490,6 @@ periodics:
 - tags:
   - generated   # AUTO-GENERATED by experiment/generate_tests.py - DO NOT EDIT!
   interval: 6h
-  agent: kubernetes
   labels:
     preset-service-account: 'true'
     preset-k8s-ssh: 'true'
@@ -1958,7 +1518,6 @@ periodics:
 - tags:
   - generated   # AUTO-GENERATED by experiment/generate_tests.py - DO NOT EDIT!
   interval: 4h
-  agent: kubernetes
   labels:
     preset-service-account: 'true'
     preset-k8s-ssh: 'true'
@@ -1987,7 +1546,6 @@ periodics:
 - tags:
   - generated   # AUTO-GENERATED by experiment/generate_tests.py - DO NOT EDIT!
   interval: 4h
-  agent: kubernetes
   labels:
     preset-service-account: 'true'
     preset-k8s-ssh: 'true'
@@ -2019,7 +1577,6 @@ periodics:
 - tags:
   - generated   # AUTO-GENERATED by experiment/generate_tests.py - DO NOT EDIT!
   interval: 4h
-  agent: kubernetes
   labels:
     preset-service-account: 'true'
     preset-k8s-ssh: 'true'
@@ -2050,7 +1607,6 @@ periodics:
 - tags:
   - generated   # AUTO-GENERATED by experiment/generate_tests.py - DO NOT EDIT!
   interval: 4h
-  agent: kubernetes
   labels:
     preset-service-account: 'true'
     preset-k8s-ssh: 'true'
@@ -2079,7 +1635,6 @@ periodics:
 - tags:
   - generated   # AUTO-GENERATED by experiment/generate_tests.py - DO NOT EDIT!
   interval: 6h
-  agent: kubernetes
   labels:
     preset-service-account: 'true'
     preset-k8s-ssh: 'true'
@@ -2110,7 +1665,6 @@ periodics:
 - tags:
   - generated   # AUTO-GENERATED by experiment/generate_tests.py - DO NOT EDIT!
   interval: 6h
-  agent: kubernetes
   labels:
     preset-service-account: 'true'
     preset-k8s-ssh: 'true'
@@ -2142,7 +1696,6 @@ periodics:
 - tags:
   - generated   # AUTO-GENERATED by experiment/generate_tests.py - DO NOT EDIT!
   interval: 6h
-  agent: kubernetes
   labels:
     preset-service-account: 'true'
     preset-k8s-ssh: 'true'
@@ -2171,7 +1724,6 @@ periodics:
 - tags:
   - generated   # AUTO-GENERATED by experiment/generate_tests.py - DO NOT EDIT!
   interval: 6h
-  agent: kubernetes
   labels:
     preset-service-account: 'true'
     preset-k8s-ssh: 'true'
@@ -2203,7 +1755,6 @@ periodics:
 - tags:
   - generated   # AUTO-GENERATED by experiment/generate_tests.py - DO NOT EDIT!
   interval: 2h
-  agent: kubernetes
   labels:
     preset-service-account: 'true'
     preset-k8s-ssh: 'true'
@@ -2233,7 +1784,6 @@ periodics:
 - tags:
   - generated   # AUTO-GENERATED by experiment/generate_tests.py - DO NOT EDIT!
   interval: 6h
-  agent: kubernetes
   labels:
     preset-service-account: 'true'
     preset-k8s-ssh: 'true'
@@ -2265,7 +1815,6 @@ periodics:
 - tags:
   - generated   # AUTO-GENERATED by experiment/generate_tests.py - DO NOT EDIT!
   interval: 6h
-  agent: kubernetes
   labels:
     preset-service-account: 'true'
     preset-k8s-ssh: 'true'
@@ -2297,7 +1846,6 @@ periodics:
 - tags:
   - generated   # AUTO-GENERATED by experiment/generate_tests.py - DO NOT EDIT!
   interval: 2h
-  agent: kubernetes
   labels:
     preset-service-account: 'true'
     preset-k8s-ssh: 'true'
@@ -2327,7 +1875,6 @@ periodics:
 - tags:
   - generated   # AUTO-GENERATED by experiment/generate_tests.py - DO NOT EDIT!
   interval: 6h
-  agent: kubernetes
   labels:
     preset-service-account: 'true'
     preset-k8s-ssh: 'true'
@@ -2358,7 +1905,6 @@ periodics:
 - tags:
   - generated   # AUTO-GENERATED by experiment/generate_tests.py - DO NOT EDIT!
   interval: 6h
-  agent: kubernetes
   labels:
     preset-service-account: 'true'
     preset-k8s-ssh: 'true'
@@ -2390,7 +1936,6 @@ periodics:
 - tags:
   - generated   # AUTO-GENERATED by experiment/generate_tests.py - DO NOT EDIT!
   interval: 4h
-  agent: kubernetes
   labels:
     preset-service-account: 'true'
     preset-k8s-ssh: 'true'
@@ -2421,7 +1966,6 @@ periodics:
 - tags:
   - generated   # AUTO-GENERATED by experiment/generate_tests.py - DO NOT EDIT!
   interval: 4h
-  agent: kubernetes
   labels:
     preset-service-account: 'true'
     preset-k8s-ssh: 'true'
@@ -2450,7 +1994,6 @@ periodics:
 - tags:
   - generated   # AUTO-GENERATED by experiment/generate_tests.py - DO NOT EDIT!
   interval: 2h
-  agent: kubernetes
   labels:
     preset-service-account: 'true'
     preset-k8s-ssh: 'true'
@@ -2480,7 +2023,6 @@ periodics:
 - tags:
   - generated   # AUTO-GENERATED by experiment/generate_tests.py - DO NOT EDIT!
   interval: 6h
-  agent: kubernetes
   labels:
     preset-service-account: 'true'
     preset-k8s-ssh: 'true'
@@ -2509,7 +2051,6 @@ periodics:
 - tags:
   - generated   # AUTO-GENERATED by experiment/generate_tests.py - DO NOT EDIT!
   interval: 6h
-  agent: kubernetes
   labels:
     preset-service-account: 'true'
     preset-k8s-ssh: 'true'
@@ -2540,7 +2081,6 @@ periodics:
 - tags:
   - generated   # AUTO-GENERATED by experiment/generate_tests.py - DO NOT EDIT!
   interval: 4h
-  agent: kubernetes
   labels:
     preset-service-account: 'true'
     preset-k8s-ssh: 'true'
@@ -2572,7 +2112,6 @@ periodics:
 - tags:
   - generated   # AUTO-GENERATED by experiment/generate_tests.py - DO NOT EDIT!
   interval: 6h
-  agent: kubernetes
   labels:
     preset-service-account: 'true'
     preset-k8s-ssh: 'true'
@@ -2601,7 +2140,6 @@ periodics:
 - tags:
   - generated   # AUTO-GENERATED by experiment/generate_tests.py - DO NOT EDIT!
   interval: 6h
-  agent: kubernetes
   labels:
     preset-service-account: 'true'
     preset-k8s-ssh: 'true'
@@ -2632,7 +2170,6 @@ periodics:
 - tags:
   - generated   # AUTO-GENERATED by experiment/generate_tests.py - DO NOT EDIT!
   interval: 6h
-  agent: kubernetes
   labels:
     preset-service-account: 'true'
     preset-k8s-ssh: 'true'
@@ -2663,7 +2200,6 @@ periodics:
 - tags:
   - generated   # AUTO-GENERATED by experiment/generate_tests.py - DO NOT EDIT!
   interval: 6h
-  agent: kubernetes
   labels:
     preset-service-account: 'true'
     preset-k8s-ssh: 'true'
@@ -2695,7 +2231,6 @@ periodics:
 - tags:
   - generated   # AUTO-GENERATED by experiment/generate_tests.py - DO NOT EDIT!
   interval: 6h
-  agent: kubernetes
   labels:
     preset-service-account: 'true'
     preset-k8s-ssh: 'true'
@@ -2727,7 +2262,6 @@ periodics:
 - tags:
   - generated   # AUTO-GENERATED by experiment/generate_tests.py - DO NOT EDIT!
   interval: 4h
-  agent: kubernetes
   labels:
     preset-service-account: 'true'
     preset-k8s-ssh: 'true'
@@ -2757,7 +2291,6 @@ periodics:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 # shielded vm testing suites
 - interval: 2h
-  agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-shieldedvm
   labels:
     preset-service-account: "true"
@@ -2782,7 +2315,6 @@ periodics:
       - --timeout=50m
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 - interval: 2h
-  agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-serial-shieldedvm
   labels:
     preset-service-account: "true"
@@ -2806,7 +2338,6 @@ periodics:
       - --timeout=300m
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 - interval: 2h
-  agent: kubernetes
   name: ci-kubernetes-e2e-gce-gci-slow-shieldedvm
   labels:
     preset-service-account: "true"
@@ -2833,7 +2364,6 @@ periodics:
 
 # TODO: Remove after we get enough benchmark data.
 - interval: 1h
-  agent: kubernetes
   name: ci-cri-containerd-e2e-gci-serial-m70
   labels:
     preset-service-account: "true"
@@ -2857,7 +2387,6 @@ periodics:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180730-8b7ab3104-master
 
 - interval: 2h
-  agent: kubernetes
   name: ci-kubernetes-e2e-gke-sysctl-default
   labels:
     preset-service-account: "true"
@@ -2886,7 +2415,6 @@ periodics:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
 
 - interval: 2h
-  agent: kubernetes
   name: ci-kubernetes-e2e-gke-sysctl-serial
   labels:
     preset-service-account: "true"
@@ -2915,7 +2443,6 @@ periodics:
       image: gcr.io/k8s-testimages/kubekins-e2e:v20180918-b58d77e83-master
 
 - interval: 2h
-  agent: kubernetes
   name: ci-kubernetes-e2e-gke-sysctl-slow
   labels:
     preset-service-account: "true"
@@ -2946,7 +2473,6 @@ periodics:
 postsubmits:
   GoogleCloudPlatform/k8s-tpu-operator:
   - name: k8s-tpu-operator-image-push
-    agent: kubernetes
     branches:
     - master
     - release-0.0

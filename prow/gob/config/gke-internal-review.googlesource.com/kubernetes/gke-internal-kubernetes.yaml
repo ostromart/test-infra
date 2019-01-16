@@ -201,7 +201,6 @@ presubmits:
     path_alias: k8s.io/kubernetes
     labels:
       preset-service-account: "true"
-      preset-dind-enabled: "true"
       prow.k8s.io/gerrit-report-label: "Verified"
     spec:
       containers:
@@ -221,7 +220,6 @@ presubmits:
     path_alias: k8s.io/kubernetes
     labels:
       preset-service-account: "true"
-      preset-dind-enabled: "true"
       prow.k8s.io/gerrit-report-label: "Verified"
     spec:
       containers:
@@ -241,7 +239,6 @@ presubmits:
     path_alias: k8s.io/kubernetes
     labels:
       preset-service-account: "true"
-      preset-dind-enabled: "true"
       prow.k8s.io/gerrit-report-label: "Verified"
     spec:
       containers:
@@ -261,7 +258,6 @@ presubmits:
     path_alias: k8s.io/kubernetes
     labels:
       preset-service-account: "true"
-      preset-dind-enabled: "true"
       prow.k8s.io/gerrit-report-label: "Verified"
     spec:
       containers:
@@ -281,7 +277,6 @@ presubmits:
     path_alias: k8s.io/kubernetes
     labels:
       preset-service-account: "true"
-      preset-dind-enabled: "true"
       prow.k8s.io/gerrit-report-label: "Verified"
     spec:
       containers:

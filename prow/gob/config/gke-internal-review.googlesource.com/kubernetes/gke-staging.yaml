@@ -217,3 +217,41 @@ periodics:
       - runner.sh
       - /workspace/scenarios/kubernetes_e2e.py
       image: gcr.io/gke-test-infra/kubekins-e2e:v20181221-f9eff05-master
+
+- decorate: true
+  decoration_config:
+    timeout: 6000000000000 # 100 minutes
+  interval: 30m
+  extra_refs:
+  - org: gke-internal.googlesource.com/cloud-services-mesh-team
+    repo: csm-sync-agent
+    base_ref: master
+    path_alias: gke-internal.googlesource.com/cloud-services-mesh-team/csm-sync-agent
+    clone_uri: https://gke-internal.googlesource.com/cloud-services-mesh-team/csm-sync-agent
+  labels:
+    preset-service-account: "true"
+    preset-k8s-ssh: "true"
+  name: periodic-e2e-gke-staging-1-11-csm-addon
+  spec:
+    containers:
+    - args:
+      - --check-leaked-resources
+      - --cluster=csm-e2e
+      - --deployment=gke
+      - --extract=gke-latest
+      - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+      - --gcp-node-image=gci
+      - --gcp-project-type=gke-internal-project
+      - --gcp-zone=us-central1-f
+      - --gke-command-group=alpha
+      - --gke-create-command=container clusters create --quiet --num-nodes=4 --no-enable-legacy-authorization --addons=Istio --istio-config=auth=MTLS_PERMISSIVE,csm-mesh-name=projects/1234/meshes/1234
+      - --gke-environment=test
+      - --provider=gke
+      - --test=false
+      - --test-cmd=../e2e/e2e-prow.sh
+      - --test-cmd-name=csm-addon
+      - --timeout=80m
+      command:
+      - runner.sh
+      - /workspace/scenarios/kubernetes_e2e.py
+      image: gcr.io/gke-test-infra/kubekins-e2e:v20181221-f9eff05-master

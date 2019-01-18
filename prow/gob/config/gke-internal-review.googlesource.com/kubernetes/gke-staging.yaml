@@ -239,7 +239,7 @@ periodics:
       - --cluster=csm-e2e
       - --deployment=gke
       - --extract=gke-latest
-      - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
+      - --gcp-cloud-sdk=gs://csm-alpha-artifacts/gcloud/
       - --gcp-node-image=gci
       - --gcp-project=csm-e2e-test
       - --gcp-zone=us-central1-f

@@ -8,7 +8,7 @@ presubmits:
       preset-dind-enabled: "true"
     spec:
       containers:
-      - image: gcr.io/k8s-testimages/kubekins-e2e:v20190116-8e0f20924-master
+      - image: gcr.io/k8s-testimages/kubekins-e2e:v20190117-9a712c1e6-master
         command:
         - runner.sh
         args:
@@ -36,7 +36,7 @@ periodics:
      clone_uri: https://team.googlesource.com/gke-kubernetes-enterprise-control/prototype
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20190116-8e0f20924-master
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20190117-9a712c1e6-master
        command:
        - runner.sh
        args:
@@ -78,7 +78,7 @@ periodics:
    spec:
      activeDeadlineSeconds: 7200  # 2 hours
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20190116-8e0f20924-master
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20190117-9a712c1e6-master
        args:
        - --clean
        - --timeout=300
@@ -129,7 +129,7 @@ periodics:
      clone_uri: https://gke-internal.googlesource.com/cluster-lifecycle/cluster-operators
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20190116-8e0f20924-master
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20190117-9a712c1e6-master
        command:
        - runner.sh
        args:
@@ -187,7 +187,7 @@ periodics:
      clone_uri: https://team.googlesource.com/gke-kubernetes-enterprise-control/prototype
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20190116-8e0f20924-master
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20190117-9a712c1e6-master
        command:
        - runner.sh
        args:
@@ -238,7 +238,7 @@ periodics:
      clone_uri: https://team.googlesource.com/gke-kubernetes-enterprise-control/prototype
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20190116-8e0f20924-master
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20190117-9a712c1e6-master
        command:
        - runner.sh
        args:
@@ -288,7 +288,7 @@ periodics:
      clone_uri: https://team.googlesource.com/gke-kubernetes-enterprise-control/prototype
    spec:
      containers:
-     - image: gcr.io/k8s-testimages/kubekins-e2e:v20190116-8e0f20924-master
+     - image: gcr.io/k8s-testimages/kubekins-e2e:v20190117-9a712c1e6-master
        command:
        - runner.sh
        args:

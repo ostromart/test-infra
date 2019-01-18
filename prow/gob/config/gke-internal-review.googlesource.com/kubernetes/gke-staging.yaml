@@ -231,7 +231,7 @@ periodics:
   labels:
     preset-service-account: "true"
     preset-k8s-ssh: "true"
-  name: periodic-e2e-gke-staging-1-11-csm-addon
+  name: periodic-e2e-gke-staging-latest-csm-addon
   spec:
     containers:
     - args:
@@ -243,8 +243,7 @@ periodics:
       - --gcp-node-image=gci
       - --gcp-project=csm-e2e-test
       - --gcp-zone=us-central1-f
-      - --gke-command-group=alpha
-      - --gke-create-command=container clusters create --quiet --num-nodes=4 --no-enable-legacy-authorization --addons=Istio --istio-config=auth=MTLS_PERMISSIVE,csm-mesh-name=projects/1234/meshes/1234
+      - --gke-create-command=alpha container clusters create --quiet --num-nodes=4 --no-enable-legacy-authorization --addons=Istio --istio-config=auth=MTLS_PERMISSIVE,csm-mesh-name=projects/1234/meshes/1234
       - --gke-environment=test
       - --provider=gke
       - --test=false

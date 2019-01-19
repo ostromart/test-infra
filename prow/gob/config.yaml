@@ -110,6 +110,10 @@ presets:
   - name: docker-graph
     mountPath: /docker-graph
 
+pubsub_subscriptions:
+  "gob-prow":
+  - "louhi-to-prow"
+
 deck:
   spyglass:
     size_limit: 500000000 # 500MB

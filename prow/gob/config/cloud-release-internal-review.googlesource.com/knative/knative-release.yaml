@@ -1,0 +1,35 @@
+periodics:
+
+- cron: "* * 30 02 *" # Invalid date, should only run when triggered
+  name: ci-knative-serving-continuous
+  agent: kubernetes
+  labels:
+    preset-service-account: "true"
+    preset-bazel-scratch-dir: "true"
+    preset-bazel-remote-cache-enabled: "true"
+  spec:
+    containers:
+    - image: gcr.io/knative-tests/test-infra/prow-tests:latest
+      imagePullPolicy: Always
+      args:
+      - "--scenario=kubernetes_execute_bazel"
+      - "--clean"
+      - "--job=$(JOB_NAME)"
+      - "--repo=cloud-release-internal.googlesource.com/knative/serving"
+      - "--root=/go/src"
+      - "--service-account=/etc/service-account/service-account.json"
+      - "--upload=gs://gob-prow/"
+      - "--timeout=50" # Avoid overrun
+      - "--" # end bootstrap args, scenario args below
+      - "--" # end kubernetes_execute_bazel flags (consider following flags as text)
+      - "bash"
+      - "-c"
+      # TODO: `export PROJECT_ID="${customer_project_id}"` set this to the right thing
+      - "set -ex && export PROJECT_ID='knative-serving-e2e-tests' && gcloud auth list && rm -rf /go/src/github.com/knative/ && gcloud auth list && gcloud config configurations list && (cd ~ && pwd) && ls -lahR ~/.config/gcloud/ && cp -ar /go/src/cloud-release-internal.googlesource.com/knative /go/src/github.com && gcloud auth list && cd /go/src/github.com/knative/serving && ./test/presubmit-tests.sh --build-tests && ./test/presubmit-tests.sh --unit-tests && ./test/presubmit-tests.sh --integration-tests"
+      # Bazel needs privileged mode in order to sandbox builds.
+      securityContext:
+        privileged: true
+      resources:
+        requests:
+          memory: "1Gi"
+

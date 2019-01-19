@@ -356,3 +356,68 @@ spec:
           secretName: http-cookiefile
       nodeSelector:
         cloud.google.com/gke-nodepool: pubsub-node-pool
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sub-deployment
+  labels:
+    app: sub
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sub
+  template:
+    metadata:
+      labels:
+        app: sub
+    spec:
+      terminationGracePeriodSeconds: 120
+      containers:
+      - name: sub
+        image: gcr.io/sebvas-experiment/sub:v20190123-ab5bf36d2
+        args:
+        - --config-path=/etc/config/config.yaml
+        - --job-config-path=/etc/job-config
+        - --grace-period=110s
+        ports:
+        - name: http
+          containerPort: 80
+        env:
+        - name: GOOGLE_APPLICATION_CREDENTIALS
+          value: /etc/pubsub/service-account.json
+        volumeMounts:
+        - name: config
+          mountPath: /etc/config
+          readOnly: true
+        - name: job-config
+          mountPath: /etc/job-config
+          readOnly: true
+        - name: pubsub-service-account
+          mountPath: /etc/pubsub
+          readOnly: true
+      volumes:
+      - name: config
+        configMap:
+          name: config
+      - name: job-config
+        configMap:
+          name: job-config
+      - name: pubsub-service-account
+        secret:
+          secretName: pubsub-service-account
+      nodeSelector:
+        cloud.google.com/gke-nodepool: pubsub-node-pool
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sub
+spec:
+  selector:
+    app: sub
+  ports:
+  - port: 80
+    targetPort: 80
+  type: NodePort

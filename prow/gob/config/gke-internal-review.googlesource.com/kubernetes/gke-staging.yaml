@@ -238,6 +238,8 @@ periodics:
       - --check-leaked-resources
       - --cluster=csm-e2e
       - --deployment=gke
+      - --env=CLOUDSDK_CONTAINER_USE_V1_API=false
+      - --env=CLOUDSDK_API_ENDPOINT_OVERRIDES_CONTAINER=https://staging-container.sandbox.googleapis.com/
       - --extract=gke-latest
       - --gcp-cloud-sdk=gs://csm-alpha-artifacts/gcloud/
       - --gcp-node-image=gci

@@ -244,7 +244,7 @@ periodics:
       - --gcp-project=csm-e2e-test
       - --gcp-zone=us-central1-f
       - --gke-create-command=alpha container clusters create --quiet --num-nodes=4 --no-enable-legacy-authorization --addons=Istio --istio-config=auth=MTLS_PERMISSIVE,csm-mesh-name=projects/1234/meshes/1234
-      - --gke-environment=test
+      - --gke-environment=staging
       - --provider=gke
       - --test=false
       - --test-cmd=../e2e/e2e-prow.sh

@@ -174,6 +174,7 @@ periodics:
 # that passes the build.
  - interval: 20m
    name: nomos-operator-release-staging
+   path_alias: sigs.k8s.io/cluster-operators
    labels:
      preset-service-account: "true"
      preset-dind-enabled: "true"

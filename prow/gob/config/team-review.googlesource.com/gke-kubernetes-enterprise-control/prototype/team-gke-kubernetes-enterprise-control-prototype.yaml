@@ -174,7 +174,6 @@ periodics:
 # that passes the build.
  - interval: 20m
    name: nomos-operator-release-staging
-   path_alias: sigs.k8s.io/cluster-operators
    labels:
      preset-service-account: "true"
      preset-dind-enabled: "true"
@@ -186,6 +185,7 @@ periodics:
      repo: cluster-operators
      base_ref: master
      clone_uri: https://gke-internal.googlesource.com/cluster-lifecycle/cluster-operators
+     path_alias: sigs.k8s.io/cluster-operators
    spec:
      containers:
      - image: gcr.io/k8s-testimages/kubekins-e2e:v20190117-9a712c1e6-master

@@ -109,6 +109,22 @@ presets:
   volumeMounts:
   - name: docker-graph
     mountPath: /docker-graph
+# service account from csm-e2e-test, has alpha feature visibility
+- labels:
+    preset-service-account-csm: "true"
+  env:
+  - name: GOOGLE_APPLICATION_CREDENTIALS
+    value: /etc/service-account/service-account.json
+  - name: E2E_GOOGLE_APPLICATION_CREDENTIALS
+    value: /etc/service-account/service-account.json
+  volumes:
+  - name: service
+    secret:
+      secretName: service-account-csm
+  volumeMounts:
+  - name: service
+    mountPath: /etc/service-account
+    readOnly: true
 
 deck:
   spyglass:

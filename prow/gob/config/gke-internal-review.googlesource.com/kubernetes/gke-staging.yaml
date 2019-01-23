@@ -229,7 +229,7 @@ periodics:
     path_alias: gke-internal.googlesource.com/cloud-services-mesh-team/csm-sync-agent
     clone_uri: https://gke-internal.googlesource.com/cloud-services-mesh-team/csm-sync-agent
   labels:
-    preset-service-account: "true"
+    preset-service-account-csm: "true"
     preset-k8s-ssh: "true"
   name: periodic-e2e-gke-staging-latest-csm-addon
   spec:

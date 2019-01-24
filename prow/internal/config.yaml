@@ -1153,7 +1153,7 @@ periodics:
       - --gcp-zone=us-central1-f
       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
       - --gke-environment=test
-      - --image-family=ubuntu-gke-1604-lts-2
+      - --image-family=pipeline-1
       - --image-project=ubuntu-os-gke-cloud-private
       - --gcp-node-image=custom
       - --extract=ci/k8s-stable2
@@ -1183,7 +1183,7 @@ periodics:
       - --gcp-zone=us-central1-f
       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
       - --gke-environment=test
-      - --image-family=ubuntu-gke-1604-lts-2
+      - --image-family=pipeline-1
       - --image-project=ubuntu-os-gke-cloud-private
       - --gcp-node-image=custom
       - --extract=ci/k8s-stable2
@@ -1212,7 +1212,7 @@ periodics:
       - --node-tests=true
       - --provider=gce
       - --gcp-zone=us-central1-f
-      - --image-family=ubuntu-gke-1604-lts-1
+      - --image-family=pipeline-2
       - --image-project=ubuntu-os-gke-cloud-private
       - --timeout=180m
       - --test_args=--nodes=1 --focus="\[Serial\]" --skip="\[Flaky\]|\[Benchmark\]|\[NodeAlphaFeature:.+\]"
@@ -1239,7 +1239,7 @@ periodics:
       - --cluster=test-532dba062e
       - --provider=gce
       - --gcp-zone=us-central1-f
-      - --image-family=ubuntu-gke-1604-lts-2
+      - --image-family=pipeline-1
       - --image-project=ubuntu-os-gke-cloud-private
       - --gcp-node-image=custom
       - --extract=ci/k8s-stable2
@@ -1269,7 +1269,7 @@ periodics:
       - --node-tests=true
       - --provider=gce
       - --gcp-zone=us-central1-f
-      - --image-family=ubuntu-gke-1604-lts-1
+      - --image-family=pipeline-2
       - --image-project=ubuntu-os-gke-cloud-private
       - --timeout=60m
       - --test_args=--nodes=8 --skip="\[Flaky\]|\[Serial\]|\[NodeAlphaFeature:.+\]"
@@ -1296,7 +1296,7 @@ periodics:
       - --cluster=test-0d4c6b9a5b
       - --provider=gce
       - --gcp-zone=us-central1-f
-      - --image-family=ubuntu-gke-1604-lts-1
+      - --image-family=pipeline-2
       - --image-project=ubuntu-os-gke-cloud-private
       - --gcp-node-image=custom
       - --extract=ci/k8s-stable3
@@ -1328,7 +1328,7 @@ periodics:
       - --gcp-zone=us-central1-f
       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
       - --gke-environment=test
-      - --image-family=ubuntu-gke-1604-lts-1
+      - --image-family=pipeline-2
       - --image-project=ubuntu-os-gke-cloud-private
       - --gcp-node-image=custom
       - --extract=ci/k8s-stable3
@@ -1358,7 +1358,7 @@ periodics:
       - --gcp-zone=us-central1-f
       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
       - --gke-environment=test
-      - --image-family=ubuntu-gke-1604-lts-1
+      - --image-family=pipeline-2
       - --image-project=ubuntu-os-gke-cloud-private
       - --gcp-node-image=custom
       - --extract=ci/k8s-stable3
@@ -1386,7 +1386,7 @@ periodics:
       - --node-tests=true
       - --provider=gce
       - --gcp-zone=us-central1-f
-      - --image-family=ubuntu-gke-1604-lts-2
+      - --image-family=pipeline-1
       - --image-project=ubuntu-os-gke-cloud-private
       - --timeout=180m
       - --test_args=--nodes=1 --focus="\[Serial\]" --skip="\[Flaky\]|\[Benchmark\]|\[NodeAlphaFeature:.+\]"
@@ -1417,7 +1417,7 @@ periodics:
       - --gcp-zone=us-central1-f
       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
       - --gke-environment=test
-      - --image-family=ubuntu-gke-1604-lts-2
+      - --image-family=pipeline-1
       - --image-project=ubuntu-os-gke-cloud-private
       - --gcp-node-image=custom
       - --extract=ci/k8s-stable1
@@ -1448,7 +1448,7 @@ periodics:
       - --gcp-zone=us-central1-f
       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
       - --gke-environment=test
-      - --image-family=ubuntu-gke-1604-lts-2
+      - --image-family=pipeline-1
       - --image-project=ubuntu-os-gke-cloud-private
       - --gcp-node-image=custom
       - --extract=ci/k8s-stable1
@@ -1478,7 +1478,7 @@ periodics:
       - --gcp-zone=us-central1-f
       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
       - --gke-environment=test
-      - --image-family=ubuntu-gke-1604-lts-2
+      - --image-family=pipeline-1
       - --image-project=ubuntu-os-gke-cloud-private
       - --gcp-node-image=custom
       - --extract=ci/k8s-stable1
@@ -1505,7 +1505,7 @@ periodics:
       - --cluster=test-665fca7985
       - --provider=gce
       - --gcp-zone=us-central1-f
-      - --image-family=ubuntu-gke-1604-lts-1
+      - --image-family=pipeline-2
       - --image-project=ubuntu-os-gke-cloud-private
       - --gcp-node-image=custom
       - --extract=ci/k8s-stable3
@@ -1533,7 +1533,7 @@ periodics:
       - --cluster=test-eca67f767b
       - --provider=gce
       - --gcp-zone=us-central1-f
-      - --image-family=ubuntu-gke-1604-lts-2
+      - --image-family=pipeline-1
       - --image-project=ubuntu-os-gke-cloud-private
       - --gcp-node-image=custom
       - --extract=ci/k8s-stable1
@@ -1565,7 +1565,7 @@ periodics:
       - --gcp-zone=us-central1-f
       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
       - --gke-environment=test
-      - --image-family=ubuntu-gke-1604-lts-2
+      - --image-family=pipeline-1
       - --image-project=ubuntu-os-gke-cloud-private
       - --gcp-node-image=custom
       - --extract=ci/k8s-stable1
@@ -1596,7 +1596,7 @@ periodics:
       - --gcp-zone=us-central1-f
       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
       - --gke-environment=test
-      - --image-family=ubuntu-gke-1604-lts-2
+      - --image-family=pipeline-1
       - --image-project=ubuntu-os-gke-cloud-private
       - --gcp-node-image=custom
       - --extract=ci/k8s-stable1
@@ -1622,7 +1622,7 @@ periodics:
       - --cluster=test-f49fb1d994
       - --provider=gce
       - --gcp-zone=us-central1-f
-      - --image-family=ubuntu-gke-1604-lts-2
+      - --image-family=pipeline-1
       - --image-project=ubuntu-os-gke-cloud-private
       - --gcp-node-image=custom
       - --extract=ci/k8s-stable1
@@ -1654,7 +1654,7 @@ periodics:
       - --gcp-zone=us-central1-f
       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
       - --gke-environment=test
-      - --image-family=ubuntu-gke-1604-lts-2
+      - --image-family=pipeline-1
       - --image-project=ubuntu-os-gke-cloud-private
       - --gcp-node-image=custom
       - --extract=ci/k8s-stable2
@@ -1684,7 +1684,7 @@ periodics:
       - --gcp-zone=us-central1-f
       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
       - --gke-environment=test
-      - --image-family=ubuntu-gke-1604-lts-2
+      - --image-family=pipeline-1
       - --image-project=ubuntu-os-gke-cloud-private
       - --gcp-node-image=custom
       - --extract=ci/k8s-stable2
@@ -1711,7 +1711,7 @@ periodics:
       - --cluster=test-72f5019039
       - --provider=gce
       - --gcp-zone=us-central1-f
-      - --image-family=ubuntu-gke-1604-lts-1
+      - --image-family=pipeline-2
       - --image-project=ubuntu-os-gke-cloud-private
       - --gcp-node-image=custom
       - --extract=ci/k8s-stable3
@@ -1743,7 +1743,7 @@ periodics:
       - --gcp-zone=us-central1-f
       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
       - --gke-environment=test
-      - --image-family=ubuntu-gke-1604-lts-2
+      - --image-family=pipeline-1
       - --image-project=ubuntu-os-gke-cloud-private
       - --gcp-node-image=custom
       - --extract=ci/k8s-stable2
@@ -1772,7 +1772,7 @@ periodics:
       - --node-tests=true
       - --provider=gce
       - --gcp-zone=us-central1-f
-      - --image-family=ubuntu-gke-1604-lts-2
+      - --image-family=pipeline-1
       - --image-project=ubuntu-os-gke-cloud-private
       - --timeout=180m
       - --test_args=--nodes=1 --focus="\[Serial\]" --skip="\[Flaky\]|\[Benchmark\]|\[NodeAlphaFeature:.+\]"
@@ -1803,7 +1803,7 @@ periodics:
       - --gcp-zone=us-central1-f
       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
       - --gke-environment=test
-      - --image-family=ubuntu-gke-1604-lts-1
+      - --image-family=pipeline-2
       - --image-project=ubuntu-os-gke-cloud-private
       - --gcp-node-image=custom
       - --extract=ci/k8s-stable3
@@ -1834,7 +1834,7 @@ periodics:
       - --gcp-zone=us-central1-f
       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
       - --gke-environment=test
-      - --image-family=ubuntu-gke-1604-lts-1
+      - --image-family=pipeline-2
       - --image-project=ubuntu-os-gke-cloud-private
       - --gcp-node-image=custom
       - --extract=ci/k8s-stable3
@@ -1863,7 +1863,7 @@ periodics:
       - --node-tests=true
       - --provider=gce
       - --gcp-zone=us-central1-f
-      - --image-family=ubuntu-gke-1604-lts-2
+      - --image-family=pipeline-1
       - --image-project=ubuntu-os-gke-cloud-private
       - --timeout=60m
       - --test_args=--nodes=8 --skip="\[Flaky\]|\[Serial\]|\[NodeAlphaFeature:.+\]"
@@ -1894,7 +1894,7 @@ periodics:
       - --gcp-zone=us-central1-f
       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
       - --gke-environment=test
-      - --image-family=ubuntu-gke-1604-lts-2
+      - --image-family=pipeline-1
       - --image-project=ubuntu-os-gke-cloud-private
       - --gcp-node-image=custom
       - --extract=ci/k8s-stable2
@@ -1924,7 +1924,7 @@ periodics:
       - --gcp-zone=us-central1-f
       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
       - --gke-environment=test
-      - --image-family=ubuntu-gke-1604-lts-1
+      - --image-family=pipeline-2
       - --image-project=ubuntu-os-gke-cloud-private
       - --gcp-node-image=custom
       - --extract=ci/k8s-stable3
@@ -1955,7 +1955,7 @@ periodics:
       - --gcp-zone=us-central1-f
       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
       - --gke-environment=test
-      - --image-family=ubuntu-gke-1604-lts-2
+      - --image-family=pipeline-1
       - --image-project=ubuntu-os-gke-cloud-private
       - --gcp-node-image=custom
       - --extract=ci/k8s-stable1
@@ -1981,7 +1981,7 @@ periodics:
       - --cluster=test-6827b2df7c
       - --provider=gce
       - --gcp-zone=us-central1-f
-      - --image-family=ubuntu-gke-1604-lts-2
+      - --image-family=pipeline-1
       - --image-project=ubuntu-os-gke-cloud-private
       - --gcp-node-image=custom
       - --extract=ci/k8s-stable1
@@ -2011,7 +2011,7 @@ periodics:
       - --node-tests=true
       - --provider=gce
       - --gcp-zone=us-central1-f
-      - --image-family=ubuntu-gke-1604-lts-2
+      - --image-family=pipeline-1
       - --image-project=ubuntu-os-gke-cloud-private
       - --timeout=60m
       - --test_args=--nodes=8 --skip="\[Flaky\]|\[Serial\]|\[NodeAlphaFeature:.+\]"
@@ -2038,7 +2038,7 @@ periodics:
       - --cluster=test-bf27c33c25
       - --provider=gce
       - --gcp-zone=us-central1-f
-      - --image-family=ubuntu-gke-1604-lts-2
+      - --image-family=pipeline-1
       - --image-project=ubuntu-os-gke-cloud-private
       - --gcp-node-image=custom
       - --extract=ci/k8s-stable2
@@ -2070,7 +2070,7 @@ periodics:
       - --gcp-zone=us-central1-f
       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
       - --gke-environment=test
-      - --image-family=ubuntu-gke-1604-lts-1
+      - --image-family=pipeline-2
       - --image-project=ubuntu-os-gke-cloud-private
       - --gcp-node-image=custom
       - --extract=ci/k8s-stable3
@@ -2100,7 +2100,7 @@ periodics:
       - --gcp-zone=us-central1-f
       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
       - --gke-environment=test
-      - --image-family=ubuntu-gke-1604-lts-2
+      - --image-family=pipeline-1
       - --image-project=ubuntu-os-gke-cloud-private
       - --gcp-node-image=custom
       - --extract=ci/k8s-stable1
@@ -2127,7 +2127,7 @@ periodics:
       - --cluster=test-79194b4fe0
       - --provider=gce
       - --gcp-zone=us-central1-f
-      - --image-family=ubuntu-gke-1604-lts-2
+      - --image-family=pipeline-1
       - --image-project=ubuntu-os-gke-cloud-private
       - --gcp-node-image=custom
       - --extract=ci/k8s-stable2
@@ -2159,7 +2159,7 @@ periodics:
       - --gcp-zone=us-central1-f
       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
       - --gke-environment=test
-      - --image-family=ubuntu-gke-1604-lts-2
+      - --image-family=pipeline-1
       - --image-project=ubuntu-os-gke-cloud-private
       - --gcp-node-image=custom
       - --extract=ci/k8s-stable2
@@ -2189,7 +2189,7 @@ periodics:
       - --gcp-zone=us-central1-f
       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
       - --gke-environment=test
-      - --image-family=ubuntu-gke-1604-lts-1
+      - --image-family=pipeline-2
       - --image-project=ubuntu-os-gke-cloud-private
       - --gcp-node-image=custom
       - --extract=ci/k8s-stable3
@@ -2219,7 +2219,7 @@ periodics:
       - --gcp-zone=us-central1-f
       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
       - --gke-environment=test
-      - --image-family=ubuntu-gke-1604-lts-2
+      - --image-family=pipeline-1
       - --image-project=ubuntu-os-gke-cloud-private
       - --gcp-node-image=custom
       - --extract=ci/k8s-stable2
@@ -2250,7 +2250,7 @@ periodics:
       - --gcp-zone=us-central1-f
       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
       - --gke-environment=test
-      - --image-family=ubuntu-gke-1604-lts-1
+      - --image-family=pipeline-2
       - --image-project=ubuntu-os-gke-cloud-private
       - --gcp-node-image=custom
       - --extract=ci/k8s-stable3
@@ -2281,7 +2281,7 @@ periodics:
       - --gcp-zone=us-central1-f
       - --gcp-cloud-sdk=gs://cloud-sdk-testing/ci/staging
       - --gke-environment=test
-      - --image-family=ubuntu-gke-1604-lts-2
+      - --image-family=pipeline-1
       - --image-project=ubuntu-os-gke-cloud-private
       - --gcp-node-image=custom
       - --extract=ci/k8s-stable1
